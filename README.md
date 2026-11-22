@@ -50,7 +50,7 @@ agy plugin install ./coldpin-antigravity
 agy --agent coldpin-auditor
 ```
 
-For enterprise private registries, copy [mcp_config.private-registry.example.json](examples/mcp_config.private-registry.example.json) as an opt-in Antigravity `variables` overlay. For workspace-scoped discovery inside this repository, run `python scripts/pack_plugin.py --verify --sync-workspace` (syncs `.agents/skills/coldpin/`). For manual global installation into `~/.gemini/config/plugins/coldpin/`, see [Harnesses](docs/harnesses.md#antigravity-app-and-antigravity-for-ides).
+For enterprise private registries, copy [mcp_config.private-registry.example.json](examples/mcp_config.private-registry.example.json) as an opt-in Antigravity `variables` overlay. For opt-in self-hosted remote Streamable HTTP (`lib/mcp-http.mjs`, OAuth 2.1 CIMD / API Key / Cloud Run ADC), inline MCP App evidence cards (`ui://coldpin/evidence-card.html`, Antigravity `>= v2.34.0`), or disabled-by-default weekly scheduled scans ([sidecar.weekly-audit.example.json](examples/sidecar.weekly-audit.example.json)), see [Harnesses](docs/harnesses.md#optional-enterprise-extensions-v16-phase-e). For workspace-scoped discovery inside this repository, run `python scripts/pack_plugin.py --verify --sync-workspace` (syncs `.agents/skills/coldpin/`). For manual global installation into `~/.gemini/config/plugins/coldpin/`, see [Harnesses](docs/harnesses.md#antigravity-app-and-antigravity-for-ides).
 
 ### Claude Code, Codex CLI & Official MCP Registry
 
@@ -135,7 +135,7 @@ Static triage does not replace runtime isolation or human judgment. See [FAQ](do
 - [Privacy & data handling](docs/privacy.md): exact network egress, private-scope non-leakage, and credential boundaries.
 - [FAQ](docs/faq.md): trade-offs, false-positive controls, stock `npx` limits, and REA optionality.
 - [Design specification](docs/designs/coldpin.md) & [Design sitemap](docs/designs/SITEMAP.md): locked architecture and design records.
-- [Testing & verification](TESTING.md): deterministic unit/E2E/MCP/hook tests, 14 automated verification gates, cross-platform CI matrix, SkillSpector self-audit (`SS-03`–`SS-15`), and reproducible build gates.
+- [Testing & verification](TESTING.md): deterministic unit/E2E/MCP/hook tests, automated verification gates, cross-platform CI matrix, SkillSpector self-audit (`SS-03`–`SS-18`), and reproducible build gates.
 - [Benchmarks](skills/coldpin/BENCHMARK.md) & [Skill Card](skills/coldpin/skill-card.md): real executed Tier 1–2 measurements (`49`-fixture corpus, mutation proofs) and honest Tier 3 status.
 - [Fact Ledger](docs/fact-ledger.md), [Maintenance Cadence](MAINTENANCE.md), & [Changelog](CHANGELOG.md).
 

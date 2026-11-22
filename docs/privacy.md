@@ -22,6 +22,6 @@
 
 ## Host Agent Processing
 
-When invoked through an AI agent harness (Antigravity, Claude Code, Codex, Cursor), the selected host processes prompts and tool/CLI outputs under that host's own account terms and privacy policy. `coldpin` exposes a strictly local `stdio`-only MCP server (`lib/mcp.mjs`, zero listening network sockets, operator-only control plane), ships read-only aspect subagents and fail-safe `PreToolUse` guarding hooks with zero auto-approval (`hooks.json` → `lib/hook.mjs`, zero network calls), and runs no untrusted package scripts.
+When invoked through an AI agent harness (Antigravity, Claude Code, Codex, Cursor), the selected host processes prompts and tool/CLI outputs under that host's own account terms and privacy policy. `coldpin` exposes a strictly local `stdio`-only default MCP server (`lib/mcp.mjs`, zero listening network sockets, operator-only control plane), an inline zero-network MCP App (`ui://coldpin/evidence-card.html`, default-deny CSP `csp: {}`), read-only aspect subagents, and fail-safe `PreToolUse` guarding hooks with zero auto-approval (`hooks.json` → `lib/hook.mjs`, zero network calls). Organizations choosing to self-host the opt-in Streamable HTTP adapter (`lib/mcp-http.mjs`) operate it on their own infrastructure (VPC / Cloud Run) under their own OAuth 2.1 IdP or SHA-256-hashed API keys; Coldpin's maintainer never receives tokens, prompts, or scan telemetry.
 
 *Engineering guidance, not legal, medical or financial advice; confirm decisions with qualified counsel.*

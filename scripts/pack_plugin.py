@@ -80,6 +80,7 @@ HOST_GLOBS = {
 EXEC_ARCHIVE_PATHS = {
     "lib/cli.mjs",
     "lib/mcp.mjs",
+    "lib/mcp-http.mjs",
     "lib/hook.mjs",
 }
 
@@ -93,9 +94,11 @@ REQUIRED_ARCHIVE_PATHS = {
     "assets/icon.svg",
     "lib/cli.mjs",
     "lib/mcp.mjs",
+    "lib/mcp-http.mjs",
     "lib/hook.mjs",
     "src/cli.ts",
     "src/mcp.ts",
+    "src/mcp-http.ts",
     "src/hook.ts",
     "catalog/triage-rules.json",
     "catalog/mcp-schema-pin.json",

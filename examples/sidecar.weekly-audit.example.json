@@ -1,0 +1,30 @@
+{
+  "display_name": "Coldpin Weekly Dependency Audit",
+  "description": "Read-only weekly supply-chain screening of package.json and .npmrc using Coldpin MCP (disabled by default; copy to ~/.gemini/config/sidecars/coldpin-weekly-audit/sidecar.json and enable explicitly).",
+  "builtin": "schedule",
+  "restart_policy": "always",
+  "args": [
+    "CRON_TZ=UTC 0 9 * * 1",
+    "agentapi",
+    "new-conversation",
+    "--",
+    "In ${workspace_dir}, run Coldpin audit_manifest_batch and verify_confusion on package.json in strictly read-only mode. Summarize flagged dependencies, private-scope confusion findings, unknowns, and exact pinned upgrade candidates without running shell commands or editing files."
+  ],
+  "arguments": [
+    {
+      "key": "workspace_dir",
+      "description": "Workspace folder containing package.json to screen weekly",
+      "workspace_arg": {}
+    }
+  ],
+  "agent_permissions": {
+    "workspace_uris": [
+      "${workspace_dir}"
+    ],
+    "access_grants": [
+      "mcp(coldpin_coldpin/audit_manifest_batch)",
+      "mcp(coldpin_coldpin/verify_confusion)",
+      "mcp(coldpin_coldpin/get_artifact_report)"
+    ]
+  }
+}
