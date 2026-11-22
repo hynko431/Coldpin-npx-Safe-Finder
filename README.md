@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="docs/assets/readme-header.svg" width="480" height="116" alt="Coldpin">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-header-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme-header.svg">
+    <img src="docs/assets/readme-header.svg" width="480" height="116" alt="Coldpin">
+  </picture>
 </p>
 
 <p align="center">Inspect <code>npx</code> packages cold in memory. Pin clean releases with verifiable evidence.</p>

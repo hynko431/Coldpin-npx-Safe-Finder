@@ -46,7 +46,7 @@ SECRET_RE = re.compile(
 PAYLOAD_RE = re.compile(r"msfvenom|(\\x90){6,}|shellcode\s*=\s*b?[\"']\\x", re.I)
 MDREF_RE = re.compile(r"`([\w./\-]+\.md)`")
 MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
-HTML_REF_RE = re.compile(r"""(?:href|src)=["']([^"']+)["']""")
+HTML_REF_RE = re.compile(r"""\b(?:href|src|srcset)=["']([^"']+)["']""")
 URL_RE = re.compile(r"https?://([\w.\-]+)")
 
 

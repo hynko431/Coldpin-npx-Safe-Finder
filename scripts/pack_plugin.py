@@ -106,7 +106,7 @@ REQUIRED_ARCHIVE_PATHS = {
 }
 
 MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
-HTML_REF_RE = re.compile(r"""(?:href|src)=["']([^"']+)["']""")
+HTML_REF_RE = re.compile(r"""\b(?:href|src|srcset)=["']([^"']+)["']""")
 
 
 def slugify_heading(heading: str) -> str:
