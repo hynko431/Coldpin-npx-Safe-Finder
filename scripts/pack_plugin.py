@@ -43,7 +43,6 @@ SHARED_GLOBS = [
     "tsconfig.json",
     "assets/icon.svg",
     "docs/*.md",
-    "docs/assets/*.svg",
     "docs/designs/*.md",
     "docs/verification/*.md",
     "examples/*",

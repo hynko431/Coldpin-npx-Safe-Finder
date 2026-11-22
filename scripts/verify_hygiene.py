@@ -14,6 +14,7 @@ Checks across skills/coldpin/ and docs/:
 import datetime
 import re
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 if sys.platform == "win32":
@@ -235,12 +236,67 @@ def main() -> int:
         for h in unlisted_hosts:
             errors.append(f"URL host '{h}' not listed in docs/fact-ledger.md allow-list (used in {sorted(hosts[h])[:2]})")
 
+    # Validate bundled SVG assets: valid XML, UTF-8 without BOM, LF-only, zero active script/external URLs,
+    # canonical icon byte-parity, and legacy npm v1.5.0-v1.5.2 banner contract.
+    svg_paths = [
+        ROOT / "assets" / "icon.svg",
+        ROOT / "skills" / "coldpin" / "assets" / "icon.svg",
+        ROOT / "site" / "icon.svg",
+        ROOT / "docs" / "assets" / "readme-header.svg",
+    ]
+    svg_bytes_map: dict[str, bytes] = {}
+    for sp in svg_paths:
+        rel_svg = sp.relative_to(ROOT).as_posix()
+        if not sp.exists():
+            errors.append(f"{rel_svg}: missing expected SVG asset")
+            continue
+        raw_svg = sp.read_bytes()
+        svg_bytes_map[rel_svg] = raw_svg
+        if raw_svg.startswith(b"\xef\xbb\xbf"):
+            errors.append(f"{rel_svg}: UTF-8 BOM present")
+        if b"\r\n" in raw_svg:
+            errors.append(f"{rel_svg}: CRLF line endings present (must be LF)")
+        try:
+            svg_txt = raw_svg.decode("utf-8")
+        except UnicodeDecodeError:
+            errors.append(f"{rel_svg}: invalid UTF-8 encoding")
+            continue
+        if HIDDEN_RE.search(svg_txt):
+            errors.append(f"{rel_svg}: hidden/bidi/Tag Unicode present")
+        try:
+            root_el = ET.fromstring(svg_txt)
+        except ET.ParseError as exc:
+            errors.append(f"{rel_svg}: malformed SVG XML ({exc})")
+            continue
+        for el in root_el.iter():
+            tag_local = el.tag.rsplit("}", 1)[-1].lower()
+            if tag_local in ("script", "foreignobject", "iframe", "object", "embed"):
+                errors.append(f"{rel_svg}: disallowed active SVG element <{tag_local}>")
+            for attr_k, attr_v in el.attrib.items():
+                attr_local = attr_k.rsplit("}", 1)[-1].lower()
+                if attr_local.startswith("on"):
+                    errors.append(f"{rel_svg}: disallowed SVG event handler '{attr_local}'")
+                if attr_local in ("href", "src") and re.search(r"^\s*(?:https?:|javascript:|data:)", attr_v, re.I):
+                    errors.append(f"{rel_svg}: disallowed external/active URI in '{attr_local}'")
+        if rel_svg == "docs/assets/readme-header.svg":
+            if root_el.attrib.get("viewBox") != "0 0 480 116":
+                errors.append(f"{rel_svg}: legacy npm v1.5.0-v1.5.2 banner must keep viewBox='0 0 480 116'")
+            if "prefers-color-scheme" in svg_txt:
+                errors.append(f"{rel_svg}: must not use prefers-color-scheme inside sandboxed <img> SVG")
+            if not any(el.tag.rsplit("}", 1)[-1].lower() == "title" and (el.text or "").strip() for el in root_el.iter()):
+                errors.append(f"{rel_svg}: missing non-empty <title> element")
+    canonical_icon = svg_bytes_map.get("assets/icon.svg")
+    if canonical_icon is not None:
+        for mirror_rel in ("skills/coldpin/assets/icon.svg", "site/icon.svg"):
+            if mirror_rel in svg_bytes_map and svg_bytes_map[mirror_rel] != canonical_icon:
+                errors.append(f"{mirror_rel}: byte mismatch against canonical assets/icon.svg")
+
     desc_txt = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     dm = re.search(r"description:\s*(?:>-?\s*)?(.*?)\n(?:[a-z_-]+:|---)", desc_txt, re.S)
     desc_len = len(" ".join(dm.group(1).split())) if dm else 0
 
     print(
-        f"Hygiene audit: {len(files_to_check)} docs checked | URL hosts: {len(hosts)} "
+        f"Hygiene audit: {len(files_to_check)} docs + {len(svg_bytes_map)} SVGs checked | URL hosts: {len(hosts)} "
         f"(unlisted: {len(unlisted_hosts)}) | SKILL.md description: {desc_len} chars"
     )
     if warnings:

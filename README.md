@@ -1,19 +1,8 @@
-<p align="center">
-  <img src="docs/assets/readme-header.svg" width="68" height="68" alt="">
-</p>
+# <a href="https://coldpin-docs.pages.dev/"><img src="assets/icon.svg" width="36" height="36" alt="Coldpin documentation portal" align="absmiddle"></a> Coldpin
 
-<h1 align="center">Coldpin</h1>
+Inspect `npx` packages cold in memory. Pin clean releases with verifiable evidence.
 
-<p align="center">Inspect <code>npx</code> packages cold in memory. Pin clean releases with verifiable evidence.</p>
-
-<p align="center">
-  <a href="#install">Install</a> &ensp;·&ensp;
-  <a href="#try-your-first-audit">Quickstart</a> &ensp;·&ensp;
-  <a href="docs/getting_started.md">Documentation</a> &ensp;·&ensp;
-  <a href="skills/coldpin/BENCHMARK.md">Benchmarks</a>
-</p>
-
-<br>
+[Install](#install) · [Quickstart](#try-your-first-audit) · [Documentation](https://coldpin-docs.pages.dev/) · [Getting Started](docs/getting_started.md) · [Benchmarks](skills/coldpin/BENCHMARK.md)
 
 Discover `npx` CLI packages by capability, category, creator, or organization without executing untrusted install scripts. **Coldpin** (`coldpin`) is a zero-dependency Node.js 24 CLI, local-first JSON-RPC 2.0 `stdio` MCP server (`lib/mcp.mjs`), and multi-harness AI agent plugin.
 
