@@ -45,18 +45,18 @@ Mitigation: Deterministic 4-state verdict reports explicit observations, inferen
 **Other Properties Related to Output:** [Zero untrusted script execution; defanged IOCs (`hxxp://`, `[.]`); private scopes never query public npmjs.org or api.osv.dev] <br>
 
 ## Evaluation Tasks & Results: <br>
-See [BENCHMARK.md](BENCHMARK.md) for the executed 49-fixture adversarial/benign corpus, 35 perturbation/mutation checks, cold vs. warm Split-Plane SQLite cache measurements, and positive/decoy trigger selection proxy. <br>
+See [BENCHMARK.md](BENCHMARK.md) for the executed 49-fixture adversarial/benign corpus, 38 perturbation/mutation checks, cold vs. warm Split-Plane SQLite cache measurements, and positive/decoy trigger selection proxy. <br>
 
 | Dimension | Tier 1–2 Measured (Local Deterministic) | Tier 3 Live Multi-Agent Sandbox |
 |---|---:|---:|
 | Security (Adversarial Recall) | 100.0% (28/28 fixtures) | N/A (not run offline) |
 | Security (False-Positive Rate) | 0.0% (0/21 benign CLIs) | N/A (not run offline) |
-| Correctness (Mutation Proofs) | 100.0% (35/35 regressions caught) | N/A (not run offline) |
+| Correctness (Mutation Proofs) | 100.0% (38/38 regressions caught) | N/A (not run offline) |
 | Discoverability (Trigger + Decoys) | 100.0% (5/5 positive, 5/5 decoys avoided) | N/A (not run offline) |
 | Skill Self-Audit (SkillSpector-class) | APPROVE (0 blocking findings) | N/A (not run offline) |
 
 ## Skill Version(s): <br>
-1.5.2 (source: `SKILL.md` frontmatter) <br>
+1.6.0 (source: `SKILL.md` frontmatter) <br>
 
 ## Ethical Considerations & Security Reporting: <br>
 This skill is strictly for defensive software supply-chain security and authorized inspection. Never detonate suspected malware outside an isolated lab. Engineering guidance, not legal, medical or financial advice; confirm compliance decisions with qualified counsel. <br>

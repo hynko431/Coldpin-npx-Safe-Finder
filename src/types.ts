@@ -1,4 +1,4 @@
-export const ENGINE_VERSION = "1.5.2";
+export const ENGINE_VERSION = "1.6.0";
 export const CACHE_SCHEMA_VERSION = "3";
 
 export type TrustVerdict =

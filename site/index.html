@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none';">
   <meta name="referrer" content="no-referrer">
-  <title>Coldpin Documentation (v1.5.2)</title>
+  <title>Coldpin Documentation (v1.6.0)</title>
   <meta name="description" content="Inspect npx packages cold in memory, verify tarball-to-source parity, and pin verified clean releases with zero execution.">
   <link rel="icon" type="image/svg+xml" href="./icon.svg">
   <link rel="stylesheet" href="./styles.css">
@@ -22,7 +22,7 @@
         <a class="brand-link" href="#introduction">
           <img src="./icon.svg" alt="" width="28" height="28">
           <span>Coldpin Docs</span>
-          <span class="brand-version">v1.5.2</span>
+          <span class="brand-version">v1.6.0</span>
         </a>
       </div>
 
@@ -31,7 +31,7 @@
           <span class="search-trigger-label">Search</span>
           <kbd class="kbd">Ctrl K</kbd>
         </button>
-        <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.5.2">Release</a>
+        <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0">Release</a>
         <a class="header-ext" href="https://www.npmjs.com/package/coldpin">npm</a>
         <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder">GitHub</a>
         <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle color theme">Dark</button>
@@ -89,10 +89,10 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="#quickstart">Install in Antigravity</a>
             <a class="btn btn-secondary" href="#simulator">Try Hook Simulator</a>
-            <a class="btn btn-secondary" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.5.2">Release v1.5.2</a>
+            <a class="btn btn-secondary" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0">Release v1.6.0</a>
           </div>
 
-          <dl class="spec-strip" aria-label="Verified v1.5.2 specifications">
+          <dl class="spec-strip" aria-label="Verified v1.6.0 specifications">
             <div class="spec-item">
               <dt>Runtime &amp; Cost</dt>
               <dd>Node &gt;= 24, 0 deps, $0/mo</dd>
@@ -107,7 +107,7 @@
             </div>
             <div class="spec-item">
               <dt>Self-Audit &amp; Proofs</dt>
-              <dd>APPROVE 12/100, 35/35</dd>
+              <dd>APPROVE 16/100, 38/38</dd>
             </div>
           </dl>
         </section>
@@ -117,7 +117,7 @@
           <p class="prose">
             Coldpin runs 100% locally with zero mandatory credentials or MCP variables.
             Prerequisites: Node.js <code>&gt;= 24.0.0</code>, Git <code>&gt;= 2.25</code> (for commit bisection and Git parity),
-            and Antigravity <code>&gt;= v1.5.23</code> for native <code>PreToolUse</code> hooks.
+            and Antigravity <code>&gt;= v1.5.13</code> for native <code>PreToolUse</code> hooks (<code>&gt;= v2.34.0</code> for inline MCP Apps).
           </p>
 
           <div class="tab-bar" role="tablist" aria-label="Install method">
@@ -149,12 +149,12 @@ agy --agent coldpin-auditor</code></pre>
                 <span>Standalone CLI &amp; Local MCP Server (npm)</span>
                 <button type="button" class="copy-btn" data-copy="code-npm">Copy</button>
               </div>
-              <pre><code id="code-npm">npx --ignore-scripts coldpin@1.5.2 mcp
-npx --ignore-scripts coldpin@1.5.2 inspect semver@7.7.1
-npx --ignore-scripts coldpin@1.5.2 audit-batch ./package.json --limit 50</code></pre>
+              <pre><code id="code-npm">npx --ignore-scripts coldpin@1.6.0 mcp
+npx --ignore-scripts coldpin@1.6.0 inspect semver@7.7.1
+npx --ignore-scripts coldpin@1.6.0 audit-batch ./package.json --limit 50</code></pre>
             </div>
             <p class="prose-muted">
-              Published as <a href="https://www.npmjs.com/package/coldpin">coldpin@1.5.2</a> on npm and indexed in the
+              Published as <a href="https://www.npmjs.com/package/coldpin">coldpin@1.6.0</a> on npm and indexed in the
               <a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin">Official MCP Registry</a> as <code>io.github.hynko431/coldpin</code>.
             </p>
           </div>
@@ -172,7 +172,7 @@ agy plugin install ./coldpin-antigravity</code></pre>
             </div>
             <p class="prose-muted">
               Reproducible host archives for Antigravity, Claude Code, and Codex CLI ship with SHA-256 digests and GitHub SLSA build provenance on
-              <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.5.2">Release v1.5.2</a>.
+              <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0">Release v1.6.0</a>.
             </p>
           </div>
 
@@ -497,12 +497,12 @@ agy plugin install ./coldpin-antigravity</code></pre>
                 <tr>
                   <td>Official MCP Registry</td>
                   <td><code>io.github.hynko431/coldpin</code> (<code>server.json</code>)</td>
-                  <td><code>npx --ignore-scripts coldpin@1.5.2 mcp</code></td>
+                  <td><code>npx --ignore-scripts coldpin@1.6.0 mcp</code></td>
                 </tr>
                 <tr>
                   <td>npm &amp; Standalone CLI</td>
-                  <td><code>coldpin@1.5.2</code> (<code>package.json</code>)</td>
-                  <td><code>coldpin</code> / <code>coldpin-mcp</code></td>
+                  <td><code>coldpin@1.6.0</code> (<code>package.json</code>)</td>
+                  <td><code>coldpin</code> / <code>coldpin-mcp</code> / <code>coldpin-mcp-http</code></td>
                 </tr>
                 <tr>
                   <td>Claude Code</td>
@@ -593,21 +593,21 @@ agy plugin install ./coldpin-antigravity</code></pre>
           <h2 class="doc-h2">Verification &amp; Supply-Chain Provenance</h2>
           <p class="prose">
             Every release runs a 14-gate pipeline across <code>ubuntu-latest</code> and <code>windows-latest</code> on Node <code>24</code> and Node <code>26</code>:
-            <code>39/39</code> deterministic tests, <code>49</code>-fixture corpus (<code>100.0%</code> recall, <code>0.0%</code> FPR), <code>35/35</code> mutation proofs,
-            SkillSpector self-audit (<code>SS-03</code> through <code>SS-15</code>: <code>APPROVE</code>, risk <code>12/100</code>, <code>0</code> blocking),
-            dual in-toto DSSE signatures (<code>skills/coldpin/skill.oms.sig</code> across 18 files and <code>catalog/plugin.oms.sig</code> across 40 files),
+            <code>42/42</code> deterministic tests, <code>49</code>-fixture corpus (<code>100.0%</code> recall, <code>0.0%</code> FPR), <code>38/38</code> mutation proofs,
+            SkillSpector self-audit (<code>SS-03</code> through <code>SS-18</code>: <code>APPROVE</code>, risk <code>16/100</code>, <code>0</code> blocking),
+            dual in-toto DSSE signatures (<code>skills/coldpin/skill.oms.sig</code> across 18 files and <code>catalog/plugin.oms.sig</code> across 44 files),
             and GitHub SLSA Build Provenance attestations (<a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/attestations">SLSA attestations</a>).
           </p>
 
           <div class="code-block">
             <div class="code-header">
-              <span>Release v1.5.2 Verified SHA256SUMS.txt</span>
+              <span>Release v1.6.0 Verified SHA256SUMS.txt</span>
               <button type="button" class="copy-btn" data-copy="code-sha">Copy</button>
             </div>
-            <pre><code id="code-sha">5fad53fcbb621427977fc91684483b87866e97303804bfa95f87cbb4e8caafd8  coldpin-antigravity.zip
-9bec08170f203d458941e7de4659aa028665cc9c704c81c11eae8c712c99bc7f  coldpin-claude.zip
-57c064f256bdab77510d425ff2e42a4a8c9544906eeff2ab9a97fbcf06ecedf5  coldpin-openai.zip
-7206e35a3daf88525c1c335e55a6f902ac6849ba20f317e0b7f66a8a95c2135c  skillspector-self-audit.sarif</code></pre>
+            <pre><code id="code-sha">7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822  coldpin-antigravity.zip
+3b520c6688d56f88dcd213470f9d10d9e1345fd73d16909c6055989d65f9e50a  coldpin-claude.zip
+723fc06ed8a8989c738d7f8e216b5f12e018efd2a0ae82a6f6b901dd988223df  coldpin-openai.zip
+929682d1dd7ef2b40b82e8e8cce3ac25344631399987ab9493cbd0a98a73caf9  skillspector-self-audit.sarif</code></pre>
           </div>
 
           <p class="prose-muted">
@@ -667,11 +667,11 @@ agy plugin install ./coldpin-antigravity</code></pre>
           <div class="footer-panel">
             <div class="footer-top">
               <div>
-                <strong>Coldpin</strong> (<code>coldpin</code> v1.5.2) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431">hynko431</a>
+                <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431">hynko431</a>
               </div>
               <div class="footer-links">
                 <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder">Repository</a>
-                <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.5.2">Release v1.5.2</a>
+                <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0">Release v1.6.0</a>
                 <a href="https://www.npmjs.com/package/coldpin">npm</a>
                 <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/issues">Support</a>
                 <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/blob/main/CHANGELOG.md">Changelog</a>
@@ -704,8 +704,8 @@ agy plugin install ./coldpin-antigravity</code></pre>
       <div class="toc-meta">
         <p class="toc-meta-title">Published Channels</p>
         <ul>
-          <li><a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.5.2">GitHub Release v1.5.2</a></li>
-          <li><a href="https://www.npmjs.com/package/coldpin">npm: coldpin@1.5.2</a></li>
+          <li><a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0">GitHub Release v1.6.0</a></li>
+          <li><a href="https://www.npmjs.com/package/coldpin">npm: coldpin@1.6.0</a></li>
           <li><a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin">Official MCP Registry</a></li>
           <li><a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/issues">Public Support Tracker</a></li>
         </ul>
