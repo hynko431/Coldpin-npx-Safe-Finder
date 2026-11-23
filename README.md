@@ -37,7 +37,7 @@ node --no-warnings lib/cli.mjs --help
 node --no-warnings lib/mcp.mjs        # Start local stdio MCP server (or: coldpin mcp)
 ```
 
-Or install via npm (`npx --ignore-scripts coldpin@1.5.2 mcp`) or download a checksum-verified host bundle (`coldpin-{antigravity,claude,openai}.zip` + `SHA256SUMS.txt`) from [GitHub Releases](https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases).
+Or install via npm (`npx --ignore-scripts coldpin@1.6.0 mcp`) or download a checksum-verified host bundle (`coldpin-{antigravity,claude,openai}.zip` + `SHA256SUMS.txt`) from [GitHub Releases](https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases).
 
 ### Antigravity (CLI / Workspace / App / IDEs — requires `agy >= v1.5.13`)
 

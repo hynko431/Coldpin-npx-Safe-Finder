@@ -7,7 +7,7 @@ description: >-
   rotation, and prepare REA Tier-2 escalation without self-bootstrapping.
 license: Apache-2.0
 metadata:
-  version: "1.5.2"
+  version: "1.6.0"
   author: "hynko431"
   tags:
     - incident-response
