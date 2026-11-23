@@ -13,7 +13,7 @@
  */
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
+import { createHash, createHmac, generateKeyPairSync, sign as cryptoSign } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -39,8 +39,15 @@ import { resolveConfinedPath } from "../src/core/path-confinement.ts";
 import { runAuditManifestBatch } from "../src/core/workflows.ts";
 import { evaluateCommandText, evaluatePreToolUsePayload } from "../src/hook.ts";
 import { validateOutboundUrl, verifyNpmAttestationPayload } from "../src/intel/registry-osv.ts";
+import {
+  EVIDENCE_CARD_UI_META,
+  EVIDENCE_CARD_UI_MIME,
+  EVIDENCE_CARD_UI_URI,
+  renderEvidenceCardAppHtml,
+} from "../src/mcp/evidence-card-app.ts";
+import { HttpBearerAuthenticator, type JwksKeyEntry } from "../src/mcp/http-auth.ts";
 import { ColdpinMcpServer, loadOperatorConfigFromEnv } from "../src/mcp/server.ts";
-import { computeMcpSchemaPin } from "../src/mcp/tool-catalog.ts";
+import { computeMcpSchemaPin, MCP_RESOURCES, MCP_TOOLS } from "../src/mcp/tool-catalog.ts";
 import { computeSha512Integrity, unpackTarballInMemory } from "../src/quarantine/safe-unpack.ts";
 import { ENGINE_VERSION } from "../src/types.ts";
 import { assembleInspectionReport } from "../src/verdict/engine-and-formatters.ts";
@@ -871,7 +878,7 @@ async function runMutationChecks(): Promise<Array<{ id: string; passed: boolean;
           "out = Path(sys.argv[1]) / 'ag.zip'",
           "pp.build_reproducible_zip(out, pp.collect_target_files('antigravity'), 'antigravity')",
           "with zipfile.ZipFile(out) as zf:",
-          "  for p in ('lib/cli.mjs', 'lib/mcp.mjs', 'lib/hook.mjs'):",
+          "  for p in ('lib/cli.mjs', 'lib/mcp.mjs', 'lib/mcp-http.mjs', 'lib/hook.mjs'):",
           "    zi = zf.getinfo(p)",
           "    assert zi.create_system == 3 and (zi.external_attr >> 16) == 0o100755, (p, zi.create_system, oct(zi.external_attr >> 16))",
           "  names = set(zf.namelist())",
@@ -894,6 +901,105 @@ async function runMutationChecks(): Promise<Array<{ id: string; passed: boolean;
       id: "mut-35-vertical-slice-hygiene-and-0755-zip-modes",
       passed: mut35Ok,
       detail: `rules=${rulesList.length}(AGENTS=${agentsBytes}B), agents=${agentsList.length}, hooks=${Object.keys(hooksObj).length}, skills3=${skillsOk}, zip0755=${packZipPy.includes("ZIP_0755_OK")}`,
+    });
+
+    // Mutation 36 (Phase E1): HTTP OAuth/API-key auth rejects alg:none, HS256, wrong RFC 8707 aud, missing scope, and placeholder keys while accepting valid ES256
+    const b64u = (b: Buffer | string) =>
+      (Buffer.isBuffer(b) ? b : Buffer.from(b, "utf8")).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+    const ecMut = generateKeyPairSync("ec", { namedCurve: "prime256v1" });
+    const ecJwk = { ...(ecMut.publicKey.export({ format: "jwk" }) as JwksKeyEntry), kid: "mut-ec", use: "sig", alg: "ES256" };
+    const mutResUrl = "https://coldpin.acme.internal/mcp";
+    const mutIss = "https://idp.acme.internal";
+    const mutApiKey = "cpk_live_mut36_0123456789abcdef0123456789";
+    const mutAuth = new HttpBearerAuthenticator({
+      mode: "both",
+      resourceUrl: mutResUrl,
+      authorizationServers: [mutIss],
+      oauthIssuer: mutIss,
+      oauthRequiredScope: "coldpin:read",
+      staticJwks: { keys: [ecJwk] },
+      apiKeySha256List: [createHash("sha256").update(mutApiKey, "utf8").digest("hex")],
+    });
+    const nowS = Math.floor(Date.now() / 1000);
+    const makeEcJwt = (claims: Record<string, unknown>) => {
+      const hp = `${b64u(JSON.stringify({ alg: "ES256", kid: "mut-ec" }))}.${b64u(JSON.stringify(claims))}`;
+      const sig = cryptoSign("sha256", Buffer.from(hp, "ascii"), { key: ecMut.privateKey, dsaEncoding: "ieee-p1363" });
+      return `${hp}.${b64u(sig)}`;
+    };
+    const okEc = await mutAuth.verifyAuthorizationHeader(
+      `Bearer ${makeEcJwt({ iss: mutIss, sub: "u1", aud: mutResUrl, scope: "coldpin:read", exp: nowS + 300 })}`,
+    );
+    const badNone = await mutAuth.verifyAuthorizationHeader(
+      `Bearer ${b64u(JSON.stringify({ alg: "none" }))}.${b64u(JSON.stringify({ iss: mutIss, aud: mutResUrl, scope: "coldpin:read", exp: nowS + 300 }))}.`,
+    );
+    const hsHp = `${b64u(JSON.stringify({ alg: "HS256", kid: "mut-ec" }))}.${b64u(JSON.stringify({ iss: mutIss, aud: mutResUrl, scope: "coldpin:read", exp: nowS + 300 }))}`;
+    const badHs = await mutAuth.verifyAuthorizationHeader(
+      `Bearer ${hsHp}.${b64u(createHmac("sha256", "k").update(hsHp).digest())}`,
+    );
+    const badAud = await mutAuth.verifyAuthorizationHeader(
+      `Bearer ${makeEcJwt({ iss: mutIss, sub: "u1", aud: "https://other.acme.internal/mcp", scope: "coldpin:read", exp: nowS + 300 })}`,
+    );
+    const badScope = await mutAuth.verifyAuthorizationHeader(
+      `Bearer ${makeEcJwt({ iss: mutIss, sub: "u1", aud: mutResUrl, scope: "other:read", exp: nowS + 300 })}`,
+    );
+    const badPlaceholderKey = await mutAuth.verifyAuthorizationHeader("Bearer ${COLDPIN_MCP_API_KEY}");
+    const okApiKey = await mutAuth.verifyAuthorizationHeader(`Bearer ${mutApiKey}`);
+    const mut36Ok =
+      okEc.ok &&
+      !badNone.ok &&
+      !badHs.ok &&
+      !badAud.ok &&
+      !badScope.ok &&
+      badScope.status === 403 &&
+      !badPlaceholderKey.ok &&
+      okApiKey.ok;
+    results.push({
+      id: "mut-36-http-auth-rejects-alg-none-hs256-aud-scope-and-placeholder",
+      passed: mut36Ok,
+      detail: `es256=${okEc.ok}, none=${badNone.ok}, hs256=${badHs.ok}, aud=${badAud.ok}, scope=${badScope.status}, key=${okApiKey.ok}`,
+    });
+
+    // Mutation 37 (Phase E2): MCP App HTML enforces default-deny CSP, zero innerHTML/eval/external tags, 4 linked tools, and <=1,800 tokens
+    const appHtml = renderEvidenceCardAppHtml();
+    const uiEntry = MCP_RESOURCES.find((r) => r.uri === EVIDENCE_CARD_UI_URI);
+    const linkedUiCount = MCP_TOOLS.filter(
+      (t) => ((t._meta as { ui?: { resourceUri?: string } } | undefined)?.ui?.resourceUri) === EVIDENCE_CARD_UI_URI,
+    ).length;
+    const noUnsafeDom = !/\b(?:innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\s*\(|new\s+Function)\b/.test(appHtml);
+    const noExtTags = !/<(?:script|link|img|iframe)\b[^>]*\b(?:src|href)\s*=\s*["']https?:\/\//i.test(appHtml);
+    const pinE2 = computeMcpSchemaPin();
+    const mut37Ok =
+      uiEntry?.mimeType === EVIDENCE_CARD_UI_MIME &&
+      JSON.stringify(uiEntry?._meta) === JSON.stringify(EVIDENCE_CARD_UI_META) &&
+      appHtml.includes("default-src 'none'") &&
+      noUnsafeDom &&
+      noExtTags &&
+      linkedUiCount === 4 &&
+      pinE2.estimated_tokens <= 1800;
+    results.push({
+      id: "mut-37-mcp-app-zero-innerhtml-default-deny-csp-and-token-budget",
+      passed: mut37Ok,
+      detail: `linked=${linkedUiCount}/4, cspDefaultDeny=${appHtml.includes("default-src 'none'")}, noUnsafeDom=${noUnsafeDom}, tokens=${pinE2.estimated_tokens}<=1800`,
+    });
+
+    // Mutation 38 (Phase E3): Disabled-by-default sidecar template is strictly read-only and root mcp_config.json stays stdio-only
+    const noActiveSidecars = !existsSync(join(ROOT, "sidecars"));
+    const sidecarDoc = JSON.parse(readFileSync(join(ROOT, "examples", "sidecar.weekly-audit.example.json"), "utf8")) as {
+      builtin?: string;
+      agent_permissions?: { access_grants?: string[] };
+    };
+    const grants = sidecarDoc.agent_permissions?.access_grants ?? [];
+    const grantsRoOnly =
+      grants.length >= 2 &&
+      grants.every((g) => g.startsWith("mcp(coldpin_coldpin/") && !/command\(|write_file|edit_file|run_command/.test(g));
+    const rootMcpCfg = JSON.parse(readFileSync(join(ROOT, "mcp_config.json"), "utf8")) as {
+      mcpServers: Record<string, Record<string, unknown>>;
+    };
+    const rootStdioOnly = Object.values(rootMcpCfg.mcpServers).every((s) => !("serverUrl" in s) && !("url" in s) && s["command"] === "node");
+    results.push({
+      id: "mut-38-sidecar-template-read-only-and-default-stdio-only",
+      passed: noActiveSidecars && sidecarDoc.builtin === "schedule" && grantsRoOnly && rootStdioOnly,
+      detail: `noActiveSidecars=${noActiveSidecars}, grantsRo=${grantsRoOnly}(${grants.length}), rootStdioOnly=${rootStdioOnly}`,
     });
   } finally {
     rmSync(dir, { recursive: true, force: true });

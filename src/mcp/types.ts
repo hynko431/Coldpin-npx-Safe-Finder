@@ -57,6 +57,7 @@ export interface McpToolDefinition {
   annotations: McpToolAnnotations;
   inputSchema: Record<string, unknown>;
   outputSchema?: Record<string, unknown>;
+  _meta?: Record<string, unknown>;
 }
 
 export interface McpResourceDefinition {
@@ -64,6 +65,7 @@ export interface McpResourceDefinition {
   name: string;
   description: string;
   mimeType: string;
+  _meta?: Record<string, unknown>;
 }
 
 export interface McpResourceTemplateDefinition {

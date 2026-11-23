@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "coldpin-oauth-cimd": {
+      "serverUrl": "https://coldpin.acme.internal/mcp",
+      "timeoutSeconds": 300
+    },
+    "coldpin-api-key": {
+      "serverUrl": "https://coldpin.acme.internal/mcp",
+      "headers": {
+        "Authorization": "Bearer ${COLDPIN_MCP_API_KEY}"
+      },
+      "timeoutSeconds": 300,
+      "variables": [
+        {
+          "name": "COLDPIN_MCP_API_KEY",
+          "title": "Coldpin Scoped MCP API Key (Optional)",
+          "description": "Read-only >=256-bit cpk_live_* bearer key verified via constant-time SHA-256 on self-hosted lib/mcp-http.mjs. Leave unset when using OAuth 2.1 CIMD or Google Cloud Run ADC.",
+          "sensitive": true,
+          "required": false,
+          "link": "https://coldpin-docs.pages.dev/#configuration"
+        }
+      ]
+    },
+    "coldpin-cloud-run-adc": {
+      "serverUrl": "https://coldpin.acme.internal/mcp",
+      "authProviderType": "google_credentials",
+      "timeoutSeconds": 300
+    }
+  }
+}

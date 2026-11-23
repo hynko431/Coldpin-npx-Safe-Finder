@@ -1,5 +1,11 @@
 import { createHash } from "node:crypto";
 import { ENGINE_VERSION } from "../types.ts";
+import {
+  EVIDENCE_CARD_UI_META,
+  EVIDENCE_CARD_UI_MIME,
+  EVIDENCE_CARD_UI_URI,
+  INLINE_EVIDENCE_CARD_TOOL_META,
+} from "./evidence-card-app.ts";
 import type {
   McpPromptDefinition,
   McpResourceDefinition,
@@ -64,6 +70,7 @@ export const MCP_TOOLS: readonly McpToolDefinition[] = [
         format: { type: "string", enum: ["json", "card", "sarif", "sbom"], default: "json", description: "Output format." },
       },
     },
+    _meta: INLINE_EVIDENCE_CARD_TOOL_META,
   },
   {
     name: "resolve_safe_anchor",
@@ -89,6 +96,7 @@ export const MCP_TOOLS: readonly McpToolDefinition[] = [
         detail: { type: "string", enum: ["summary", "full"], default: "summary", description: "Output detail level." },
       },
     },
+    _meta: INLINE_EVIDENCE_CARD_TOOL_META,
   },
   {
     name: "verify_confusion",
@@ -109,6 +117,7 @@ export const MCP_TOOLS: readonly McpToolDefinition[] = [
         check_public: { type: "boolean", default: false, description: "Requires operator COLDPIN_ALLOW_PUBLIC_CONFUSION_PROBE=1." },
       },
     },
+    _meta: INLINE_EVIDENCE_CARD_TOOL_META,
   },
   {
     name: "audit_verify",
@@ -152,6 +161,7 @@ export const MCP_TOOLS: readonly McpToolDefinition[] = [
         detail: { type: "string", enum: ["summary", "full"], default: "summary", description: "Output detail level." },
       },
     },
+    _meta: INLINE_EVIDENCE_CARD_TOOL_META,
   },
   {
     name: "get_artifact_report",
@@ -188,6 +198,13 @@ export const MCP_RESOURCES: readonly McpResourceDefinition[] = [
     name: "Active Coldpin Policy",
     description: "Sanitized active operator policy, SHA-256 hash, authorized root count, and host capabilities (zero secrets).",
     mimeType: "application/json",
+  },
+  {
+    uri: EVIDENCE_CARD_UI_URI,
+    name: "Coldpin Evidence Card MCP App",
+    description: "Zero-dependency interactive read-only Title + Info + Evidence card (default-deny CSP, copy-only commands).",
+    mimeType: EVIDENCE_CARD_UI_MIME,
+    _meta: EVIDENCE_CARD_UI_META,
   },
 ];
 

@@ -2,13 +2,13 @@
   "schema_version": "1",
   "engine_version": "1.5.2",
   "tools_count": 7,
-  "resources_count": 1,
+  "resources_count": 2,
   "resource_templates_count": 1,
   "prompts_count": 2,
-  "tools_list_chars": 6249,
-  "estimated_tokens": 1563,
-  "tools_sha256": "b10e7abf5eeae51a8f09df9bd34349c270be63b8c460f095dc48c5f36775f84d",
-  "resources_sha256": "c8a9e9062dea521bf9ae36d7cbec7b2a334194f793496aae3c57c4a452dfea8d",
+  "tools_list_chars": 6509,
+  "estimated_tokens": 1628,
+  "tools_sha256": "48fc70fe2506f166e649772b04f48cc040fb34de4943f5dca1589d311cd65b15",
+  "resources_sha256": "eeafdcbf22fe077cbd82e803bebc48d6156f3737481413442ad7d1c5f5ac5db3",
   "prompts_sha256": "7ed0250e16aa025ee47f828e5296a688a1fc3264ab6adf91b40a4483fea48aaf",
-  "catalog_sha256": "41823cd977a0ab9c1d8c618ac19bb85acdbf7431bfcc0f3a8e800117e107b828"
+  "catalog_sha256": "9e997561b1a4dd1f54daa0bab536e23f53ede5628b5dd26914fbb15badcee8a4"
 }

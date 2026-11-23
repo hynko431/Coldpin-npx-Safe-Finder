@@ -18,7 +18,8 @@
   },
   "bin": {
     "coldpin": "./lib/cli.mjs",
-    "coldpin-mcp": "./lib/mcp.mjs"
+    "coldpin-mcp": "./lib/mcp.mjs",
+    "coldpin-mcp-http": "./lib/mcp-http.mjs"
   },
   "files": [
     "lib/",
@@ -47,7 +48,8 @@
     "build": "node --no-warnings ./scripts/build_lib.ts",
     "start": "node --no-warnings ./lib/cli.mjs",
     "mcp": "node --no-warnings ./lib/mcp.mjs",
-    "test": "node --no-warnings --test tests/security-quarantine.test.ts tests/static-triage-and-policy.test.ts tests/e2e-parity-and-bisect.test.ts tests/hardening-and-packaging.test.ts tests/mcp-server.test.ts tests/antigravity-plugin-components.test.ts",
+    "mcp:http": "node --no-warnings ./lib/mcp-http.mjs",
+    "test": "node --no-warnings --test tests/security-quarantine.test.ts tests/static-triage-and-policy.test.ts tests/e2e-parity-and-bisect.test.ts tests/hardening-and-packaging.test.ts tests/mcp-server.test.ts tests/antigravity-plugin-components.test.ts tests/phase-e-http-and-app.test.ts",
     "lint:skill": "python scripts/lint_skill.py",
     "verify:hygiene": "python scripts/verify_hygiene.py",
     "check:stale": "python scripts/staleness_check.py 30",
