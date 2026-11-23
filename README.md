@@ -4,9 +4,19 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
 
 [Install](#install) · [Quickstart](#try-your-first-audit) · [Documentation](https://coldpin-docs.pages.dev/) · [Getting Started](docs/getting_started.md) · [Benchmarks](skills/coldpin/BENCHMARK.md)
 
+[![mcprush](https://img.shields.io/endpoint?url=https%3A%2F%2Fmcprush.com%2Fbadge%2Fcoldpin-mcp%2Fshields.json)](https://mcprush.com/to/coldpin-mcp?ref=badge)
+
 Discover `npx` CLI packages by capability, category, creator, or organization without executing untrusted install scripts. **Coldpin** (`coldpin`) is a zero-dependency Node.js 24 CLI, local-first JSON-RPC 2.0 `stdio` MCP server (`lib/mcp.mjs`), and multi-harness AI agent plugin.
 
 **Deterministic CLI & Local MCP Server** fetch tarballs over HTTPS, verify SHA-512 integrity, unpack strictly in memory, run linear-time JS/TS lexical taint and hidden-Unicode triage, check OSV/OpenSSF `MAL-*` advisories, and validate 3-tier tarball-to-Git parity. **Safe-Anchor Resolver** walks release history and cached Git commits (`--first-parent`) to isolate the patient-zero commit and recover a verified pre-compromise release or vetted alternative. **You** review the `Title + Info + Evidence` card and decide whether to run any command.
+
+<a href="https://mcprush.com/to/coldpin-mcp?ref=badge">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://mcprush.com/badge/coldpin-mcp/card.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://mcprush.com/badge/coldpin-mcp/card.svg?theme=light" />
+    <img width="380" height="200" src="https://mcprush.com/badge/coldpin-mcp/card.svg?theme=light" alt="Coldpin MCP server" />
+  </picture>
+</a>
 
 ## Install
 
