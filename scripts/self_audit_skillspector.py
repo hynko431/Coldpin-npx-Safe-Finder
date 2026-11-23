@@ -844,8 +844,12 @@ def read_tool_version() -> str:
 
 def emit_sarif(findings: list[Finding], dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
+    # Emit only actionable findings (blocking or MEDIUM+) as SARIF alerts so GitHub Code Scanning
+    # never raises false-positive PR alerts on documented non-blocking LOW capability notes
+    # (which remain transparently listed in docs/verification/skill-inspector-self-audit.md).
+    alert_findings = [f for f in findings if f.blocks or f.severity in ("CRITICAL", "HIGH", "MEDIUM")]
     rules = {}
-    for f in findings:
+    for f in alert_findings:
         rules.setdefault(
             f.rule_id,
             {"id": f.rule_id, "name": f.rule_id, "shortDescription": {"text": f.message}},
@@ -865,13 +869,13 @@ def emit_sarif(findings: list[Finding], dest: Path) -> None:
                 "results": [
                     {
                         "ruleId": f.rule_id,
-                        "level": "error" if f.severity in ("CRITICAL", "HIGH") else "warning" if f.severity == "MEDIUM" else "note",
+                        "level": "error" if f.severity in ("CRITICAL", "HIGH") else "warning",
                         "message": {"text": f"{f.message} — {f.judgment}"},
                         "locations": [
                             {"physicalLocation": {"artifactLocation": {"uri": f.path}, "region": {"startLine": f.line}}}
                         ],
                     }
-                    for f in findings
+                    for f in alert_findings
                 ],
             }
         ],
