@@ -21,7 +21,7 @@ sources: Enterprise Commons MAINTENANCE.md; Google EGM runtime_packaging.md; NVI
 | **Every release** | Dual cryptographic in-toto DSSE (`skill.oms.sig` + `plugin.oms.sig`) sign & verify | `npm run sign:skill` / `npm run sign:verify` |
 | **Every release** | Reproducible multi-host bundles (`antigravity`, `claude`, `openai`) & tag-driven GitHub Release (`SHA256SUMS.txt`) | `npm run pack:plugin` / `.github/workflows/release.yml` |
 | **Weekly (scheduled CI)** | Cross-platform `verify:all` (`ubuntu-latest` + `windows-latest`), live-network CLI/MCP smoke test (`npm run test:live`), staleness check (`30d` window), & Dependabot `github-actions` updates | `.github/workflows/ci.yml` (`npm run check:stale`, `npm run test:live`) / `.github/dependabot.yml` |
-| **Quarterly** | Review volatile Fact Ledger rows (`docs/fact-ledger.md`) against primary pages; run live Tier-3 multi-agent sandbox evals (`npm run eval:tier3 -- --run --harness agy`) | Skill Maintainer / AppSec |
+| **Quarterly** | Review volatile Fact Ledger rows (`docs/fact-ledger.md`) against primary pages; run live Tier-3 multi-agent sandbox evals (`npm run eval:tier3 run agy`) | Skill Maintainer / AppSec |
 | **On upstream change** | New ATT&CK, ATLAS, EU CRA, India DPDP, or CERT-In updates | Update `docs/fact-ledger.md` row first, then `references/` |
 
 ## Rules

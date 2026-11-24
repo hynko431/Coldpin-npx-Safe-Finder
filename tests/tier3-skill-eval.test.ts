@@ -9,9 +9,11 @@ import { existsSync, readFileSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, it } from "node:test";
 import {
+  buildHarnessCommand,
   createTier3Workspace,
   formatTier3MarkdownReport,
   gradeTier3Output,
+  parseTier3Args,
   TIER3_SCENARIOS,
 } from "./tier3-skill-eval.ts";
 
@@ -83,6 +85,38 @@ describe("Tier-3 Skill Eval Harness & GHCR Container Hardening", () => {
     );
     assert.ok(md.includes("1/1"));
     assert.ok(md.includes("T3-01-benign-tarball"));
+
+    // Cross-shell & Windows PowerShell 5.1 npm_config_* argument parsing
+    const pFlag = parseTier3Args(["--run", "--harness", "agy", "--scenario", "T3-01-benign-tarball"], {});
+    assert.equal(pFlag.shouldRun, true);
+    assert.equal(pFlag.harness, "agy");
+    assert.equal(pFlag.scenarioFilter, "T3-01-benign-tarball");
+
+    const pPos = parseTier3Args(["run", "claude", "T3-02-prompt-injection-exfil"], {});
+    assert.equal(pPos.shouldRun, true);
+    assert.equal(pPos.harness, "claude");
+    assert.equal(pPos.scenarioFilter, "T3-02-prompt-injection-exfil");
+
+    const pPs51 = parseTier3Args(["agy"], { npm_config_run: "true", npm_config_harness: "true" });
+    assert.equal(pPs51.shouldRun, true);
+    assert.equal(pPs51.harness, "agy");
+
+    const pDry = parseTier3Args([], {});
+    assert.equal(pDry.shouldRun, false);
+
+    // Authoritative harness invocation flag shapes (agy -p <prompt>, codex exec --skip-git-repo-check via stdin)
+    const agyCmd = buildHarnessCommand("agy", "inspect test.tgz", "/repo");
+    assert.equal(agyCmd.args[0], "-p");
+    assert.equal(agyCmd.args[1], "inspect test.tgz");
+    assert.ok(agyCmd.args.includes("--sandbox") && agyCmd.args.includes("--add-dir") && agyCmd.args.includes("/repo"));
+
+    const codexCmd = buildHarnessCommand("codex", "inspect test.tgz", "/repo");
+    assert.ok(codexCmd.args.includes("--skip-git-repo-check") && codexCmd.args.includes("--ephemeral") && codexCmd.args.includes("-"));
+    assert.equal(codexCmd.stdinInput, "inspect test.tgz\n");
+    assert.ok(!codexCmd.args.includes("inspect test.tgz"), "codex prompt must travel via stdin, never cmd.exe argv");
+
+    const claudeCmd = buildHarnessCommand("claude", "inspect test.tgz", "/repo");
+    assert.ok(claudeCmd.args.includes("-p") && claudeCmd.args.includes("--output-format") && claudeCmd.args.includes("/repo"));
   });
 
   it("enforces hardened non-root zero-dep Dockerfile and default-deny .dockerignore for GHCR", () => {

@@ -59,6 +59,6 @@ Run all 11 automated pipeline commands (`npm run build`, `npm run build:docs:che
 npm run verify:all
 ```
 
-For real-network end-to-end verification against live `registry.npmjs.org` and `api.osv.dev` (compiled CLI + spawned stdio MCP), run `npm run test:live`. To execute live Tier-3 multi-agent skill evaluations against an installed harness (`agy`, `claude`, or `codex`), run `npm run eval:tier3 -- --run --harness agy`.
+For real-network end-to-end verification against live `registry.npmjs.org` and `api.osv.dev` (compiled CLI + spawned stdio MCP), run `npm run test:live`. To execute live Tier-3 multi-agent skill evaluations against an installed harness (`agy`, `claude`, or `codex`), run `npm run eval:tier3 run agy` (or `node --no-warnings tests/tier3-skill-eval.ts --run --harness agy`).
 
 See [TESTING.md](../TESTING.md) for the exact scope of each gate and what remains outside offline automated coverage, or browse the live interactive documentation and browser Policy Lab at [coldpin-docs.pages.dev](https://coldpin-docs.pages.dev/).

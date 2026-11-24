@@ -11,7 +11,7 @@
  *   non-interactively in sandbox mode, grades actual output & tool-call trajectories against
  *   Coldpin's hard invariants, and writes dated JSON + Markdown reports to `dist/tier3-eval/`.
  */
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -227,23 +227,137 @@ export function detectInstalledHarnesses(): AgentHarnessName[] {
   return found;
 }
 
-function buildHarnessCommand(harness: AgentHarnessName, promptText: string): { bin: string; args: string[] } {
+function resolveWindowsBinary(bin: AgentHarnessName): { path: string; isCmdShim: boolean } | null {
+  if (process.platform !== "win32") return { path: bin, isCmdShim: false };
+  const res = spawnSync("where.exe", [bin], { encoding: "utf8", windowsHide: true });
+  if (res.status !== 0) return null;
+  const candidates = (res.stdout ?? "")
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const exe = candidates.find((c) => /\.exe$/i.test(c));
+  if (exe) return { path: exe, isCmdShim: false };
+  const cmd = candidates.find((c) => /\.(?:cmd|bat)$/i.test(c));
+  if (cmd) return { path: cmd, isCmdShim: true };
+  return candidates[0] ? { path: candidates[0], isCmdShim: false } : null;
+}
+
+export function buildHarnessCommand(
+  harness: AgentHarnessName,
+  promptText: string,
+  extraDir?: string,
+): { bin: string; args: string[]; stdinInput?: string } {
+  const resolved = resolveWindowsBinary(harness);
+  const targetBin = resolved?.path ?? harness;
+  const addDirArgs = extraDir ? ["--add-dir", extraDir] : [];
   if (harness === "agy") {
     return {
-      bin: "agy",
-      args: ["--print", "--output-format", "text", "--sandbox", "--print-timeout", "180s", promptText],
+      bin: targetBin,
+      args: ["-p", promptText, "--output-format", "text", "--sandbox", "--print-timeout", "180s", ...addDirArgs],
     };
   }
   if (harness === "claude") {
+    if (resolved?.isCmdShim) {
+      return {
+        bin: process.env["ComSpec"] || "cmd.exe",
+        args: ["/d", "/s", "/c", targetBin, "-p", "--output-format", "text", ...addDirArgs],
+        stdinInput: `${promptText}\n`,
+      };
+    }
     return {
-      bin: "claude",
-      args: ["-p", "--output-format", "text", promptText],
+      bin: targetBin,
+      args: ["-p", "--output-format", "text", ...addDirArgs, promptText],
+    };
+  }
+  const codexArgs = ["exec", "--skip-git-repo-check", "--ephemeral", "--sandbox", "read-only", "-"];
+  if (resolved?.isCmdShim) {
+    // Pass prompt over stdin (`codex exec -`) so zero prompt characters ever enter cmd.exe parsing
+    return {
+      bin: process.env["ComSpec"] || "cmd.exe",
+      args: ["/d", "/s", "/c", targetBin, ...codexArgs],
+      stdinInput: `${promptText}\n`,
     };
   }
   return {
-    bin: "codex",
-    args: ["exec", promptText],
+    bin: targetBin,
+    args: codexArgs,
+    stdinInput: `${promptText}\n`,
   };
+}
+
+export interface ParsedTier3Args {
+  shouldRun: boolean;
+  harness?: AgentHarnessName;
+  scenarioFilter?: string;
+  outDir: string;
+}
+
+const VALID_HARNESSES = new Set<string>(["agy", "claude", "codex"]);
+
+/**
+ * Parses CLI args across bash, PowerShell 7, and Windows PowerShell 5.1
+ * (where PowerShell 5.1 strips `--` before npm, causing npm to swallow `--run`/`--harness`
+ * into `npm_config_*` env vars and pass the harness name positionally).
+ */
+export function parseTier3Args(
+  argv: readonly string[],
+  env: NodeJS.ProcessEnv = process.env,
+): ParsedTier3Args {
+  let shouldRun = false;
+  let harness: AgentHarnessName | undefined;
+  let scenarioFilter: string | undefined;
+  let outDir = join("dist", "tier3-eval");
+  const positionals: string[] = [];
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const a = argv[i]!;
+    if (a === "--run") {
+      shouldRun = true;
+    } else if (a === "--harness" && argv[i + 1]) {
+      const next = argv[++i]!;
+      if (VALID_HARNESSES.has(next)) harness = next as AgentHarnessName;
+    } else if (a.startsWith("--harness=")) {
+      const val = a.slice("--harness=".length);
+      if (VALID_HARNESSES.has(val)) harness = val as AgentHarnessName;
+    } else if (a === "--scenario" && argv[i + 1]) {
+      scenarioFilter = argv[++i]!;
+    } else if (a.startsWith("--scenario=")) {
+      scenarioFilter = a.slice("--scenario=".length);
+    } else if (a === "--out" && argv[i + 1]) {
+      outDir = argv[++i]!;
+    } else if (a.startsWith("--out=")) {
+      outDir = a.slice("--out=".length);
+    } else if (!a.startsWith("-")) {
+      positionals.push(a);
+    }
+  }
+
+  // Support PowerShell-safe positional syntax: `npm run eval:tier3 run agy [scenario_id]`
+  let posIdx = 0;
+  if (positionals[posIdx] === "run") {
+    shouldRun = true;
+    posIdx += 1;
+  }
+  if (!harness && positionals[posIdx] && VALID_HARNESSES.has(positionals[posIdx]!)) {
+    harness = positionals[posIdx] as AgentHarnessName;
+    posIdx += 1;
+  }
+  if (!scenarioFilter && positionals[posIdx]) {
+    scenarioFilter = positionals[posIdx];
+  }
+
+  // Recover flags swallowed by npm when PowerShell 5.1 strips `--` from `npm run eval:tier3 -- --run --harness agy`
+  if (!shouldRun && env["npm_config_run"] === "true") {
+    shouldRun = true;
+  }
+  if (!harness && typeof env["npm_config_harness"] === "string" && VALID_HARNESSES.has(env["npm_config_harness"])) {
+    harness = env["npm_config_harness"] as AgentHarnessName;
+  }
+  if (!scenarioFilter && typeof env["npm_config_scenario"] === "string" && env["npm_config_scenario"] !== "true") {
+    scenarioFilter = env["npm_config_scenario"];
+  }
+
+  return { shouldRun, harness, scenarioFilter, outDir: resolve(outDir) };
 }
 
 export function formatTier3MarkdownReport(runs: readonly Tier3ScenarioRun[], timestampIso: string): string {
@@ -269,14 +383,8 @@ export function formatTier3MarkdownReport(runs: readonly Tier3ScenarioRun[], tim
 }
 
 function main(): number {
-  const args = process.argv.slice(2);
-  const shouldRun = args.includes("--run");
-  const harnessIdx = args.indexOf("--harness");
-  const requestedHarness = harnessIdx >= 0 ? (args[harnessIdx + 1] as AgentHarnessName | undefined) : undefined;
-  const scenarioIdx = args.indexOf("--scenario");
-  const scenarioFilter = scenarioIdx >= 0 ? args[scenarioIdx + 1] : undefined;
-  const outIdx = args.indexOf("--out");
-  const outDir = resolve(outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1]! : join("dist", "tier3-eval"));
+  const parsed = parseTier3Args(process.argv.slice(2), process.env);
+  const { shouldRun, harness: requestedHarness, scenarioFilter, outDir } = parsed;
 
   const installed = detectInstalledHarnesses();
   const selectedScenarios = scenarioFilter
@@ -289,19 +397,21 @@ function main(): number {
   }
 
   if (!shouldRun) {
-    console.log("TIER3_STATUS: NOT_RUN (pass --run --harness <agy|claude|codex> to execute real LLM agent sessions)");
+    console.log("TIER3_STATUS: NOT_RUN (pass `run <agy|claude|codex>` or `--run --harness <agy|claude|codex>` to execute real LLM agent sessions)");
     console.log(`Detected installed harnesses on PATH: ${installed.length ? installed.join(", ") : "none"}`);
     console.log(`Available scenarios (${selectedScenarios.length}): ${selectedScenarios.map((s) => s.id).join(", ")}`);
-    console.log("Example: npm run eval:tier3 -- --run --harness agy");
+    console.log("Example (cross-shell / PowerShell safe): npm run eval:tier3 run agy");
+    console.log("Example (direct Node):                   node --no-warnings tests/tier3-skill-eval.ts --run --harness agy");
     return 0;
   }
 
   const targetHarness = requestedHarness ?? installed[0];
   if (!targetHarness || !(["agy", "claude", "codex"] as const).includes(targetHarness)) {
-    console.error(`No supported agent harness available. Pass --harness agy|claude|codex (detected: ${installed.join(", ") || "none"}).`);
+    console.error(`No supported agent harness available. Pass \`run agy|claude|codex\` (detected: ${installed.join(", ") || "none"}).`);
     return 1;
   }
 
+  const repoRoot = resolve(".");
   const cliPath = resolve("lib", "cli.mjs");
   const ws = createTier3Workspace();
   const runs: Tier3ScenarioRun[] = [];
@@ -310,17 +420,19 @@ function main(): number {
   try {
     for (const scenario of selectedScenarios) {
       const promptText = scenario.prompt(ws, cliPath);
-      const cmd = buildHarnessCommand(targetHarness, promptText);
+      const cmd = buildHarnessCommand(targetHarness, promptText, repoRoot);
       const t0 = Date.now();
       const res = spawnSync(cmd.bin, cmd.args, {
         cwd: ws,
+        input: cmd.stdinInput,
         encoding: "utf8",
         timeout: 210_000,
         maxBuffer: 8 * 1024 * 1024,
         windowsHide: true,
       });
       const durationMs = Date.now() - t0;
-      const combined = `${res.stdout ?? ""}\n${res.stderr ?? ""}`.trim();
+      const errText = res.error ? `SPAWN_ERROR: ${res.error.message}` : "";
+      const combined = [res.stdout ?? "", res.stderr ?? "", errText].filter(Boolean).join("\n").trim();
       const grade = gradeTier3Output(scenario, combined);
       runs.push({
         scenarioId: scenario.id,
@@ -331,7 +443,9 @@ function main(): number {
         grade,
         outputExcerpt: combined.slice(0, 1200),
       });
-      console.log(`[${grade.passed ? "PASS" : "FAIL"}] ${scenario.id} (${targetHarness}, ${(durationMs / 1000).toFixed(1)}s)`);
+      const failedNames = grade.checks.filter((c) => !c.passed).map((c) => `${c.kind}:${c.name}`);
+      const detail = grade.passed ? "" : ` [exit=${res.status ?? "null"} failed=${failedNames.join(",")}]`;
+      console.log(`[${grade.passed ? "PASS" : "FAIL"}] ${scenario.id} (${targetHarness}, ${(durationMs / 1000).toFixed(1)}s)${detail}`);
     }
   } finally {
     rmSync(ws, { recursive: true, force: true });
@@ -345,9 +459,6 @@ function main(): number {
 
   return runs.every((r) => r.grade.passed) ? 0 : 1;
 }
-
-// Keep unused import check satisfied while supporting standalone CLI execution
-void execFileSync;
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   process.exit(main());
