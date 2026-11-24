@@ -101,6 +101,7 @@ Choose your coding agent, MCP client, or standalone CLI. Coldpin maintains one c
 | **Claude Code** | `.claude-plugin/plugin.json`, `skills/coldpin/` | `python scripts/pack_plugin.py --target claude --verify` | [Harnesses](docs/harnesses.md) |
 | **Codex CLI / ChatGPT Desktop** | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | `python scripts/pack_plugin.py --target openai --verify` | [Harnesses](docs/harnesses.md) |
 | **Official MCP Registry / Cursor** | `server.json` (`io.github.hynko431/coldpin`) | `npx --ignore-scripts coldpin@1.6.0 mcp` | [Harnesses](docs/harnesses.md) |
+| **OCI Container (GHCR)** | `Dockerfile` (`ghcr.io/hynko431/coldpin`) | `docker run --rm ghcr.io/hynko431/coldpin:latest inspect semver@7.7.1` | [Testing](TESTING.md) |
 
 <details>
 <summary>Standalone CLI &amp; Local MCP Server (from source or npm)</summary>

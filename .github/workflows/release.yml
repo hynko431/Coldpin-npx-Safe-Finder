@@ -288,3 +288,72 @@ jobs:
             exit "$rc"
           done
           exit 1
+
+  publish-ghcr:
+    needs: [build-and-verify, publish-github-release]
+    if: needs.build-and-verify.outputs.release_tag != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: refs/tags/${{ needs.build-and-verify.outputs.release_tag }}
+
+      - name: Verify Dockerfile exists on release tag
+        run: test -f Dockerfile
+
+      - name: Build and smoke-test container locally before push
+        env:
+          PKG_VER: ${{ needs.build-and-verify.outputs.pkg_ver }}
+        run: |
+          set -euo pipefail
+          docker build -t coldpin:smoke .
+          ver_out="$(docker run --rm --read-only --tmpfs /tmp:rw,noexec,nosuid coldpin:smoke --version)"
+          echo "Container version: ${ver_out}"
+          test "$ver_out" = "coldpin v${PKG_VER}"
+          init_out="$(printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"ghcr-smoke","version":"1.0.0"}}}\n' \
+            | docker run --rm -i --read-only --tmpfs /tmp:rw,noexec,nosuid coldpin:smoke mcp | head -n 1)"
+          echo "Container MCP initialize: ${init_out}"
+          printf '%s' "$init_out" | jq -e --arg v "$PKG_VER" '.result.serverInfo.name == "coldpin" and .result.serverInfo.version == $v' >/dev/null
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract OCI metadata and tags
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/coldpin
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern=latest,enable=${{ !contains(needs.build-and-verify.outputs.release_tag, '-') }}
+
+      - name: Build and push multi-arch OCI image to GHCR
+        id: build_push
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Attest SLSA build provenance for GHCR image
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/coldpin
+          subject-digest: ${{ steps.build_push.outputs.digest }}
+          push-to-registry: true

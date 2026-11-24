@@ -2392,7 +2392,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
         "SS-03",
         "SS-18",
         "42/42",
-        "56/56",
+        "59/59",
       ],
       sections: [
         {
@@ -2404,7 +2404,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
               ariaLabel: `Live synced Coldpin v${v} verification metrics`,
               items: [
                 { label: "MCP Schema Pin", value: `${m.mcpEstimatedTokens.toLocaleString("en-US")} / 1,800 tokens (${m.mcpToolsCount} tools)` },
-                { label: "Automated Tests", value: `${m.coreTestCount}/${m.coreTestCount} core + docs & badge suites (56/56)` },
+                { label: "Automated Tests", value: `${m.coreTestCount}/${m.coreTestCount} core + docs, badge & Tier-3 suites (59/59)` },
                 { label: "Mutation Proofs", value: `${m.mutationCount}/${m.mutationCount} regressions caught` },
                 { label: "SkillSpector Self-Audit", value: `${m.selfAuditVerdict} ${m.selfAuditRisk}/100 (${m.selfAuditBlocking} blocking)` },
               ],
@@ -2417,7 +2417,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
               nowrapCols: [0, 1],
               rows: [
                 [["Compiled ESM Parity (", { code: "SS-13" }, ")"], [{ code: "npm run build" }], [`${m.compiledEsmCount} compiled LF lib/**/*.mjs files syntax-checked & 1:1 SHA-256 verified`]],
-                [["Deterministic Test Suites"], [{ code: "npm test" }], [`56/56 tests across 9 suites (${m.coreTestCount}/${m.coreTestCount} core/MCP/plugin/Phase-E + docs portal + badge function suites)`]],
+                [["Deterministic Test Suites"], [{ code: "npm test" }], [`59/59 tests across 10 suites (${m.coreTestCount}/${m.coreTestCount} core/MCP/plugin/Phase-E + docs portal + badge function + Tier-3 harness/Dockerfile)`]],
                 [["49-Fixture Security Corpus"], [{ code: "npm run bench:check" }], [`100.0% recall (28/28 adversarial), 0.0% FPR (0/21 benign), ${m.mutationCount}/${m.mutationCount} mutation proofs`]],
                 [["SkillSpector Self-Audit"], [{ code: "npm run audit:self" }], [`SS-03–SS-18: ${m.selfAuditVerdict} (risk ${m.selfAuditRisk}/100, ${m.selfAuditBlocking} blocking, 0 SARIF alerts)`]],
                 [["MCP Schema Rug-Pull Pin (", { code: "SS-11" }, ")"], [{ code: "catalog/mcp-schema-pin.json" }], [`${m.mcpToolsCount} tools, ${m.mcpResourcesCount} resources, ${m.mcpPromptsCount} prompts, ${m.mcpEstimatedTokens.toLocaleString("en-US")} tokens (${m.mcpCatalogSha256.slice(0, 12)}...)`]],

@@ -1,0 +1,9 @@
+# Strict allowlist Docker build context for Coldpin (zero dev/test/secret leakage)
+*
+!package.json
+!LICENSE
+!README.md
+!lib/
+!lib/**
+!catalog/
+!catalog/**
