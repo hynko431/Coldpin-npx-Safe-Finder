@@ -310,7 +310,7 @@ def main() -> int:
             "hook-eval.js",
             "styles.css",
             "app.js",
-            "evidence-card-app.html",
+            "evidence-card-app/index.html",
             "evidence-card-app.css",
             "evidence-card-app.js",
             "_headers",
@@ -320,6 +320,8 @@ def main() -> int:
         for req_name in required_site_files:
             if not (site_dir / req_name).exists():
                 errors.append(f"site/{req_name}: missing required documentation portal asset")
+        if (site_dir / "evidence-card-app.html").exists():
+            errors.append("site/evidence-card-app.html: legacy flat HTML route must not exist (use site/evidence-card-app/index.html)")
 
         headers_path = site_dir / "_headers"
         expected_meta_csp = None
@@ -385,7 +387,11 @@ def main() -> int:
                     mcsp = mm.group(1).strip()
                     if "unsafe-inline" in mcsp or "unsafe-eval" in mcsp:
                         errors.append(f"{srel}: disallowed 'unsafe-inline'/'unsafe-eval' in <meta> CSP")
-                    if sf.name != "evidence-card-app.html" and expected_meta_csp and mcsp != expected_meta_csp:
+                    if srel == "site/evidence-card-app/index.html":
+                        expected_app_meta_csp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none';"
+                        if mcsp != expected_app_meta_csp:
+                            errors.append(f"{srel}: <meta> CSP drifted from sandboxed MCP App policy ({mcsp} != {expected_app_meta_csp})")
+                    elif expected_meta_csp and mcsp != expected_meta_csp:
                         errors.append(f"{srel}: <meta> CSP drifted from site/_headers ({mcsp} != {expected_meta_csp})")
             elif sf.suffix.lower() == ".js":
                 js_nc = re.sub(r"/\*[\s\S]*?\*/|//[^\n]*", "", stxt)

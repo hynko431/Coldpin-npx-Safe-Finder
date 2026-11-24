@@ -312,7 +312,7 @@ function renderPolicyLabHook(m: RepoMetrics): string {
 }
 
 function renderPolicyLabVerdict(docsRoot: "." | "../.."): string {
-  const iframeSrc = `${docsRoot}/evidence-card-app.html`;
+  const iframeSrc = `${docsRoot}/evidence-card-app/`;
   return `<div class="sim-shell" data-ui="coldpin-verdict-explorer">
   <div class="sim-presets" role="group" aria-label="Select Coldpin verdict or MCP tool sample">
     <button type="button" class="preset-btn" data-verdict="clean" aria-pressed="true">Clean (exit 0)</button>
@@ -1007,7 +1007,6 @@ export function render404Html(pages: readonly DocPage[], m: RepoMetrics): string
   <link rel="icon" type="image/svg+xml" href="./icon.svg">
   <script src="./theme-init.js"></script>
   <link rel="stylesheet" href="./styles.css">
-  <script src="./hook-eval.js" defer></script>
   <script src="./app.js" defer></script>
 </head>
 <body>

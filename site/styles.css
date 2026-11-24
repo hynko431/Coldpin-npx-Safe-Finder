@@ -1680,6 +1680,10 @@ code {
   gap: var(--raw-space-3);
 }
 
+.sim-io-grid > div {
+  min-width: 0;
+}
+
 .sim-io-label {
   margin: 0 0 0.3rem;
   font-size: 0.75rem;
@@ -1698,6 +1702,8 @@ code {
   font-family: var(--raw-code-face);
   font-size: 0.8rem;
   line-height: 1.48;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .verdict-kv {

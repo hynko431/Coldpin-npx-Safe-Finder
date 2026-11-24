@@ -19,12 +19,27 @@ export function renderHeadersFile(): string {
   X-Permitted-Cross-Domain-Policies: none
 
 # Sandboxed SEP-1865 MCP App live preview frame (still zero 'unsafe-inline', default-src 'none')
-/evidence-card-app.html
+# Cover all three Cloudflare Pages path forms so Pretty URLs never inherit /* frame-ancestors 'none'.
+/evidence-card-app
   ! Content-Security-Policy
   ! X-Frame-Options
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests
   X-Frame-Options: SAMEORIGIN
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  Cache-Control: public, max-age=0, must-revalidate
+
+/evidence-card-app/
+  ! Content-Security-Policy
+  ! X-Frame-Options
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests
+  X-Frame-Options: SAMEORIGIN
+  Cache-Control: public, max-age=0, must-revalidate
+
+/evidence-card-app/index.html
+  ! Content-Security-Policy
+  ! X-Frame-Options
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests
+  X-Frame-Options: SAMEORIGIN
+  Cache-Control: public, max-age=0, must-revalidate
 
 /docs/*.md
   Content-Type: text/markdown; charset=utf-8
@@ -1810,6 +1825,10 @@ code {
   gap: var(--raw-space-3);
 }
 
+.sim-io-grid > div {
+  min-width: 0;
+}
+
 .sim-io-label {
   margin: 0 0 0.3rem;
   font-size: 0.75rem;
@@ -1828,6 +1847,8 @@ code {
   font-family: var(--raw-code-face);
   font-size: 0.8rem;
   line-height: 1.48;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .verdict-kv {

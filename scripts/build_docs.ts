@@ -6,7 +6,7 @@
  * documentation portal under `site/` with:
  * - Zero npm dependencies, zero external CDNs, LF-only UTF-8 output.
  * - Direct compilation of `src/hook-core.ts` -> `site/hook-eval.js` (100% parity with `lib/hook.mjs`).
- * - Direct extraction of `src/mcp/evidence-card-app.ts` -> `site/evidence-card-app.{html,css,js}`
+ * - Direct extraction of `src/mcp/evidence-card-app.ts` -> `site/evidence-card-app/index.html` + `site/evidence-card-app.{css,js}`
  *   so the Policy Lab runs Coldpin's real SEP-1865 MCP App under zero-'unsafe-inline' CSP.
  * - Raw Markdown twins (`/docs/<slug>.md`), `404.html`, `robots.txt`, `sitemap.xml`, `llms.txt`,
  *   `search-index.json`, `theme-init.js`, `styles.css`, `app.js`, and synced `site/_headers`.
@@ -128,8 +128,8 @@ export function splitEvidenceCardApp(): { html: string; css: string; js: string 
         /<meta http-equiv="Content-Security-Policy" content="[^"]+">/,
         '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'self\'; style-src \'self\'; img-src data:; base-uri \'none\'; form-action \'none\';">',
       )
-      .replace(styleMatch[0], '<link rel="stylesheet" href="./evidence-card-app.css">')
-      .replace(scriptMatch[0], '<script src="./evidence-card-app.js" defer></script>'),
+      .replace(styleMatch[0], '<link rel="stylesheet" href="../evidence-card-app.css">')
+      .replace(scriptMatch[0], '<script src="../evidence-card-app.js" defer></script>'),
   );
   return { html, css, js };
 }
@@ -160,7 +160,7 @@ export function computeExpectedSiteFiles(repoRoot = REPO_ROOT): Map<string, Buff
   setText("hook-eval.js", compileHookCoreToBrowserJs(hookCoreSrc));
 
   const mcpApp = splitEvidenceCardApp();
-  setText("evidence-card-app.html", mcpApp.html);
+  setText(join("evidence-card-app", "index.html"), mcpApp.html);
   setText("evidence-card-app.css", mcpApp.css);
   setText("evidence-card-app.js", mcpApp.js);
 

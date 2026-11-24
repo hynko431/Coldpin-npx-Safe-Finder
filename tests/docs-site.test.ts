@@ -126,11 +126,25 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
   });
 
   it("has zero broken internal relative links, asset refs, or #heading anchors across all 17 doc pages + 404.html", () => {
+    const appHtmlPath = join(SITE_DIR, "evidence-card-app", "index.html");
+    assert.ok(existsSync(appHtmlPath), "Expected site/evidence-card-app/index.html to exist");
+    assert.ok(!existsSync(join(SITE_DIR, "evidence-card-app.html")), "Legacy site/evidence-card-app.html must not exist");
+
+    const policyLabHtml = readFileSync(join(SITE_DIR, "docs", "policy-lab", "index.html"), "utf8");
+    assert.match(
+      policyLabHtml,
+      /<iframe[^>]*\bid="mcp-app-frame"[^>]*\bsrc="\.\.\/\.\.\/evidence-card-app\/"/,
+      "Policy Lab #mcp-app-frame must point to ../../evidence-card-app/",
+    );
+    const appHtml = readFileSync(appHtmlPath, "utf8");
+    assert.ok(appHtml.includes('href="../evidence-card-app.css"'), "evidence-card-app/index.html must reference ../evidence-card-app.css");
+    assert.ok(appHtml.includes('src="../evidence-card-app.js"'), "evidence-card-app/index.html must reference ../evidence-card-app.js");
+
     const htmlFiles = [
       join(SITE_DIR, "index.html"),
       ...EXPECTED_SUBPAGE_SLUGS.map((slug) => join(SITE_DIR, "docs", slug, "index.html")),
       join(SITE_DIR, "404.html"),
-      join(SITE_DIR, "evidence-card-app.html"),
+      appHtmlPath,
     ];
 
     const idCache = new Map<string, Set<string>>();
@@ -215,8 +229,23 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     assert.ok(edgeCsp.includes("frame-src 'self'"), "site/_headers must include frame-src 'self'");
     assert.ok(edgeCsp.includes("frame-ancestors 'none'"), "site/_headers must enforce frame-ancestors 'none'");
 
-    // Verify Cloudflare Pages detach syntax for /evidence-card-app.html and explicit MIME headers
-    assert.match(headers, /\/evidence-card-app\.html\n\s+! Content-Security-Policy\n\s+! X-Frame-Options/);
+    // Verify Cloudflare Pages detach syntax across all three /evidence-card-app path forms and explicit MIME headers
+    assert.ok(!headers.includes("/evidence-card-app.html"), "site/_headers must not reference legacy /evidence-card-app.html");
+    const expectedAppEdgeCsp =
+      "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests";
+    for (const appRoute of ["/evidence-card-app", "/evidence-card-app/", "/evidence-card-app/index.html"]) {
+      const escapedRoute = appRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const blockRe = new RegExp(
+        `^${escapedRoute}\\n` +
+          `  ! Content-Security-Policy\\n` +
+          `  ! X-Frame-Options\\n` +
+          `  Content-Security-Policy: ${expectedAppEdgeCsp.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\n` +
+          `  X-Frame-Options: SAMEORIGIN\\n` +
+          `  Cache-Control: public, max-age=0, must-revalidate$`,
+        "m",
+      );
+      assert.match(headers, blockRe, `site/_headers missing exact Cloudflare frame-override block for ${appRoute}`);
+    }
     assert.ok(headers.includes("Content-Type: text/markdown; charset=utf-8"));
     assert.ok(headers.includes("Content-Type: text/plain; charset=utf-8"));
     assert.ok(headers.includes("Content-Type: application/json; charset=utf-8"));
@@ -226,16 +255,20 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
       .map((d) => d.trim())
       .filter((d) => d && !d.startsWith("frame-ancestors ") && d !== "upgrade-insecure-requests")
       .join("; ")};`;
+    const expectedAppMetaCsp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none';";
+    const appHtmlPath = join(SITE_DIR, "evidence-card-app", "index.html");
 
     const allHtml = walkFiles(SITE_DIR).filter((f) => f.endsWith(".html"));
-    assert.equal(allHtml.length, 19, "Expected 17 doc HTML pages + 404.html + evidence-card-app.html");
+    assert.equal(allHtml.length, 19, "Expected 17 doc HTML pages + 404.html + evidence-card-app/index.html");
     for (const f of allHtml) {
       const html = readFileSync(f, "utf8");
       const mm = /<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)">/i.exec(html);
       assert.ok(mm?.[1], `Missing <meta> CSP in ${f}`);
       assert.ok(!mm[1].includes("unsafe-inline"), `Forbidden unsafe-inline in ${f}`);
       assert.ok(!mm[1].includes("unsafe-eval"), `Forbidden unsafe-eval in ${f}`);
-      if (!f.endsWith("evidence-card-app.html")) {
+      if (f === appHtmlPath) {
+        assert.equal(mm[1], expectedAppMetaCsp, `Sandboxed MCP App meta CSP mismatch in ${f}`);
+      } else {
         assert.equal(mm[1], expectedMetaCsp, `Meta CSP mismatch in ${f}`);
       }
     }
@@ -292,9 +325,10 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
       assert.ok(discPillars.has(pid), `search-index.json discovery missing pillarId '${pid}'`);
     }
 
-    // 404.html must not emit dead mobile-menu-btn pointing to nonexistent #docs-sidebar
+    // 404.html must not emit dead mobile-menu-btn or load unused hook-eval.js
     const notFoundHtml = readFileSync(join(SITE_DIR, "404.html"), "utf8");
     assert.ok(!notFoundHtml.includes('id="mobile-menu-btn"'), "404.html must not emit dead mobile-menu-btn without #docs-sidebar");
+    assert.ok(!notFoundHtml.includes("hook-eval.js"), "404.html must not request unused hook-eval.js");
 
     // Zero stray literal backticks in rendered HTML prose across all HTML pages
     for (const sf of walkFiles(SITE_DIR)) {
@@ -326,6 +360,7 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     // 320px .faq-list CSS guard & design/a11y requirements
     const css = readFileSync(join(SITE_DIR, "styles.css"), "utf8");
     assert.match(css, /\.faq-list,\s*\.release-list\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\);/);
+    assert.match(css, /\.sim-json\s*\{[\s\S]*?white-space:\s*pre-wrap;[\s\S]*?overflow-wrap:\s*anywhere;/);
     assert.ok(css.includes("overflow-wrap: anywhere"));
     assert.ok(css.includes("--surface-code: #f1f5f9"));
     assert.ok(css.includes("::highlight(coldpin-search-match)"));
