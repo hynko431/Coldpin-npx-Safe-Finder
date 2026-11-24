@@ -5,8 +5,9 @@
  * `lib/mcp.mjs` child process over stdio JSON-RPC 2.0 against live
  * `https://registry.npmjs.org` and `https://api.osv.dev`.
  *
- * Kept opt-in (run manually via `npm run test:live` and on weekly scheduled CI)
- * so PR CI remains offline-deterministic and resilient to third-party outages.
+ * Executed via `npm run test:live` locally and in the read-only non-fork
+ * `live-network-smoke` CI job (PRs from this repo, `main`, weekly schedule,
+ * and `workflow_dispatch`), separate from the offline `verify` matrix.
  */
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
