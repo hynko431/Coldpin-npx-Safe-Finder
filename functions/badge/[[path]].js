@@ -28,7 +28,11 @@ const SLSA_V1_PREDICATE = "https://slsa.dev/provenance/v1";
 const ROUTE_CARD = "/badge/npm-card.svg";
 const ROUTE_DOWNLOADS = "/badge/npm-downloads.svg";
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const MAX_DAILY_DOWNLOADS = 1_000_000_000_000;
+const MAX_COMPACT_COUNT = 999_499_999_999_999;
+const MAX_DOWNLOAD_SCAN_ENTRIES = 366;
 const UNSAFE_CHAR_RE = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff\u00ad]/g;
+const URI_SCHEME_RE = /(?:https?:\/\/|javascript:|data:)/gi;
 const FONT_SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const FONT_MONO = "ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Menlo, Consolas, monospace";
 
@@ -119,10 +123,10 @@ export function escapeXml(value) {
 
 /**
  * Formats non-negative download counts into compact human-readable badges.
- * Examples: 0 -> "0", 831 -> "831", 1200 -> "1.2k", 999950 -> "1M", 1500000 -> "1.5M".
+ * Examples: 0 -> "0", 831 -> "831", 1200 -> "1.2k", 999950 -> "1M", 1500000 -> "1.5M", 1500000000000 -> "1.5T".
  */
 export function formatCompactCount(value) {
-  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > MAX_COMPACT_COUNT) {
     return "—";
   }
   const n = Math.floor(value);
@@ -145,16 +149,46 @@ export function formatCompactCount(value) {
     if (scaled >= 1_000) return "1B";
     return `${Number.isInteger(scaled) ? scaled.toFixed(0) : scaled.toFixed(1)}M`;
   }
-  const scaled = Math.round((n / 1_000_000_000) * 10) / 10;
-  return `${Number.isInteger(scaled) ? scaled.toFixed(0) : scaled.toFixed(1)}B`;
+  if (n < 1_000_000_000_000) {
+    if (n >= 100_000_000_000) {
+      const rounded = Math.round(n / 1_000_000_000);
+      return rounded >= 1_000 ? "1T" : `${rounded}B`;
+    }
+    const scaled = Math.round((n / 1_000_000_000) * 10) / 10;
+    if (scaled >= 1_000) return "1T";
+    return `${Number.isInteger(scaled) ? scaled.toFixed(0) : scaled.toFixed(1)}B`;
+  }
+  if (n >= 100_000_000_000_000) {
+    const rounded = Math.round(n / 1_000_000_000_000);
+    return `${rounded}T`;
+  }
+  const scaled = Math.round((n / 1_000_000_000_000) * 10) / 10;
+  return `${Number.isInteger(scaled) ? scaled.toFixed(0) : scaled.toFixed(1)}T`;
 }
 
 function normalizeTheme(theme) {
   return theme === "light" ? "light" : "dark";
 }
 
+function isValidIsoDate(value) {
+  if (typeof value !== "string" || !ISO_DATE_RE.test(value)) return false;
+  const [yearStr, monthStr, dayStr] = value.split("-");
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  if (year < 1970 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) {
+    return false;
+  }
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  return (
+    dt.getUTCFullYear() === year &&
+    dt.getUTCMonth() === month - 1 &&
+    dt.getUTCDate() === day
+  );
+}
+
 function clampLabel(raw, maxLen) {
-  const clean = String(raw ?? "").replace(UNSAFE_CHAR_RE, "").trim();
+  const clean = String(raw ?? "").replace(UNSAFE_CHAR_RE, "").replace(URI_SCHEME_RE, "").trim();
   if (clean.length <= maxLen) return clean;
   return `${clean.slice(0, Math.max(1, maxLen - 1))}…`;
 }
@@ -164,70 +198,102 @@ function clampLabel(raw, maxLen) {
  * and `registry.npmjs.org/coldpin/latest`.
  */
 export function computeNpmCardMetrics(downloadsJson, registryJson) {
+  const hasDownloadsObj = Boolean(downloadsJson && typeof downloadsJson === "object" && !Array.isArray(downloadsJson));
+  const downloadsPkgValid = !(
+    hasDownloadsObj &&
+    typeof downloadsJson.package === "string" &&
+    downloadsJson.package.trim() !== "" &&
+    downloadsJson.package !== PKG
+  );
   const rawEntries =
-    downloadsJson && typeof downloadsJson === "object" && Array.isArray(downloadsJson.downloads)
+    hasDownloadsObj && downloadsPkgValid && Array.isArray(downloadsJson.downloads)
       ? downloadsJson.downloads
       : [];
 
-  const validDaily = [];
-  for (const entry of rawEntries) {
+  // Tail-bounded O(1) scan: collect at most the latest 31 valid entries without scanning unbounded arrays
+  const reversedValid = [];
+  let scanned = 0;
+  for (let i = rawEntries.length - 1; i >= 0 && reversedValid.length < 31 && scanned < MAX_DOWNLOAD_SCAN_ENTRIES; i -= 1) {
+    scanned += 1;
+    const entry = rawEntries[i];
     if (
       entry &&
       typeof entry === "object" &&
       typeof entry.downloads === "number" &&
       Number.isFinite(entry.downloads) &&
-      entry.downloads >= 0
+      entry.downloads >= 0 &&
+      entry.downloads <= MAX_DAILY_DOWNLOADS
     ) {
-      validDaily.push({
-        day: typeof entry.day === "string" && ISO_DATE_RE.test(entry.day) ? entry.day : null,
+      reversedValid.push({
+        day: isValidIsoDate(entry.day) ? entry.day : null,
         downloads: Math.floor(entry.downloads),
       });
     }
   }
+  const boundedDaily = reversedValid.reverse();
 
-  const boundedDaily = validDaily.slice(-31);
-  const downloadsAvailable = boundedDaily.length > 0;
-  const weekly = downloadsAvailable
+  const rawWeekly = boundedDaily.length > 0
     ? boundedDaily.slice(-7).reduce((sum, item) => sum + item.downloads, 0)
     : null;
-  const monthly = downloadsAvailable
+  const rawMonthly = boundedDaily.length > 0
     ? boundedDaily.reduce((sum, item) => sum + item.downloads, 0)
     : null;
-  const sparklineValues = boundedDaily.map((item) => item.downloads);
+  const downloadsAvailable =
+    boundedDaily.length > 0 &&
+    Number.isSafeInteger(rawWeekly) &&
+    Number.isSafeInteger(rawMonthly) &&
+    rawWeekly <= MAX_COMPACT_COUNT &&
+    rawMonthly <= MAX_COMPACT_COUNT;
+
+  const weekly = downloadsAvailable ? rawWeekly : null;
+  const monthly = downloadsAvailable ? rawMonthly : null;
+  const sparklineValues = downloadsAvailable ? boundedDaily.map((item) => item.downloads) : [];
 
   let endDate = null;
-  if (downloadsJson && typeof downloadsJson === "object" && typeof downloadsJson.end === "string" && ISO_DATE_RE.test(downloadsJson.end)) {
-    endDate = downloadsJson.end;
-  } else {
-    for (let i = boundedDaily.length - 1; i >= 0; i -= 1) {
-      if (boundedDaily[i].day) {
-        endDate = boundedDaily[i].day;
-        break;
+  if (downloadsAvailable) {
+    if (hasDownloadsObj && isValidIsoDate(downloadsJson.end)) {
+      endDate = downloadsJson.end;
+    } else {
+      for (let i = boundedDaily.length - 1; i >= 0; i -= 1) {
+        if (boundedDaily[i].day) {
+          endDate = boundedDaily[i].day;
+          break;
+        }
       }
     }
   }
 
-  const hasRegistry = Boolean(registryJson && typeof registryJson === "object" && !Array.isArray(registryJson));
-  const rawVersion = hasRegistry && typeof registryJson.version === "string" ? registryJson.version.replace(UNSAFE_CHAR_RE, "").trim() : "";
+  const hasRegistryObj = Boolean(registryJson && typeof registryJson === "object" && !Array.isArray(registryJson));
+  const registryNameValid = !(
+    hasRegistryObj &&
+    typeof registryJson.name === "string" &&
+    registryJson.name.trim() !== "" &&
+    registryJson.name !== PKG
+  );
+  const rawVersion =
+    hasRegistryObj && registryNameValid && typeof registryJson.version === "string"
+      ? clampLabel(registryJson.version, 24)
+      : "";
   const registryAvailable = rawVersion.length > 0;
-  const version = registryAvailable ? clampLabel(rawVersion, 24) : FALLBACK_VERSION;
+  const version = registryAvailable ? rawVersion : FALLBACK_VERSION;
 
   let license = FALLBACK_LICENSE;
-  if (hasRegistry) {
-    if (typeof registryJson.license === "string" && registryJson.license.trim()) {
-      license = clampLabel(registryJson.license, 18);
+  if (registryAvailable) {
+    if (typeof registryJson.license === "string") {
+      const cleaned = clampLabel(registryJson.license, 18);
+      if (cleaned) license = cleaned;
     } else if (
       registryJson.license &&
       typeof registryJson.license === "object" &&
-      typeof registryJson.license.type === "string" &&
-      registryJson.license.type.trim()
+      typeof registryJson.license.type === "string"
     ) {
-      license = clampLabel(registryJson.license.type, 18);
+      const cleaned = clampLabel(registryJson.license.type, 18);
+      if (cleaned) license = cleaned;
     }
   }
 
   const depsCount =
-    hasRegistry &&
+    registryAvailable &&
     registryJson.dependencies &&
     typeof registryJson.dependencies === "object" &&
     !Array.isArray(registryJson.dependencies)
@@ -314,36 +380,44 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
   const mode = normalizeTheme(theme);
   const t = THEMES[mode];
 
-  const pkgText = escapeXml(metrics?.packageName || PKG);
-  const rawVer = clampLabel(metrics?.version || FALLBACK_VERSION, 16);
-  const verLabel = `v${rawVer}`;
+  const pkgRaw = String(metrics?.packageName || PKG).replace(URI_SCHEME_RE, "") || PKG;
+  const pkgText = escapeXml(pkgRaw);
+  const rawVer = clampLabel(metrics?.version || FALLBACK_VERSION, 16).replace(/^[vV]+(?=\d)/, "");
+  const verLabel = `v${rawVer || FALLBACK_VERSION}`;
   const verText = escapeXml(verLabel);
-  const licenseRaw = clampLabel(metrics?.license || FALLBACK_LICENSE, 16);
+  const licenseRaw = clampLabel(metrics?.license || FALLBACK_LICENSE, 16) || FALLBACK_LICENSE;
   const licenseText = escapeXml(licenseRaw);
 
   const depsNum =
     typeof metrics?.depsCount === "number" && Number.isFinite(metrics.depsCount) && metrics.depsCount >= 0
       ? Math.floor(metrics.depsCount)
       : 0;
-  const depsLabel = `${depsNum} ${depsNum === 1 ? "dep" : "deps"}`;
+  const depsCountText = depsNum >= 1_000 ? formatCompactCount(depsNum) : String(depsNum);
+  const depsLabel = `${depsCountText} ${depsNum === 1 ? "dep" : "deps"}`;
   const depsText = escapeXml(depsLabel);
 
   const provenanceVerified = Boolean(metrics?.provenanceVerified);
   const registryAvailable = metrics?.registryAvailable !== false;
-  const hasDownloads = typeof metrics?.weekly === "number" && Number.isFinite(metrics.weekly);
+  const hasDownloads =
+    typeof metrics?.weekly === "number" &&
+    Number.isFinite(metrics.weekly) &&
+    metrics.weekly >= 0 &&
+    metrics.weekly <= MAX_COMPACT_COUNT;
 
   const weeklyStr = hasDownloads ? formatCompactCount(metrics.weekly) : null;
   const monthlyStr =
-    typeof metrics?.monthly === "number" && Number.isFinite(metrics.monthly)
+    typeof metrics?.monthly === "number" &&
+    Number.isFinite(metrics.monthly) &&
+    metrics.monthly >= 0 &&
+    metrics.monthly <= MAX_COMPACT_COUNT
       ? formatCompactCount(metrics.monthly)
       : weeklyStr;
 
-  const endDate =
-    typeof metrics?.endDate === "string" && ISO_DATE_RE.test(metrics.endDate) ? metrics.endDate : null;
+  const endDate = isValidIsoDate(metrics?.endDate) ? metrics.endDate : null;
 
   // Dynamic pill widths kept comfortably within x = 18..362
   const verPillX = 124;
-  const verPillW = Math.max(48, Math.min(110, Math.round(verLabel.length * 6.8 + 16)));
+  const verPillW = Math.max(48, Math.min(140, Math.round(verLabel.length * 7.2 + 18)));
 
   const provX = 18;
   let provW;
@@ -353,7 +427,7 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
   let provMarkup;
 
   if (provenanceVerified) {
-    provW = 118;
+    provW = 124;
     provFill = t.accentSoftBg;
     provStroke = t.accentSoftBorder;
     provInk = t.accent;
@@ -362,7 +436,7 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
       `<path d="M27.5 77.2 L30.3 80 L35.5 74.5" fill="none" stroke="${provInk}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>` +
       `<text x="41" y="80.5" fill="${provInk}" font-family="${FONT_SANS}" font-size="10.5" font-weight="600">SLSA Provenance</text>`;
   } else if (!registryAvailable) {
-    provW = 110;
+    provW = 116;
     provFill = t.warnBg;
     provStroke = t.warnBorder;
     provInk = t.warnText;
@@ -370,7 +444,7 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
       `<rect x="${provX}" y="66" width="${provW}" height="22" rx="11" fill="${provFill}" stroke="${provStroke}" stroke-width="1"/>` +
       `<text x="${provX + provW / 2}" y="80.5" text-anchor="middle" fill="${provInk}" font-family="${FONT_SANS}" font-size="10.5" font-weight="600">Registry fallback</text>`;
   } else {
-    provW = 112;
+    provW = 116;
     provFill = t.pillBg;
     provStroke = t.pillBorder;
     provInk = t.pillText;
@@ -380,10 +454,10 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
   }
 
   const depsX = provX + provW + 8;
-  const depsW = Math.max(52, Math.min(82, Math.round(depsLabel.length * 6.5 + 18)));
+  const depsW = Math.max(52, Math.min(84, Math.round(depsLabel.length * 6.8 + 18)));
   const licX = depsX + depsW + 8;
   const maxLicW = Math.max(54, 362 - licX);
-  const licW = Math.max(54, Math.min(maxLicW, Math.round(licenseRaw.length * 6.4 + 18)));
+  const licW = Math.max(54, Math.min(maxLicW, Math.round(licenseRaw.length * 6.8 + 18)));
 
   const statsMarkup = hasDownloads
     ? `<text x="30" y="122" fill="${t.inkPrimary}" font-family="${FONT_SANS}" font-size="15.5" font-weight="700">` +
@@ -402,19 +476,23 @@ export function renderNpmCardSvg(metrics, theme = "dark") {
   const footerRight = endDate
     ? `updated ${escapeXml(endDate)}`
     : metrics?.degraded
-      ? "cached fallback"
+      ? "fallback mode"
       : "live registry";
 
   const summaryDownloads = hasDownloads
     ? `${weeklyStr} weekly and ${monthlyStr} 30-day downloads`
     : "live download stats temporarily unavailable";
-  const provDesc = provenanceVerified ? "verified SLSA v1 provenance" : "unverified provenance";
+  const provDesc = provenanceVerified
+    ? "verified SLSA v1 provenance"
+    : registryAvailable
+      ? "no SLSA v1 provenance attestation"
+      : "registry fallback (provenance unconfirmed)";
   const ariaLabel = escapeXml(
-    `${metrics?.packageName || PKG} ${verLabel} on official npmjs.com registry: ${summaryDownloads}, ${depsLabel}, ${licenseRaw} license, ${provDesc}`,
+    `${pkgRaw} ${verLabel} on official npmjs.com registry: ${summaryDownloads}, ${depsLabel}, ${licenseRaw} license, ${provDesc}`,
   );
-  const titleText = escapeXml(`${metrics?.packageName || PKG} ${verLabel} — Official npmjs.com Package Card`);
+  const titleText = escapeXml(`${pkgRaw} ${verLabel} — Official npmjs.com Package Card`);
   const descText = escapeXml(
-    `Official npmjs.com package statistics for ${metrics?.packageName || PKG} (${verLabel}): ${summaryDownloads}, ${depsLabel}, ${licenseRaw}, ${provDesc}${endDate ? `, data through ${endDate}` : ""}.`,
+    `Official npmjs.com package statistics for ${pkgRaw} (${verLabel}): ${summaryDownloads}, ${depsLabel}, ${licenseRaw}, ${provDesc}${endDate ? `, data through ${endDate}` : ""}.`,
   );
 
   return [
@@ -456,19 +534,24 @@ export function renderNpmDownloadsBadgeSvg(metrics, theme = "dark") {
   const mode = normalizeTheme(theme);
   const t = THEMES[mode];
 
-  const hasDownloads = typeof metrics?.weekly === "number" && Number.isFinite(metrics.weekly);
+  const pkgRaw = String(metrics?.packageName || PKG).replace(URI_SCHEME_RE, "") || PKG;
+  const hasDownloads =
+    typeof metrics?.weekly === "number" &&
+    Number.isFinite(metrics.weekly) &&
+    metrics.weekly >= 0 &&
+    metrics.weekly <= MAX_COMPACT_COUNT;
   const labelText = "npmjs downloads";
   const valueText = hasDownloads ? `${formatCompactCount(metrics.weekly)}/week` : "unavailable";
   const rightFill = hasDownloads ? t.badgeRightBg : t.badgeDegradedBg;
 
   const leftW = 108;
-  const rightW = Math.max(66, Math.round(valueText.length * 6.5 + 16));
+  const rightW = Math.max(66, Math.round(valueText.length * 6.8 + 18));
   const totalW = leftW + rightW;
 
   const ariaLabel = escapeXml(`${labelText}: ${valueText}`);
-  const titleText = escapeXml(`${metrics?.packageName || PKG} ${labelText}: ${valueText}`);
+  const titleText = escapeXml(`${pkgRaw} ${labelText}: ${valueText}`);
   const descText = escapeXml(
-    `Weekly downloads for ${metrics?.packageName || PKG} from official npmjs.com registry: ${valueText}.`,
+    `Weekly downloads for ${pkgRaw} from official npmjs.com registry: ${valueText}.`,
   );
 
   return [
@@ -494,6 +577,7 @@ async function fetchUpstreamJson(url) {
     signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
   });
   if (!response.ok) {
+    void response.body?.cancel?.().catch(() => {});
     throw new Error(`Upstream HTTP ${response.status}`);
   }
   return await response.json();
@@ -534,6 +618,7 @@ async function handleReadRequest(context, isHead) {
         const hitHeaders = new Headers(cached.headers);
         hitHeaders.set("X-Coldpin-Badge-Cache", "HIT");
         if (isHead) {
+          void cached.body?.cancel?.().catch(() => {});
           return new Response(null, { status: cached.status, headers: hitHeaders });
         }
         return new Response(cached.body, { status: cached.status, headers: hitHeaders });
