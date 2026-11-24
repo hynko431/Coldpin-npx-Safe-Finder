@@ -9,7 +9,7 @@ canonical source tree (`skills/coldpin/` + `lib/` + `src/` + `catalog/` + `examp
   and EVERY relative Markdown / image link inside each generated archive.
 - Supports `--no-overwrite` (EGM overwrite-refusal guard) for safe CI/release staging.
 - Sorts archive entries and uses fixed timestamps (2026-01-01 00:00:00 UTC) and POSIX modes
-  (`create_system=3`, `0100755` for `lib/{cli,mcp,hook}.mjs`, `0100644` otherwise)
+  (`create_system=3`, `0100755` for `lib/{cli,mcp,mcp-http,hook}.mjs`, `0100644` otherwise)
   for byte-for-byte reproducibility under the same toolchain.
 - Syncs `.agents/skills/coldpin/` when `--sync-workspace` is passed.
 """
@@ -96,10 +96,12 @@ REQUIRED_ARCHIVE_PATHS = {
     "lib/mcp.mjs",
     "lib/mcp-http.mjs",
     "lib/hook.mjs",
+    "lib/hook-core.mjs",
     "src/cli.ts",
     "src/mcp.ts",
     "src/mcp-http.ts",
     "src/hook.ts",
+    "src/hook-core.ts",
     "catalog/triage-rules.json",
     "catalog/mcp-schema-pin.json",
     "skills/coldpin/SKILL.md",

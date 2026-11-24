@@ -58,7 +58,7 @@ Coldpin ships three ready-to-adapt client entries in `examples/mcp_config.http-r
           "description": "Read-only >=256-bit cpk_live_* bearer key verified via constant-time SHA-256 on self-hosted lib/mcp-http.mjs. Leave unset when using OAuth 2.1 CIMD or Google Cloud Run ADC.",
           "sensitive": true,
           "required": false,
-          "link": "https://coldpin-docs.pages.dev/#configuration"
+          "link": "https://coldpin-docs.pages.dev/docs/enterprise-http/"
         }
       ]
     },

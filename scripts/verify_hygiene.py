@@ -2,13 +2,15 @@
 """Deep Enterprise Skill Hygiene, Reference, & URL Allow-List Validator
 (Enterprise Commons `tools/verify.py` parity).
 
-Checks across skills/coldpin/ and docs/:
-1. Zero UTF-8 BOM, zero hidden/bidi/Tag Unicode, zero ASCII control chars.
+Checks across skills/coldpin/, docs/, rules/, agents/, examples/, and site/:
+1. Zero UTF-8 BOM, zero hidden/bidi/Tag Unicode, zero ASCII control chars, LF line endings.
 2. Zero embedded prompt-injection or exploit-payload strings inside operational docs.
 3. Zero hardcoded secrets / credentialed URIs.
-4. Every backticked *.md path resolves cleanly.
+4. Every backticked *.md path, relative Markdown/HTML link, and `#heading-anchor` resolves cleanly.
 5. Reference files carry `last_reviewed:`, `review_by:`, and `status:`.
 6. Every referenced URL host appears in docs/fact-ledger.md allow-list.
+7. Static documentation portal (`site/`, 49 files): `<meta>`-vs-`site/_headers` dual-CSP sync,
+   zero `'unsafe-inline'`, Cloudflare Pages `/evidence-card-app*` detach blocks after `/*`, and zero `innerHTML` in `site/*.js`.
 """
 
 import datetime

@@ -7,6 +7,8 @@
 /src/intel/ @hynko431
 /src/core/ @hynko431
 /src/mcp/ @hynko431
+/src/hook.ts @hynko431
+/src/hook-core.ts @hynko431
 /lib/ @hynko431
 
 # Detection-as-Code catalog, MCP schema pin, SOC Sigma detections, and Antigravity plugin primitives
@@ -24,4 +26,6 @@
 
 # CI/CD workflows, release automation, documentation portal security headers, and repository governance
 /.github/ @hynko431
+/scripts/build_docs.ts @hynko431
+/scripts/docs/ @hynko431
 /site/ @hynko431

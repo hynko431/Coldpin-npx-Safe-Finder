@@ -2,7 +2,7 @@
 
 Inspect `npx` packages cold in memory. Pin clean releases with verifiable evidence.
 
-[Install](#install) · [Quickstart](#try-your-first-audit) · [Documentation](https://coldpin-docs.pages.dev/) · [Getting Started](docs/getting_started.md) · [Benchmarks](skills/coldpin/BENCHMARK.md)
+[Install](#install) · [Quickstart](#try-your-first-audit) · [Documentation](https://coldpin-docs.pages.dev/) · [Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab/) · [llms.txt](https://coldpin-docs.pages.dev/llms.txt) · [Benchmarks](skills/coldpin/BENCHMARK.md)
 
 <a href="https://mcprush.com/to/coldpin-mcp?ref=badge">
   <picture>
@@ -130,6 +130,7 @@ Static triage does not replace runtime isolation or human judgment. See [FAQ](do
 
 ## Learn more
 
+- [Documentation Portal (Cloudflare Pages)](https://coldpin-docs.pages.dev/): 5-pillar / 17-page zero-dependency docs site with raw `.md` twins, [`/llms.txt`](https://coldpin-docs.pages.dev/llms.txt), the [Interactive Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab/) (compiled directly from `src/hook-core.ts` alongside the live SEP-1865 MCP App preview), and a [GitHub Pages mirror](https://hynko431.github.io/Coldpin-npx-Safe-Finder/). Regenerate via `npm run build:docs`.
 - [Getting started](docs/getting_started.md): end-to-end workflows, policy setup, MCP env vars, and offline usage.
 - [Harnesses](docs/harnesses.md): Antigravity, Claude Code, Codex CLI, Official MCP Registry (`server.json`), and verified support status.
 - [Privacy & data handling](docs/privacy.md): exact network egress, private-scope non-leakage, and credential boundaries.

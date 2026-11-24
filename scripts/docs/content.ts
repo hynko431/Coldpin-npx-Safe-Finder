@@ -2392,6 +2392,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
         "SS-03",
         "SS-18",
         "42/42",
+        "48/48",
       ],
       sections: [
         {

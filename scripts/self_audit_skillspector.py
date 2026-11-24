@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
-"""SkillSpector-class Deterministic Self-Audit for Coldpin (v1.5.0).
+"""SkillSpector-class Deterministic Self-Audit for Coldpin (v1.6.0).
 
 Audits skills/coldpin/, skills/coldpin-audit/, skills/coldpin-incident/, src/, scripts/, catalog/,
 rules/, agents/, hooks.json, examples/, and multi-harness/MCP manifests across
 NVIDIA SkillSpector's threat categories + Coldpin MCP & Antigravity plugin supply-chain gates:
 - SS-03 (import-aware): allow ONLY async `execFile` from `node:child_process` in allowlisted files;
   flag sync `execFileSync(` as `SS-03-SYNC-EXEC-BLOCKING`; never false-positive on `RegExp.exec()` or `db.exec()`.
-- SS-04..SS-10: unpinned `npx -y`, secrets, persistence, hidden/bidi Unicode, `SS-08-HOOK-LEAST-PRIV`, bounded network, symlinks.
+- SS-04..SS-10: unpinned `npx -y`, secrets, persistence, hidden/bidi Unicode, `SS-08-HOOK-LEAST-PRIV`
+  (covering both `src/hook.ts` and zero-`node:*` `src/hook-core.ts`), bounded network, symlinks.
 - SS-11: MCP `tools/list` + `resources/list` + `prompts/list` SHA-256 rug-pull pin (`catalog/mcp-schema-pin.json`),
-  zero listening network sockets in `src/`, and zero stray `stdout` writes in pure-core modules.
+  zero default listening network sockets in `src/`, and zero stray `stdout` writes in pure-core modules.
 - SS-12: Structured JSON least-privilege audit of `mcp_config.json`, `examples/mcp_config.*.json`, `server.json`, and `.claude-plugin/plugin.json`.
 - SS-13: Zero-noise 1:1 cryptographic parity between `src/**/*.ts` and committed `lib/**/*.mjs` (`build_lib.ts --check`).
 - SS-14: Strictly read-only agent/subagent least privilege (`agents/*.md`).
 - SS-15: Pure Markdown `rules/` hygiene (flat `.md`-only, zero `@[label](path)`, `AGENTS.md <= 1,800` bytes).
+- SS-16: Opt-in self-hosted Streamable HTTP MCP adapter hardening (`src/mcp/http-server.ts`, disabled in default `mcp_config.json`).
+- SS-17: Disabled-by-default scheduled weekly audit sidecar least privilege (`examples/sidecar.weekly-audit.example.json`).
+- SS-18: Zero-dependency SEP-1865 MCP App strict default-deny CSP & DOM-injection defense (`src/mcp/evidence-card-app.ts`).
 """
 
 import json
