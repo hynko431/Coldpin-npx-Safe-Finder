@@ -53,10 +53,12 @@ node --no-warnings lib/mcp.mjs   # or: coldpin mcp
 
 ## Full Verification Suite
 
-Run all 11 automated pipeline commands (`npm run build`, `npm run build:docs:check` across 49 `site/` files, `56/56` tests across 9 suites including `tests/docs-site.test.ts` and `tests/badge-function.test.ts`, 13-manifest & vertical-slice lint, hygiene & dual-CSP audit, staleness, static eval, SkillSpector `SS-03`–`SS-18` self-audit, 49-fixture/38-mutation benchmark verification, dual DSSE signature verification, and reproducible multi-host packaging) with one command:
+Run all 11 automated pipeline commands (`npm run build`, `npm run build:docs:check` across 49 `site/` files, `59/59` tests across 10 suites including `tests/docs-site.test.ts`, `tests/badge-function.test.ts`, and `tests/tier3-skill-eval.test.ts`, 13-manifest & vertical-slice lint, hygiene & dual-CSP audit, staleness, static eval, SkillSpector `SS-03`–`SS-18` self-audit, 49-fixture/38-mutation benchmark verification, dual DSSE signature verification, and reproducible multi-host packaging) with one command:
 
 ```sh
 npm run verify:all
 ```
+
+For real-network end-to-end verification against live `registry.npmjs.org` and `api.osv.dev` (compiled CLI + spawned stdio MCP), run `npm run test:live`. To execute live Tier-3 multi-agent skill evaluations against an installed harness (`agy`, `claude`, or `codex`), run `npm run eval:tier3 run agy` (or `node --no-warnings tests/tier3-skill-eval.ts --run --harness agy`).
 
 See [TESTING.md](../TESTING.md) for the exact scope of each gate and what remains outside offline automated coverage, or browse the live interactive documentation and browser Policy Lab at [coldpin-docs.pages.dev](https://coldpin-docs.pages.dev/).

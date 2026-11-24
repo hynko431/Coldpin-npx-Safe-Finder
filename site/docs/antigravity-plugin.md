@@ -33,7 +33,7 @@ Always exits `0` with strictly `allow`, `deny`, or `force_ask`. Never emits auto
 
 ### Local MCP Server (1 stdio server)
 
-Root `mcp_config.json` launches `node --no-warnings ${PLUGIN_ROOT}/lib/mcp.mjs` with `timeoutSeconds: 300`, `${PLUGIN_DATA}` cache isolation, and all `7` read-only tools marked `eager: true` (`1,628 tokens`).
+Root `mcp_config.json` launches `node --no-warnings ${PLUGIN_ROOT}/lib/mcp.mjs` with `timeoutSeconds: 300`, `${PLUGIN_DATA}` cache isolation, and all `7` read-only tools marked `eager: true` (`1,643 tokens`).
 
 Zero mandatory `variables` keeps public installs active immediately; enterprises can layer [private-registry variables](https://coldpin-docs.pages.dev/docs/configuration/) or [self-hosted HTTP MCP](https://coldpin-docs.pages.dev/docs/enterprise-http/).
 

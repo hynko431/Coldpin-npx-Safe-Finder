@@ -3,7 +3,7 @@
 > **Coldpin v1.6.0** · Section: MCP & CLI · Available on: Local stdio (lib/mcp.mjs), Self-Hosted HTTP (lib/mcp-http.mjs), Official MCP Registry
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/mcp-tools/
 
-Coldpin exposes a static, plain-English MCP catalog (`MCP 2025-11-25`, `2025-06-18`, `2025-03-26`) pinned cryptographically in `catalog/mcp-schema-pin.json` at `1,628 <= 1,800` estimated tokens (`6,509 chars`). Control-plane parameters (`policy_path`, writable `audit_log_path`, `override_ticket_id`) are permanently omitted from tool schemas.
+Coldpin exposes a static, plain-English MCP catalog (`MCP 2025-11-25`, `2025-06-18`, `2025-03-26`) pinned cryptographically in `catalog/mcp-schema-pin.json` at `1,643 <= 1,800` estimated tokens (`6,572 chars`). Control-plane parameters (`policy_path`, writable `audit_log_path`, `override_ticket_id`) are permanently omitted from tool schemas.
 
 ## 7 Read-Only MCP Tools
 
@@ -32,7 +32,7 @@ Coldpin exposes a static, plain-English MCP catalog (`MCP 2025-11-25`, `2025-06-
 - **Framing & stdio safety: **Byte-buffered LF/CRLF framing with `1 MiB` cap, `stdout` hijack guard, and `drain` backpressure.
 - **3-tier workspace root confinement: **Resolves allowed local roots from operator `COLDPIN_ALLOWED_ROOTS` and MCP `roots/list` (blocking symlink escapes, path traversal, and NTFS ADS).
 - **Bounded concurrency & session LRU: **Semaphore caps `maxConcurrent=4` / `maxQueue=16` with `notifications/cancelled` support; ephemeral LRU holds max `25` reports / `30 min` TTL / `15 MiB` cap (never persisted to SQLite).
-- **Rug-pull schema pin (SS-11): **Live `tools/list` + `resources/list` + `prompts/list` canonical SHA-256 `9e997561b1a4dd1f...` is verified automatically on every build and self-audit.
+- **Rug-pull schema pin (SS-11): **Live `tools/list` + `resources/list` + `prompts/list` canonical SHA-256 `47c052d4f7e0f7f5...` is verified automatically on every build and self-audit.
 
 ---
 
