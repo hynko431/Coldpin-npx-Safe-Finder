@@ -28,4 +28,4 @@ Tier-0 metadata/OSV checks, Tier-1 in-memory unpacking, JS/TS lexical taint anal
 
 #### Q: Why does `BENCHMARK.md` mark Tier 3 Live Multi-Agent Evaluation as `NOT RUN`?
 
-**A**: Epistemic honesty. Running Tier 3 requires live LLM API calls in isolated sandbox containers across multiple agent harnesses (Antigravity, Claude Code, Codex). Rather than fabricating synthetic uplift numbers, `BENCHMARK.md` reports real measured Tier 1–2 execution metrics (49-fixture security corpus recall/FPR, latency, cache speedup, 35 mutation proofs, and positive+decoy trigger selection) and leaves Tier 3 explicitly `N/A` until run in CI/sandbox.
+**A**: Epistemic honesty. Running Tier 3 requires live LLM API calls in isolated sandbox containers across multiple agent harnesses (Antigravity, Claude Code, Codex). Rather than fabricating synthetic uplift numbers, `BENCHMARK.md` reports real measured Tier 1–2 execution metrics (49-fixture security corpus recall/FPR, latency, cache speedup, 38 mutation proofs, and positive+decoy trigger selection) and leaves Tier 3 explicitly `N/A` until run in CI/sandbox.

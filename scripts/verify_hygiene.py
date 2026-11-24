@@ -291,13 +291,115 @@ def main() -> int:
             if mirror_rel in svg_bytes_map and svg_bytes_map[mirror_rel] != canonical_icon:
                 errors.append(f"{mirror_rel}: byte mismatch against canonical assets/icon.svg")
 
+    # Validate static documentation portal under site/: zero BOM, LF-only, valid UTF-8,
+    # zero hidden/bidi/control/secret/injection strings, dual-CSP sync, zero 'unsafe-inline',
+    # and zero innerHTML sinks in site/*.js.
+    site_dir = ROOT / "site"
+    site_files_checked = 0
+    if not site_dir.is_dir():
+        errors.append("site/: missing documentation portal directory")
+    else:
+        required_site_files = (
+            "index.html",
+            "404.html",
+            "robots.txt",
+            "sitemap.xml",
+            "llms.txt",
+            "search-index.json",
+            "theme-init.js",
+            "hook-eval.js",
+            "styles.css",
+            "app.js",
+            "evidence-card-app.html",
+            "evidence-card-app.css",
+            "evidence-card-app.js",
+            "_headers",
+            ".nojekyll",
+            "icon.svg",
+        )
+        for req_name in required_site_files:
+            if not (site_dir / req_name).exists():
+                errors.append(f"site/{req_name}: missing required documentation portal asset")
+
+        headers_path = site_dir / "_headers"
+        expected_meta_csp = None
+        if headers_path.exists():
+            h_txt = headers_path.read_text(encoding="utf-8")
+            m_csp = re.search(r"(?m)^/\*\n[\s\S]*?^\s+Content-Security-Policy:\s*(.+)$", h_txt)
+            if not m_csp:
+                errors.append("site/_headers: missing /* Content-Security-Policy header")
+            else:
+                edge_csp = m_csp.group(1).strip()
+                if "unsafe-inline" in edge_csp or "unsafe-eval" in edge_csp:
+                    errors.append("site/_headers: disallowed 'unsafe-inline'/'unsafe-eval' in /* CSP")
+                if "connect-src 'self'" not in edge_csp:
+                    errors.append("site/_headers: /* CSP must include connect-src 'self'")
+                # Derive expected HTML <meta> CSP by stripping HTTP-header-only directives
+                meta_parts = [
+                    d.strip()
+                    for d in edge_csp.split(";")
+                    if d.strip()
+                    and not d.strip().startswith("frame-ancestors ")
+                    and d.strip() != "upgrade-insecure-requests"
+                ]
+                expected_meta_csp = "; ".join(meta_parts) + ";"
+
+        meta_csp_re = re.compile(
+            r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content="([^"]+)"',
+            re.I,
+        )
+        for sf in sorted(site_dir.rglob("*")):
+            if sf.is_symlink():
+                errors.append(f"{sf.relative_to(ROOT).as_posix()}: symlink not permitted inside site/")
+                continue
+            if not sf.is_file():
+                continue
+            site_files_checked += 1
+            srel = sf.relative_to(ROOT).as_posix()
+            sraw = sf.read_bytes()
+            if sraw.startswith(b"\xef\xbb\xbf"):
+                errors.append(f"{srel}: UTF-8 BOM present")
+            if b"\r\n" in sraw:
+                errors.append(f"{srel}: CRLF line endings present (must be LF)")
+            try:
+                stxt = sraw.decode("utf-8")
+            except UnicodeDecodeError:
+                errors.append(f"{srel}: invalid UTF-8 encoding")
+                continue
+            if HIDDEN_RE.search(stxt):
+                errors.append(f"{srel}: hidden/bidi/Tag Unicode present")
+            if CTRL_RE.search(stxt):
+                errors.append(f"{srel}: ASCII control characters present")
+            if INJECT_RE.search(stxt):
+                errors.append(f"{srel}: embedded prompt-injection phrase present")
+            if SECRET_RE.search(stxt):
+                errors.append(f"{srel}: secret-like token present")
+            if PAYLOAD_RE.search(stxt):
+                errors.append(f"{srel}: exploit-payload pattern present")
+
+            if sf.suffix.lower() == ".html":
+                mm = meta_csp_re.search(stxt)
+                if not mm:
+                    errors.append(f"{srel}: missing <meta http-equiv='Content-Security-Policy'>")
+                else:
+                    mcsp = mm.group(1).strip()
+                    if "unsafe-inline" in mcsp or "unsafe-eval" in mcsp:
+                        errors.append(f"{srel}: disallowed 'unsafe-inline'/'unsafe-eval' in <meta> CSP")
+                    if sf.name != "evidence-card-app.html" and expected_meta_csp and mcsp != expected_meta_csp:
+                        errors.append(f"{srel}: <meta> CSP drifted from site/_headers ({mcsp} != {expected_meta_csp})")
+            elif sf.suffix.lower() == ".js":
+                js_nc = re.sub(r"/\*[\s\S]*?\*/|//[^\n]*", "", stxt)
+                for bad_sink in ("innerHTML", "outerHTML", "insertAdjacentHTML", "document.write"):
+                    if bad_sink in js_nc:
+                        errors.append(f"{srel}: forbidden DOM sink '{bad_sink}' in site JS")
+
     desc_txt = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     dm = re.search(r"description:\s*(?:>-?\s*)?(.*?)\n(?:[a-z_-]+:|---)", desc_txt, re.S)
     desc_len = len(" ".join(dm.group(1).split())) if dm else 0
 
     print(
-        f"Hygiene audit: {len(files_to_check)} docs + {len(svg_bytes_map)} SVGs checked | URL hosts: {len(hosts)} "
-        f"(unlisted: {len(unlisted_hosts)}) | SKILL.md description: {desc_len} chars"
+        f"Hygiene audit: {len(files_to_check)} docs + {len(svg_bytes_map)} SVGs + {site_files_checked} site files checked | "
+        f"URL hosts: {len(hosts)} (unlisted: {len(unlisted_hosts)}) | SKILL.md description: {desc_len} chars"
     )
     if warnings:
         for w in warnings:

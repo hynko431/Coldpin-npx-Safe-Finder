@@ -46,10 +46,12 @@
   ],
   "scripts": {
     "build": "node --no-warnings ./scripts/build_lib.ts",
+    "build:docs": "node --no-warnings ./scripts/build_docs.ts",
+    "build:docs:check": "node --no-warnings ./scripts/build_docs.ts --check",
     "start": "node --no-warnings ./lib/cli.mjs",
     "mcp": "node --no-warnings ./lib/mcp.mjs",
     "mcp:http": "node --no-warnings ./lib/mcp-http.mjs",
-    "test": "node --no-warnings --test tests/security-quarantine.test.ts tests/static-triage-and-policy.test.ts tests/e2e-parity-and-bisect.test.ts tests/hardening-and-packaging.test.ts tests/mcp-server.test.ts tests/antigravity-plugin-components.test.ts tests/phase-e-http-and-app.test.ts",
+    "test": "node --no-warnings --test tests/security-quarantine.test.ts tests/static-triage-and-policy.test.ts tests/e2e-parity-and-bisect.test.ts tests/hardening-and-packaging.test.ts tests/mcp-server.test.ts tests/antigravity-plugin-components.test.ts tests/phase-e-http-and-app.test.ts tests/docs-site.test.ts",
     "lint:skill": "python scripts/lint_skill.py",
     "verify:hygiene": "python scripts/verify_hygiene.py",
     "check:stale": "python scripts/staleness_check.py 30",
@@ -60,7 +62,7 @@
     "sign:skill": "node --no-warnings ./scripts/sign_and_verify_skill.ts --sign",
     "sign:verify": "node --no-warnings ./scripts/sign_and_verify_skill.ts --verify",
     "pack:plugin": "python scripts/pack_plugin.py --target all --verify --sync-workspace",
-    "verify:all": "npm run build && npm test && npm run lint:skill && npm run verify:hygiene && npm run check:stale && npm run eval:static && npm run audit:self && npm run bench:check && npm run sign:verify && npm run pack:plugin"
+    "verify:all": "npm run build && npm run build:docs:check && npm test && npm run lint:skill && npm run verify:hygiene && npm run check:stale && npm run eval:static && npm run audit:self && npm run bench:check && npm run sign:verify && npm run pack:plugin"
   },
   "keywords": [
     "npx",

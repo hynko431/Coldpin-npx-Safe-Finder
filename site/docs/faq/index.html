@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="faq" data-pillar="verification-releases">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>FAQ &amp; Epistemic Limits — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/faq/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="FAQ &amp; Epistemic Limits — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/faq/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FAQ &amp; Epistemic Limits — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"FAQ & Epistemic Limits","description":"Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.","url":"https://coldpin-docs.pages.dev/docs/faq/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Verification & Releases","item":"https://coldpin-docs.pages.dev/docs/verification/"},{"@type":"ListItem","position":3,"name":"FAQ & Epistemic Limits","item":"https://coldpin-docs.pages.dev/docs/faq/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin Docs</span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search docs</span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/" aria-current="page">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started">
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails">
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli">
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases" open>
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/" aria-current="page">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../docs/verification/">Verification &amp; Releases</a></li><li><span aria-current="page">FAQ &amp; Epistemic Limits</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/faq.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/faq.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">FAQ &amp; Epistemic Limits</h1>
+          <p class="doc-lead">Security tooling should never overstate what static analysis can prove. These answers define Coldpin&#39;s exact epistemic boundaries and how it complements runtime isolation and private registries.</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Epistemic Rigor</span>
+            <span class="surface-chip">All Harnesses</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#common-questions">Frequently Asked Questions</a></li>
+          </ul>
+        </details>
+
+<section id="common-questions" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Frequently Asked Questions</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="common-questions" aria-label="Copy link to Frequently Asked Questions">#</button>
+  </div>
+<div class="faq-list" id="faq-accordion">
+  <details class="faq-item" id="faq-clean-scope" open>
+    <summary><span class="summary-text">Does VERIFIED_CLEAN_WITHIN_SCOPE prove a package has zero malware?</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>No.</strong> Static analysis cannot prove absence of malware on dynamically fetched remote payloads, time-bombed triggers, or uninspected compiled binaries. <code>VERIFIED_CLEAN_WITHIN_SCOPE</code> means only that no malicious, suspicious, policy-violating, or uninspected-binary indicators were observed within the stated static inspection boundary.</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-npx-caveat">
+    <summary><span class="summary-text">Why does the recommended npx command carry a SHA-512 and transitive caveat?</span></summary>
+    <div class="faq-answer">
+<p class="prose">Stock <code>npx</code> (<code>npm exec</code>) has no <code>--integrity &lt;sha512&gt;</code> CLI flag and ignores lockfiles inside published npm packages, resolving floating <code>^x.y.z</code> transitive dependencies live at runtime. Coldpin states that boundary honestly rather than implying a bare <code>npx</code> command enforces full transitive locks. Combine <code>--ignore-scripts</code> and exact pins with a private caching proxy or shrinkwrapped install for regulated builds.</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-forensic-commit">
+    <summary><span class="summary-text">Why does resolve-anchor emit FORENSIC_COMMIT_ONLY when no npm tarball matches?</span></summary>
+    <div class="faq-answer">
+<p class="prose">Running <code>npx github:org/repo#&lt;clean_sha&gt;</code> executes <code>prepare</code> and <code>postinstall</code> build scripts locally and pulls floating transitive dependencies. When a clean Git commit has no matching published npm release tarball, Coldpin suppresses runnable commands and recommends either building inside an isolated sandbox or switching to a vetted alternative (<code>SWITCH_TO_ALTERNATIVE</code>).</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-rea">
+    <summary><span class="summary-text">Do I need REA (rea-agents) installed to use Coldpin?</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>No.</strong> Discovery, in-memory archive quarantine, JS/TS lexical taint analysis, hidden-Unicode detection, 3-tier tarball parity, and Git commit bisection all run on pure Node.js 24 with zero external packages. When an artifact contains obfuscated bundles or compiled <code>.node</code>/WASM/ELF/PE/Mach-O binaries, Coldpin fails closed and points to a pre-registered REA server — never auto-bootstrapping <code>npx -y rea-agents</code>.</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-tier3">
+    <summary><span class="summary-text">Why does BENCHMARK.md mark Tier 3 Live Multi-Agent Evaluation as NOT RUN?</span></summary>
+    <div class="faq-answer">
+<p class="prose">Epistemic honesty. Tier 3 requires live LLM API calls in isolated sandbox containers across Antigravity, Claude Code, and Codex. Instead of fabricating uplift numbers, <code>BENCHMARK.md</code> reports real measured Tier 1–2 metrics (<code>49</code>-fixture corpus recall/FPR, latency, cache speedup, <code>38</code> mutation proofs, and positive/decoy trigger selection) and leaves Tier 3 honestly <code>N/A</code>.</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-http-cost">
+    <summary><span class="summary-text">Does v1.6.0 HTTP MCP or the Weekly Sidecar open ports or run daemons by default?</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>No.</strong> Default <code>mcp_config.json</code> runs strictly local <code>stdio</code> (<code>lib/mcp.mjs</code>, zero listening sockets), and no active <code>sidecars/</code> directory ships at the plugin root. Both <code>coldpin-mcp-http</code> and <code>examples/sidecar.weekly-audit.example.json</code> are strictly opt-in.</p>
+    </div>
+  </details>
+  <details class="faq-item" id="faq-alternatives">
+    <summary><span class="summary-text">Are there alternatives, and where do I get support?</span></summary>
+    <div class="faq-answer">
+<p class="prose">Yes: Socket.dev, Snyk, GuardDog, OSV-Scanner, and private registries (Verdaccio, Artifactory) solve overlapping parts of npm supply-chain security. Coldpin focuses specifically on the zero-dependency local agentic pre-<code>npx</code> workflow. Report bugs or detection gaps publicly on <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/issues" rel="noopener noreferrer">GitHub Issues</a>; report security vulnerabilities confidentially via <a href="../../docs/security/">Security Policy</a>.</p>
+    </div>
+  </details>
+</div>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/changelog/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">Changelog</span>
+  </a>
+  <span></span>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#common-questions">Frequently Asked Questions</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/faq.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>

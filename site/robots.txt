@@ -1,0 +1,6 @@
+# Coldpin Documentation Portal
+# AI/LLM index: https://coldpin-docs.pages.dev/llms.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://coldpin-docs.pages.dev/sitemap.xml

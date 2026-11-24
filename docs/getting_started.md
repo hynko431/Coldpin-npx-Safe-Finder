@@ -53,7 +53,7 @@ node --no-warnings lib/mcp.mjs   # or: coldpin mcp
 
 ## Full Verification Suite
 
-Run all 10 automated pipeline commands (`39/39` tests, 13-manifest & vertical-slice lint, hygiene, staleness, static eval, SkillSpector `SS-03`–`SS-15` self-audit, 49-fixture/35-mutation benchmark verification, dual DSSE signature verification, and reproducible multi-host packaging) with one command:
+Run all automated pipeline commands (`42/42` core/MCP/plugin/Phase-E tests + docs-site verification suite, 13-manifest & vertical-slice lint, hygiene, staleness, static eval, SkillSpector `SS-03`–`SS-18` self-audit, 49-fixture/38-mutation benchmark verification, dual DSSE signature verification, and reproducible multi-host packaging) with one command:
 
 ```sh
 npm run verify:all

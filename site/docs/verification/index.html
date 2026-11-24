@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="verification" data-pillar="verification-releases">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>Verification, Benchmarks &amp; Provenance — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/verification/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="Verification, Benchmarks &amp; Provenance — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/verification/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Verification, Benchmarks &amp; Provenance — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Verification, Benchmarks & Provenance","description":"Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.","url":"https://coldpin-docs.pages.dev/docs/verification/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Verification & Releases","item":"https://coldpin-docs.pages.dev/docs/verification/"},{"@type":"ListItem","position":3,"name":"Verification & Benchmarks","item":"https://coldpin-docs.pages.dev/docs/verification/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin Docs</span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search docs</span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/" aria-current="page">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started">
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails">
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli">
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases" open>
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/" aria-current="page">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../docs/verification/">Verification &amp; Releases</a></li><li><span aria-current="page">Verification &amp; Benchmarks</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/verification.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/verification.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">Verification, Benchmarks &amp; Provenance</h1>
+          <p class="doc-lead">Every Coldpin release passes a cross-platform 14-gate pipeline across <code>ubuntu-latest</code> and <code>windows-latest</code> on Node <code>24</code> LTS and Node <code>26</code> Active LTS, followed by keyless npm OIDC Trusted Publishing and GitHub SLSA Build Provenance attestations.</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Node 24 &amp; 26 CI Matrix</span>
+            <span class="surface-chip">Ubuntu &amp; Windows</span>
+            <span class="surface-chip">SLSA Build Provenance</span>
+            <span class="surface-chip">Dual DSSE</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#live-metrics">Live Synced Verification Metrics (v1.6.0)</a></li>
+          <li><a class="toc-link" href="#release-checksums">Release v1.6.0 Verified SHA256SUMS.txt</a></li>
+          <li><a class="toc-link" href="#verification-boundaries">Explicit Verification Boundaries (Honest Non-Claims)</a></li>
+          </ul>
+        </details>
+
+<section id="live-metrics" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Live Synced Verification Metrics (v1.6.0)</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="live-metrics" aria-label="Copy link to Live Synced Verification Metrics (v1.6.0)">#</button>
+  </div>
+<dl class="spec-strip" aria-label="Live synced Coldpin v1.6.0 verification metrics">
+  <div class="spec-item"><dt>MCP Schema Pin</dt><dd>1,628 / 1,800 tokens (7 tools)</dd></div>
+  <div class="spec-item"><dt>Core Engine Tests</dt><dd>42/42 + docs portal suite</dd></div>
+  <div class="spec-item"><dt>Mutation Proofs</dt><dd>38/38 regressions caught</dd></div>
+  <div class="spec-item"><dt>SkillSpector Self-Audit</dt><dd>APPROVE 16/100 (0 blocking)</dd></div>
+</dl>
+<div class="table-container" id="verif-gates-table" data-table-switcher="true" data-view="cards">
+  <div class="table-view-bar" role="group" aria-label="Mobile layout view">
+    <span class="table-view-label">Mobile view</span>
+    <div class="table-view-btns">
+      <button type="button" class="table-view-btn" data-table-view="cards" aria-pressed="true">Cards</button>
+      <button type="button" class="table-view-btn" data-table-view="table" aria-pressed="false">Table</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col" class="nowrap">Verification Gate</th><th scope="col" class="nowrap">Command</th><th scope="col">Measured Result</th></tr></thead>
+      <tbody>
+      <tr><td data-label="Verification Gate" class="nowrap">Compiled ESM Parity (<code>SS-13</code>)</td><td data-label="Command" class="nowrap"><code>npm run build</code></td><td data-label="Measured Result">25 compiled LF lib/**/*.mjs files syntax-checked &amp; 1:1 SHA-256 verified</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">Deterministic Test Suites</td><td data-label="Command" class="nowrap"><code>npm test</code></td><td data-label="Measured Result">42/42 core/MCP/plugin/Phase-E tests + automated docs-site parity suite</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">49-Fixture Security Corpus</td><td data-label="Command" class="nowrap"><code>npm run bench:check</code></td><td data-label="Measured Result">100.0% recall (28/28 adversarial), 0.0% FPR (0/21 benign), 38/38 mutation proofs</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">SkillSpector Self-Audit</td><td data-label="Command" class="nowrap"><code>npm run audit:self</code></td><td data-label="Measured Result">SS-03–SS-18: APPROVE (risk 16/100, 0 blocking, 0 SARIF alerts)</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">MCP Schema Rug-Pull Pin (<code>SS-11</code>)</td><td data-label="Command" class="nowrap"><code>catalog/mcp-schema-pin.json</code></td><td data-label="Measured Result">7 tools, 2 resources, 2 prompts, 1,628 tokens (9e997561b1a4...)</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">Dual in-toto DSSE Attestations</td><td data-label="Command" class="nowrap"><code>npm run sign:verify</code></td><td data-label="Measured Result">skills/coldpin/skill.oms.sig (18 files) &amp; catalog/plugin.oms.sig (45 files)</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">Antigravity Strict Validation</td><td data-label="Command" class="nowrap"><code>agy plugin validate --strict</code></td><td data-label="Measured Result">agents: 7, hooks: 3, mcpServers: 1, rules: 3, skills: 3, sidecars: 0, findings: []</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">Static Docs Parity &amp; Hygiene</td><td data-label="Command" class="nowrap"><code>npm run build:docs -- --check</code> &amp; <code>npm run verify:hygiene</code></td><td data-label="Measured Result">Zero broken links/anchors, dual-CSP sync, 100% hook-eval.js parity, LF-only UTF-8</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="release-checksums" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Release v1.6.0 Verified SHA256SUMS.txt</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="release-checksums" aria-label="Copy link to Release v1.6.0 Verified SHA256SUMS.txt">#</button>
+  </div>
+<div class="code-block" data-lang="text">
+  <div class="code-header">
+    <span class="code-label">Release v1.6.0 SHA256SUMS.txt</span>
+    <button type="button" class="copy-btn" data-copy="verif-sha256">Copy</button>
+  </div>
+  <pre><code id="verif-sha256"><span class="tok-num">7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822</span>  <span class="tok-str">coldpin-antigravity.zip</span>
+<span class="tok-num">3b520c6688d56f88dcd213470f9d10d9e1345fd73d16909c6055989d65f9e50a</span>  <span class="tok-str">coldpin-claude.zip</span>
+<span class="tok-num">723fc06ed8a8989c738d7f8e216b5f12e018efd2a0ae82a6f6b901dd988223df</span>  <span class="tok-str">coldpin-openai.zip</span>
+<span class="tok-num">929682d1dd7ef2b40b82e8e8cce3ac25344631399987ab9493cbd0a98a73caf9</span>  <span class="tok-str">skillspector-self-audit.sarif</span></code></pre>
+</div>
+<p class="prose">Verify GitHub SLSA Build Provenance attestations online at <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/attestations" rel="noopener noreferrer">GitHub Attestations</a>, or inspect the full source reports: <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/blob/main/skills/coldpin/BENCHMARK.md" rel="noopener noreferrer">BENCHMARK.md</a>, <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/blob/main/docs/verification/skill-inspector-self-audit.md" rel="noopener noreferrer">SkillSpector Self-Audit</a>, and <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/blob/main/TESTING.md" rel="noopener noreferrer">TESTING.md</a>.</p>
+</section>
+
+<section id="verification-boundaries" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Explicit Verification Boundaries (Honest Non-Claims)</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="verification-boundaries" aria-label="Copy link to Explicit Verification Boundaries (Honest Non-Claims)">#</button>
+  </div>
+<aside class="callout callout-caution" aria-label="caution callout">
+  <p class="callout-title">Tier 3 Live Multi-Agent Sandbox Uplift: NOT RUN (N/A)</p>
+  <p class="callout-body">Offline CI executes deterministic Tier 1 (lint, hygiene, SkillSpector) and Tier 2 (49-fixture corpus, cache benchmarks, <code>38/38</code> mutation proofs) gates. Tier 3 live multi-agent LLM token uplift across hosted sandboxes is honestly recorded as <code>NOT RUN (N/A)</code> rather than fabricated, and local <code>*.oms.sig</code> dev keys are explicitly labeled <code>local-dev-self-signed</code>.</p>
+</aside>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/security/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">Security &amp; Compliance</span>
+  </a>
+  <a class="pagination-link pagination-next" href="../../docs/changelog/">
+    <span class="pagination-dir">Next</span>
+    <span class="pagination-title">Changelog</span>
+  </a>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#live-metrics">Live Synced Verification Metrics (v1.6.0)</a></li>
+          <li><a class="toc-link" href="#release-checksums">Release v1.6.0 Verified SHA256SUMS.txt</a></li>
+          <li><a class="toc-link" href="#verification-boundaries">Explicit Verification Boundaries (Honest Non-Claims)</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/verification.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>

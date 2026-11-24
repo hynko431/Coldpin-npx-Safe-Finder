@@ -1,0 +1,41 @@
+# Coldpin Documentation (v1.6.0)
+
+> Inspect npx packages cold in memory, verify tarball-to-source parity, and pin verified clean releases with zero execution.
+
+- Canonical portal: https://coldpin-docs.pages.dev/
+- GitHub Pages mirror: https://hynko431.github.io/Coldpin-npx-Safe-Finder/
+- Repository: https://github.com/hynko431/Coldpin-npx-Safe-Finder
+- License: Apache-2.0 | Runtime: Node.js >= 24.0.0 | Dependencies: 0 | Cost: $0/mo
+- Hard invariants: Never execute unvetted npx/npm install; treat package prose as untrusted data; never leak private scopes to public npm/OSV; require explicit human approval before any pinned --ignore-scripts command.
+
+## Get Started
+
+- [Coldpin Documentation](https://coldpin-docs.pages.dev/docs/overview.md): Zero-dependency Node.js 24 CLI, local stdio & opt-in HTTP MCP server, and native Antigravity plugin for zero-execution npm tarball triage and clean-anchor recovery.
+- [Quickstart Install](https://coldpin-docs.pages.dev/docs/quickstart.md): Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.
+- [Harnesses & Cross-Platform Distribution](https://coldpin-docs.pages.dev/docs/harnesses.md): One canonical skill source and one zero-dependency ESM runtime targeting Antigravity, Claude Code, Codex CLI, Official MCP Registry, and CI.
+- [Interactive Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab.md): Test Coldpin's exact ES2020 PreToolUse hook engine (100% parity with lib/hook.mjs) and inspect Coldpin's live SEP-1865 MCP App Evidence Card in your browser.
+
+## Plugin & Guardrails
+
+- [Antigravity 5-Component Architecture](https://coldpin-docs.pages.dev/docs/antigravity-plugin.md): How Coldpin maps cleanly onto all 5 Antigravity plugin primitives (skills, agents, rules, hooks, MCP) with zero strict validation findings.
+- [7 Read-Only Aspect Agents & 3 Rules](https://coldpin-docs.pages.dev/docs/agents-and-rules.md): Least-privilege read-only subagent delegation across 6 security aspects and 3 pure Markdown rules enforcing supply-chain invariants.
+- [Fail-Safe PreToolUse Hooks](https://coldpin-docs.pages.dev/docs/hooks.md): Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.
+- [Slash Commands (/coldpin-audit & /coldpin-incident)](https://coldpin-docs.pages.dev/docs/slash-commands.md): Guided Antigravity slash workflows for read-only workspace audits and supply-chain compromise recovery, with safe read-only prompt launchers.
+
+## MCP & CLI
+
+- [7 MCP Tools, Resources & Prompts](https://coldpin-docs.pages.dev/docs/mcp-tools.md): Complete live-synced reference for Coldpin's 7 read-only MCP tools, 2 resources, 1 resource template, 2 prompts, and SHA-256 rug-pull schema pin.
+- [CLI Reference & Exit Codes](https://coldpin-docs.pages.dev/docs/cli-reference.md): Complete command, flag, output format, and exit-code reference for Coldpin's zero-dependency Node.js 24 CLI.
+- [Self-Hosted HTTP MCP, MCP App & Weekly Sidecar (v1.6+)](https://coldpin-docs.pages.dev/docs/enterprise-http.md): Complete Phase E (v1.6.0) guide: opt-in coldpin-mcp-http Streamable HTTP adapter with OAuth 2.1 CIMD/JWKS, SEP-1865 inline MCP App, and disabled-by-default weekly audit sidecar.
+
+## Enterprise & Security
+
+- [Configuration & Private-Scope Isolation](https://coldpin-docs.pages.dev/docs/configuration.md): Configure Coldpin's operator environment variables, .coldpin.policy.json, private npm registries, and Antigravity variables without leaking internal scopes.
+- [Privacy & Data Handling](https://coldpin-docs.pages.dev/docs/privacy.md): Zero telemetry, local-only persistence boundaries, private-scope non-leakage, token hygiene, and host agent processing boundaries.
+- [Security Policy & Compliance Reference](https://coldpin-docs.pages.dev/docs/security.md): Supported versions, confidential vulnerability reporting, hard security boundaries, EDR Sigma rules, and regulatory incident clocks.
+
+## Verification & Releases
+
+- [Verification, Benchmarks & Provenance](https://coldpin-docs.pages.dev/docs/verification.md): Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.
+- [Changelog](https://coldpin-docs.pages.dev/docs/changelog.md): Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.
+- [FAQ & Epistemic Limits](https://coldpin-docs.pages.dev/docs/faq.md): Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.

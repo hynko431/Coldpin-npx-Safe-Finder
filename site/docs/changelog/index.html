@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="changelog" data-pillar="verification-releases">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>Changelog — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/changelog/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="Changelog — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/changelog/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Changelog — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Changelog","description":"Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.","url":"https://coldpin-docs.pages.dev/docs/changelog/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Verification & Releases","item":"https://coldpin-docs.pages.dev/docs/verification/"},{"@type":"ListItem","position":3,"name":"Changelog","item":"https://coldpin-docs.pages.dev/docs/changelog/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin Docs</span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search docs</span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/" aria-current="page">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started">
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails">
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli">
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases" open>
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/" aria-current="page">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../docs/verification/">Verification &amp; Releases</a></li><li><span aria-current="page">Changelog</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/changelog.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/changelog.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">Changelog</h1>
+          <p class="doc-lead">All notable changes to <code>coldpin</code> following Keep a Changelog and Semantic Versioning. Jump to any release from the version index or toggle all entries below.</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Latest: v1.6.0</span>
+            <span class="surface-chip">Semantic Versioning</span>
+            <span class="surface-chip">Apache-2.0</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#v1-6-0">v1.6.0</a></li>
+          <li><a class="toc-link" href="#v1-5-2">v1.5.2</a></li>
+          <li><a class="toc-link" href="#v1-5-1">v1.5.1</a></li>
+          <li><a class="toc-link" href="#v1-5-0">v1.5.0</a></li>
+          <li><a class="toc-link" href="#v1-4-0">v1.4.0</a></li>
+          <li><a class="toc-link" href="#v1-3-0">v1.3.0</a></li>
+          <li><a class="toc-link" href="#v1-2-1">v1.2.1</a></li>
+          <li><a class="toc-link" href="#v1-2-0">v1.2.0</a></li>
+          <li><a class="toc-link" href="#v1-1-0">v1.1.0</a></li>
+          <li><a class="toc-link" href="#v1-0-0">v1.0.0</a></li>
+          </ul>
+        </details>
+
+<section id="releases" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Release History (v1.0.0 – v1.6.0)</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="releases" aria-label="Copy link to Release History (v1.0.0 – v1.6.0)">#</button>
+  </div>
+<div class="details-toolbar" id="changelog-toggle-controls" data-details-target="changelog-list">
+  <button type="button" class="btn btn-secondary btn-sm" data-details-action="expand">Expand all</button>
+  <button type="button" class="btn btn-secondary btn-sm" data-details-action="collapse">Collapse all</button>
+</div>
+<div class="release-list" id="changelog-list">
+  <details class="release-item" id="v1-6-0" open>
+    <summary><span class="summary-text">v1.6.0 — 2026-11-23 <span class="summary-badge">Latest</span></span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Opt-In Self-Hosted Enterprise Streamable HTTP MCP Adapter (`src/mcp-http.ts` → `lib/mcp-http.mjs`, `src/mcp/http-auth.ts`, `src/mcp/http-server.ts`, `examples/mcp_config.http-remote.example.json`):</strong> Added an isolated, fail-closed Streamable HTTP MCP (<code>2025-11-25</code>) adapter (<code>bin.coldpin-mcp-http</code>, POSIX <code>0100755</code>) keeping default <code>mcp_config.json</code> / <code>lib/mcp.mjs</code> local <code>stdio</code>-only with <code>$0/mo</code> maintainer cost. Enforces OAuth 2.1 + PKCE (<code>S256</code>) + RFC 9728 Protected Resource Metadata (<code>/.well-known/oauth-protected-resource</code> and path-inserted form) + RFC 8707 <code>aud</code> &amp; scope (<code>403 insufficient_scope</code>) validation + pure Node 24 <code>RS256</code>/<code>ES256</code> JWKS verification (rejecting <code>alg: none</code> and <code>HS*</code>, with SSRF-guarded <code>fetchJwksJson()</code> consolidated inside <code>src/intel/registry-osv.ts</code>), constant-time SHA-256 <code>cpk_live_*</code> API keys (rejecting <code>&lt;32</code>-char keys and unexpanded <code>${VAR}</code> placeholders), anti-DNS-rebinding <code>Host</code> + <code>Origin</code> allowlists, <code>1 MiB</code> request body cap (<code>413</code>), per-principal rate limiting (<code>429</code> + <code>Retry-After</code>), principal-bound cryptographic <code>Mcp-Session-Id</code> (<code>403</code> on cross-principal reuse, <code>DELETE /mcp</code> <code>204</code>), and Cloud Run <code>google_credentials</code> config template.</li>
+  <li><strong>Zero-Dependency Inline MCP App (`ui://coldpin/evidence-card.html`, `src/mcp/evidence-card-app.ts`):</strong> Added a self-contained <code>text/html;profile=mcp-app</code> SEP-1865 (<code>2026-01-26</code>) JSON-RPC <code>postMessage</code> evidence card UI linked via <code>_meta.ui.resourceUri</code> on <code>inspect_package_artifact</code>, <code>resolve_safe_anchor</code>, <code>verify_confusion</code>, and <code>audit_manifest_batch</code>, with <code>io.modelcontextprotocol/ui</code> initialize negotiation, default-deny CSP (<code>csp: {}</code>, <code>default-src &#39;none&#39;</code>), strict <code>createElement</code>/<code>textContent</code> DOM rendering (zero <code>innerHTML</code>, <code>eval</code>, or external URLs), Antigravity <code>--color-*</code> host theme variables, copy-only command button, and read-only <code>get_artifact_report</code> paging while holding <code>tools/list</code> at <code>1,628 &lt;= 1,800</code> estimated tokens.</li>
+  <li><strong>Disabled-by-Default Scheduled Weekly Audit Sidecar Template (`examples/sidecar.weekly-audit.example.json`):</strong> Added an opt-in Antigravity automation template (<code>&quot;builtin&quot;: &quot;schedule&quot;</code>, <code>&quot;restart_policy&quot;: &quot;always&quot;</code>, <code>&quot;workspace_arg&quot;</code>) whose <code>agent_permissions.access_grants</code> are strictly limited to read-only Coldpin MCP tools (<code>audit_manifest_batch</code>, <code>verify_confusion</code>, <code>get_artifact_report</code>) with zero shell/write permissions and zero active <code>sidecars/</code> directory at plugin root.</li>
+  <li><strong>Phase E Verification, Self-Audit Rules &amp; README Badges (`tests/phase-e-http-and-app.test.ts`, `scripts/self_audit_skillspector.py`, `scripts/run_benchmarks.ts`, `README.md`):</strong> Added deterministic live loopback OAuth/JWKS/API-key/HTTP/MCP-App/sidecar tests (<code>42/42</code> across <code>7</code> suites), 3 new mutation proofs (<code>mut-36</code>–<code>mut-38</code>, <code>38/38</code> total), SkillSpector rules <code>SS-16</code>–<code>SS-18</code> (<code>APPROVE</code>, <code>risk=16/100</code>, <code>0</code> blocking across <code>24</code> compiled ESM modules), and GitHub Light/Dark adaptive <code>mcprush.com</code> <code>score.svg</code> + <code>card.svg</code> badges.</li>
+</ul>
+<p class="prose"><strong>Fixed</strong></p>
+<ul class="doc-list">
+  <li><strong>Actionable SARIF Code Scanning Output (`scripts/self_audit_skillspector.py`):</strong> Updated <code>emit_sarif()</code> to emit only actionable findings (<code>blocks == True</code> or <code>MEDIUM</code>/<code>HIGH</code>/<code>CRITICAL</code>) into <code>dist/skillspector-self-audit.sarif</code> so GitHub Code Scanning avoids false-positive PR alerts on documented non-blocking <code>LOW</code> capabilities (which remain fully reported in <code>docs/verification/skill-inspector-self-audit.md</code>).</li>
+  <li><strong>Docs Portal Minimum Antigravity Version Typo (`site/index.html`):</strong> Restored <code>&gt;= v1.5.13</code> (previously mistyped as <code>v1.5.23</code>) and synced release metadata, verification metrics, and verified <code>SHA256SUMS.txt</code> to <code>v1.6.0</code>.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-5-2">
+    <summary><span class="summary-text">v1.5.2 — 2026-11-22</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Fixed</strong></p>
+<ul class="doc-list">
+  <li><strong>npm CDN Propagation Guard &amp; Idempotent MCP Registry Publishing (`.github/workflows/release.yml`):</strong> Replaced bare <code>npm view</code> existence probes in <code>publish-npm</code> with cache-busting query-parameter checks so Cloudflare&#39;s bare-URL <code>max-age=300</code> negative <code>404</code> cache is never poisoned before <code>npm publish</code>, added a dedicated origin-propagation wait step in <code>publish-mcp-registry</code> verifying both <code>registry.npmjs.org</code> version metadata (<code>mcpName</code> match) and tarball readiness before calling <code>mcp-publisher</code>, and wrapped <code>./mcp-publisher publish</code> in bounded transient-error retries with live Official MCP Registry idempotency checks.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-5-1">
+    <summary><span class="summary-text">v1.5.1 — 2026-11-22</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Standalone Documentation Portal (`site/` + `.github/workflows/pages.yml`):</strong> Added a zero-dependency, 3-column static documentation portal deployed on Cloudflare Pages (<code>https://coldpin-docs.pages.dev/</code>) and GitHub Pages (<code>https://hynko431.github.io/Coldpin-npx-Safe-Finder/</code>) featuring a three-layer CSS design token system, strict zero-<code>&#39;unsafe-inline&#39;</code> CSP + edge HTTP security headers (<code>site/_headers</code> enforcing <code>frame-ancestors &#39;none&#39;</code>, <code>connect-src &#39;none&#39;</code>, HSTS, <code>X-Content-Type-Options: nosniff</code>, COOP/CORP, and Permissions-Policy), instant <code>Ctrl+K</code> / <code>/</code> keyboard search, an interactive <code>PreToolUse</code> Hook Policy Simulator, and a 4-state <code>Title + Info + Evidence</code> Verdict Card Explorer.</li>
+</ul>
+<p class="prose"><strong>Fixed</strong></p>
+<ul class="doc-list">
+  <li><strong>Keyless npm OIDC Trusted Publishing &amp; Release Automation (`.github/workflows/release.yml`):</strong> Pinned verified commit SHAs for <code>actions/download-artifact</code> (<code>v4.3.0</code>) and <code>actions/attest-build-provenance</code> (<code>v4.2.2</code>), passed <code>--repo &quot;$GH_REPO&quot;</code> and idempotency checks to <code>gh release create</code>, removed the <code>actions/setup-node</code> <code>registry-url</code> placeholder token that conflicted with keyless npm OIDC Trusted Publishing, and bound <code>publish-npm</code> to the protected <code>npm-publish</code> GitHub Environment for end-to-end Sigstore provenance publishing.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-5-0">
+    <summary><span class="summary-text">v1.5.0 — 2026-11-21</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Antigravity-Native Aspect-Aligned Vertical Slice (`rules/`, `agents/`, `skills/`, `hooks.json`, `src/hook.ts`):</strong> Upgraded Coldpin to a complete 5-component Antigravity Marketplace plugin (<code>agy plugin validate --strict</code>: <code>agents: 7, hooks: 3, mcpServers: 1, rules: 3, skills: 3, findings: []</code>, minimum host <code>agy &gt;= v1.5.13</code>, <code>$0/mo</code>, zero external dependencies):</li>
+  <li><strong>Clean `rules/` → `catalog/` Separation &amp; 2-Tier Markdown Rules:</strong> Relocated detection JSON/YAML (<code>triage-rules.json</code>, <code>mcp-schema-pin.json</code>, <code>sigma/*.yml</code>) into <code>catalog/</code> and populated <code>rules/</code> strictly with 3 Antigravity Markdown rules (<code>rules/AGENTS.md &lt;= 1,800</code> bytes with compact 6-aspect delegation routing table, <code>rules/coldpin-manifest-guard.md</code> with <code>trigger: glob</code>, and <code>rules/coldpin-incident-checklist.md</code> with <code>trigger: model_decision</code>), paired with isolated private per-agent rules in each <code>agents/coldpin-*.md</code> body.</li>
+  <li><strong>7 Strictly Read-Only Aspect Agents (`agents/`):</strong> Added primary orchestrator <code>coldpin-auditor</code> (<code>mainAgent: true</code>, <code>invoke_subagent</code>) plus 6 dedicated background aspect subagents (<code>coldpin-discoverer</code>, <code>coldpin-inspector</code>, <code>coldpin-manifest-auditor</code>, <code>coldpin-confusion-auditor</code>, <code>coldpin-forensics</code>, <code>coldpin-compliance</code>) enforcing <code>commandExecutionPolicy: &quot;off&quot;</code>, canonical <code>view_file</code> allowlists, zero shell/write/<code>define_subagent</code> tools, and <code>inheritCustomizations: false</code> on all 6 background subagents (<code>[PLG-15]</code>).</li>
+  <li><strong>Modular Aspect Playbooks &amp; Antigravity Slash Skills (`skills/`):</strong> Added 5 modular aspect playbooks under <code>skills/coldpin/references/aspect-*.md</code> (<code>SHARED_GLOBS</code>, <code>18</code> files attested in <code>skills/coldpin/skill.oms.sig</code>) plus 2 Antigravity-only slash skills (<code>skills/coldpin-audit/SKILL.md</code> and <code>skills/coldpin-incident/SKILL.md</code>) scoped strictly to <code>HOST_GLOBS[&quot;antigravity&quot;]</code> and attested in <code>catalog/plugin.oms.sig</code>.</li>
+  <li><strong>Fail-Safe ES2020 `PreToolUse` Hook (`hooks.json` → `src/hook.ts` / `lib/hook.mjs`):</strong> Added 3 default-enabled hook groups (<code>coldpin-npx-guard</code>, <code>coldpin-config-guard</code>, <code>coldpin-delegation-guard</code> on <code>define_subagent</code>) running a pure ES2020 linear-time multi-shell tokenizer &amp; file-edit guard that emits strictly <code>allow</code>, <code>deny</code>, or <code>force_ask</code> (never auto-approval) and exits <code>0</code> in 100% of code paths.</li>
+  <li><strong>Official Schema Compliance &amp; Enterprise Private-Registry Overlay (`plugin.json`, `mcp_config.json`, `examples/mcp_config.private-registry.example.json`):</strong> Aligned root <code>plugin.json</code> to <code>https://antigravity.google/schemas/v1/plugin.json</code> (<code>additionalProperties: false</code>, zero root <code>&quot;category&quot;</code>, <code>author.url</code>, tightened <code>122</code>-char description synced across Claude/Codex, <code>~10%</code> transparent SVG icon margin), set <code>timeoutSeconds: 300</code> and all 7 Coldpin MCP tools <code>&quot;eager&quot;: true</code> (<code>1,563</code> tokens), added <code>COLDPIN_PRIVATE_SCOPES</code> / <code>COLDPIN_PRIVATE_REGISTRY_URL</code> / <code>COLDPIN_REGISTRY_TOKEN</code> with unanchored <code>/\$\{[A-Za-z0-9_]+\}/</code> placeholder rejection (<code>[PLG-09]</code>), and kept default <code>mcp_config.json</code> zero-variable instant-enabled (<code>$0/mo</code>).</li>
+  <li><strong>14-Gate Verification &amp; Dual DSSE Signing (`SS-08`, `SS-14`, `SS-15`, `mut-30`–`mut-35`, `catalog/plugin.oms.sig`):</strong> Added <code>tests/antigravity-plugin-components.test.ts</code> (<code>39/39</code> tests), 6 new mutation proofs (<code>35/35</code> total), upgraded <code>lint_skill.py</code> (13-file parity), <code>verify_hygiene.py</code>, <code>self_audit_skillspector.py</code> (<code>SS-08</code>/<code>SS-12</code>/<code>SS-14</code>/<code>SS-15</code>), <code>sign_and_verify_skill.ts</code> (<code>skill.oms.sig</code> + <code>catalog/plugin.oms.sig</code>), and <code>pack_plugin.py</code> (<code>create_system=3</code>, <code>0100755</code> POSIX zip modes).</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-4-0">
+    <summary><span class="summary-text">v1.4.0 — 2026-11-21</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Deterministic Batch Dependency Screening (`audit_manifest_batch` / `audit-batch`):</strong> Added a 7th local read-only MCP tool (<code>audit_manifest_batch</code>) and matching 6th CLI verb (<code>coldpin audit-batch [path/to/package.json] [--include-dev] [--limit 1..50] [--offline] [--json]</code>) screening up to <code>50</code> direct dependencies from a root-confined <code>package.json</code> locally at <code>$0/mo</code>. Performs private-scope routing, <code>allowed_orgs</code>/<code>denied_orgs</code> policy screening, 7-primitive slopsquat/typosquat checks, and route-separated batch OSV/OpenSSF <code>MAL-*</code>/KEV lookups (failing closed as <code>UNVERIFIABLE_OFFLINE</code> when offline or when OSV lookups fail or are suppressed for private scopes). MCP responses default to compact <code>&lt;= 2,000</code>-byte (<code>&lt;= 500</code>-token) summaries prioritizing <code>MALICIOUS_OR_BLOCKED</code> ahead of <code>FLAGGED_SUSPICIOUS</code>, with full flagged-item paging via <code>get_artifact_report</code>.</li>
+  <li><strong>Node 24 + Node 26 Active LTS CI Matrix (`.github/workflows/ci.yml`):</strong> Expanded CI verification from <code>2</code> to <code>4</code> matrix cells (<code>ubuntu-latest</code> + <code>windows-latest</code> × Node <code>24</code> LTS + Node <code>26</code> Active LTS) while keeping SARIF Code Scanning upload pinned to <code>ubuntu-latest</code> (Node <code>24</code>).</li>
+  <li><strong>Expanded Verification &amp; Mutation Proofs (`tests/mcp-server.test.ts`, `scripts/run_benchmarks.ts`):</strong> Added end-to-end MCP + CLI <code>audit_manifest_batch</code> verification (<code>33/33</code> deterministic tests) and 2 new mutation proofs (<code>mut-28-batch-manifest-malicious-and-private-isolation</code>, <code>mut-29-batch-summary-token-cap</code> — <code>29/29</code> total) covering the 50-dependency cap, private-scope OSV non-leakage, <code>MAL-*</code>/KEV/typosquat/unconfigured-private flagging, and <code>&lt;= 2,000</code>-byte MCP summary enforcement.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-3-0">
+    <summary><span class="summary-text">v1.3.0 — 2026-11-20</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Zero-Dependency Local `stdio` MCP Server (`src/mcp/`, `src/mcp.ts`, `lib/mcp.mjs`):</strong> Implemented a local-first JSON-RPC 2.0 <code>stdio</code> MCP server (<code>MCP 2025-11-25</code>, <code>2025-06-18</code>, <code>2025-03-26</code>) with byte-buffered LF/CRLF framing (<code>1 MiB</code> cap), <code>stdout</code> hijack guard, <code>drain</code> backpressure, 3-tier workspace root confinement (<code>COLDPIN_ALLOWED_ROOTS</code> + <code>roots/list</code>), operator-only control plane, bounded concurrency semaphore (<code>maxConcurrent=4</code>, <code>maxQueue=16</code>), <code>notifications/cancelled</code> support, session-only bounded LRU report paging (<code>25</code> entries / <code>30m</code> TTL / <code>15 MiB</code> cap, zero verdict persistence to SQLite), <code>6</code> read-only tools (<code>discover_packages</code>, <code>inspect_package_artifact</code>, <code>resolve_safe_anchor</code>, <code>verify_confusion</code>, <code>audit_verify</code>, <code>get_artifact_report</code>), <code>2</code> resources, <code>2</code> prompts, compact <code>&lt;= 6 KiB</code> default summaries, <code>48 KiB</code> REA <code>resource_constraint</code> cap, and <code>coldpin mcp</code> early CLI dispatch.</li>
+  <li><strong>Pure-Core Extraction &amp; Deterministic Compiled Runtime (`src/core/{path-confinement,workflows}.ts`, `scripts/build_lib.ts`, `lib/</strong>/*.mjs<code>):** Extracted all 5 workflows into pure async modules with zero </code>stdout<code>/</code>stderr<code> writes and compiled deterministic LF ESM modules under </code>lib/<code> via Node 24&#39;s built-in </code>stripTypeScriptTypes<code> + </code>node --check<code>, fixing </code>ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING<code> under </code>node_modules/<code> (</code>bin: { coldpin: ./lib/cli.mjs, coldpin-mcp: ./lib/mcp.mjs }`).</li>
+  <li><strong>Multi-Marketplace &amp; Antigravity Packaging (`skills/coldpin/`, `mcp_config.json`, `server.json`, `.claude-plugin/plugin.json`):</strong> Migrated canonical skill directory from <code>skill-src/coldpin/</code> to <code>skills/coldpin/</code> (retaining synced <code>.agents/skills/coldpin/</code>), added root <code>mcp_config.json</code> (<code>${PLUGIN_DATA}</code> cache isolation) and Official MCP Registry <code>server.json</code> (<code>2025-12-11</code> schema + <code>package.json</code> <code>mcpName</code>), inlined Claude Code <code>mcpServers</code> in <code>.claude-plugin/plugin.json</code>, resized icons to <code>128x128</code>, updated repository URLs to <code>https://github.com/hynko431/Coldpin-npx-Safe-Finder</code>, and added <code>rules/mcp-schema-pin.json</code> rug-pull pinning.</li>
+  <li><strong>Keyless Release Automation (`.github/workflows/release.yml`):</strong> Hardened with top-level <code>permissions: {}</code>, job-scoped permissions, dry-run <code>outputs.release_tag != &#39;&#39;</code> guards, SHA-pinned <code>actions/attest-build-provenance</code>, keyless npm OIDC Trusted Publishing (<code>npm &gt;= 11.5.1</code>, zero static tokens), and Cosign-verified <code>mcp-publisher</code> publishing to the Official MCP Registry.</li>
+</ul>
+<p class="prose"><strong>Security &amp; Hardening</strong></p>
+<ul class="doc-list">
+  <li><strong>Closed `.npmrc` Arbitrary Env-Var Exfil, Prefix Confusion &amp; Plaintext Bearer (`[MCP-09]`):</strong> Restricted <code>:_authToken</code> parsing in <code>src/config/policy.ts</code> strictly to <code>$HOME/.npmrc</code> or operator-pinned config (never untrusted workspace <code>.npmrc</code>), enforced exact host/<code>/</code>-segment matching in <code>resolveAuthTokenForUrl()</code>, and enforced <code>protocol === &quot;https:&quot;</code> before attaching <code>Authorization: Bearer</code> in <code>src/intel/registry-osv.ts</code>.</li>
+  <li><strong>Closed Git Redirect SSRF, Full Env Spread, Plaintext Auto-Allow &amp; Raw OSV Fetch (`[MCP-09]`):</strong> Added <code>-c http.followRedirects=false</code>, <code>GIT_CONFIG_GLOBAL=/dev/null</code>, minimal allowlisted Git env, binary-safe async <code>promisify(execFile)</code> (<code>encoding: &quot;buffer&quot;</code> in <code>runGitBuffer</code>), and active temp-dir shutdown cleanup in <code>src/analysis/parity-and-bisect.ts</code>; stopped auto-allowing arbitrary <code>http://</code> origins in <code>fetchJsonWithTimeout</code>, routed OSV POST through <code>fetchWithSafeRedirects</code>, added pre-flight <code>dns.lookup</code> IP classification (blocking loopback, IMDS, RFC1918, ULA, CGNAT <code>100.64.0.0/10</code>, <code>0.0.0.0/8</code>), and added streaming byte caps before <code>JSON.parse</code> (<code>[MCP-06]</code>).</li>
+  <li><strong>Closed Offline Git Clone Bypass, Unscreened Discovery Fields, Cache Bleed &amp; `/tmp` SQLite Race (`[MCP-03]`, `[MCP-04]`, `[MCP-05]`, `[MCP-13]`):</strong> Blocked remote <code>git clone</code> when <code>offline_mode === true</code>; screened <code>query</code>, <code>org</code>, <code>creator</code>, and <code>category</code> for private scopes, <code>scope:</code> qualifiers, and secret-shaped strings; gated <code>verify_confusion.check_public</code> behind <code>COLDPIN_ALLOW_PUBLIC_CONFUSION_PROBE=1</code>; rejected <code>?</code>/<code>#</code>/userinfo/<code>&gt;256</code> in <code>validateRemoteGitUrl</code>; namespaced both <code>osv:npm:...</code> and <code>osv-vuln:${vid}</code> (<code>osvDetailFlight</code>) with <code>sha256(osvBaseUrl)</code>; dropped shared <code>tmpdir()/coldpin/</code> SQLite fallback in favor of direct <code>:memory:</code> with <code>0700</code>/<code>0600</code> POSIX permissions; bounded lockfile reads (<code>25 MiB</code> + <code>isFile()</code>) and single-FD <code>openReadCappedFile()</code> reads; redacted attacker-injected audit keys; and registered MCP audit attribution fields across <code>AuditEvent</code>, <code>ALLOWED_AUDIT_KEYS</code>, and <code>canonicalAuditPayload()</code>.</li>
+  <li><strong>Expanded Self-Audit &amp; Verification Gates (`scripts/self_audit_skillspector.py`, `scripts/lint_skill.py`, `tests/mcp-server.test.ts`):</strong> Added import-aware <code>SS-03</code> (zero FP on <code>RegExp.exec()</code>/<code>db.exec()</code>, blocking <code>execFileSync(</code>), <code>SS-11</code> MCP schema pin &amp; stdio-only/pure-core guards, structured JSON <code>SS-12</code> MCP config audit, zero-noise <code>SS-13</code> <code>src/</code>↔<code>lib/</code> parity, <code>24,000</code>-byte <code>SKILL.md</code> budget, and <code>10</code>-manifest parity.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-2-1">
+    <summary><span class="summary-text">v1.2.1 — 2026-11-20</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Fixed</strong></p>
+<ul class="doc-list">
+  <li><strong>Lexical Block/Function Taint Scoping &amp; Benign `envAliases` Filtering (`src/analysis/static-triage.ts`):</strong> Replaced the flat file-wide <code>taintedVars</code>/<code>envAliases</code>/<code>processAliases</code>/<code>stringVars</code>/<code>sinkAliases</code>/<code>wrapperSinks</code> tables with a lexical scope stack (handling <code>{ ... }</code> blocks, named/anonymous/method/esbuild string-keyed <code>__commonJS</code>/<code>__esm</code> function bodies, chained expression-body arrows, block-body function/arrow parameter shadowing, braced and braceless <code>for (...)</code> headers, <code>catch (e)</code> bindings, per-scope declaration lists, object/array destructuring defaults &amp; multi-entry RHS literals, unconditional-only clean-redeclaration/reassignment kill preventing braceless/short-circuit taint laundering, and scope-bounded wrapper sinks) while preserving 100% recall on closure-captured outer-scope taint, <code>try</code>-block outer reassignments, wrapper sinks, and cross-file/barrel re-exports. Unified taint evaluation (<code>getTaintAt</code>) ignores object-literal property keys (<code>{ env: &quot;prod&quot; }</code>), distinguishes dynamic <code>process.env[k]</code> reads from whole-<code>env</code> aliases, and checks <code>BENIGN_ENV_VARS</code> (including <code>NODE_DEBUG</code>, <code>npm_package_name</code>, <code>npm_lifecycle_script</code>, <code>TERM_PROGRAM</code>, <code>CLICOLOR</code>, and standard CI/terminal presence flags) and whole-<code>env</code> guards before falling back to identifier taint, eliminating bundled-parser false positives such as <code>prettier@3.5.3</code> <code>importFromFile</code> emitting <code>CRITICAL: TAINT_CRED_TO_NETWORK_OR_EXEC</code>.</li>
+  <li><strong>Non-Regex Unicode RegExp Tolerance &amp; Escape-Density Calibration (`src/analysis/static-triage.ts`):</strong> Updated <code>lexJavaScriptWithStats</code> to disambiguate regex literals vs. division after <code>++</code>/<code>--</code>, member-property keywords (<code>obj.return / 2</code>), control headers (<code>if (s) /[\u0100-...]/</code>), and statement blocks, handle ECMAScript leading-zero <code>\u{0000...}</code> codepoint escapes, and exclude comments and regex literals from both Shannon entropy (<code>&gt; 5.85</code> on <code>nonRegexCodeLen &gt; 800</code>) and hex/unicode escape counting (<code>escapeMatches &gt; 60 &amp;&amp; (escapeMatches * 6) / nonRegexCodeLen &gt;= 0.06</code>, plus <code>_0x</code> identifier obfuscators <code>&gt;= 12</code>), eliminating <code>HIGH_ENTROPY_OBFUSCATION</code> false positives on legitimate Unicode character-class RegExp parser tables while catching dense <code>\xHH</code>/<code>\uHHHH</code> obfuscated string/identifier payloads (including comment-padded payloads).</li>
+</ul>
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>CLI `--version` / `-V` Flag (`src/cli.ts`, `README.md`):</strong> Added <code>--version</code> and <code>-V</code> flags printing <code>coldpin v${ENGINE_VERSION}</code> with exit code <code>0</code>, documented them in <code>--help</code>, and updated the Quickstart clean inspection example in <code>README.md</code> to <code>semver@7.7.1</code>.</li>
+  <li><strong>Expanded Regression &amp; Corpus Verification (`tests/hardening-and-packaging.test.ts`, `tests/benchmark-corpus.ts`, `scripts/run_benchmarks.ts`):</strong> Expanded to <code>28/28</code> deterministic tests, a 49-fixture security corpus (21 benign + 28 adversarial/fail-closed), and 18 mutation proofs covering esbuild-style bundled scoping, closure-captured taint, parameter shadowing, clean re-declaration, Unicode RegExp parser bundles vs. dense hex/unicode obfuscation, and CLI <code>--version</code>/<code>-V</code>.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-2-0">
+    <summary><span class="summary-text">v1.2.0 — 2026-11-20</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Security &amp; Hardening</strong></p>
+<ul class="doc-list">
+  <li><strong>Closed Round 2 Static Triage Evasion Vectors &amp; Benign False Positives (`src/analysis/static-triage.ts`):</strong> Added ASI/semicolon-free and optional-chaining (<code>?.</code>) parsing, indirect <code>(0, eval/Function/sink)()</code>, <code>.call()</code>/<code>.apply()</code>/<code>.bind()</code>, <code>Function.prototype.constructor</code>, <code>Reflect.get/apply/construct</code>, <code>createRequire</code>, aliased ESM/CJS network/DNS/<code>child_process</code>/<code>vm</code> sinks, computed and <code>data:</code>/HTTP(S) dynamic <code>import()</code> (sparing class/object <code>import()</code> method definitions), <code>[&quot;a&quot;,&quot;b&quot;].join(&quot;&quot;)</code>/<code>.reverse().join(&quot;&quot;)</code>/<code>.split(&quot;&quot;).reverse().join(&quot;&quot;)</code> and variable-concatenation folding, <code>globalThis.process.env</code>, bounded 6-hop transforming helper wrappers, bidirectional cross-file and barrel re-export taint chains, <code>path.join</code> credential paths, manifest <code>bin</code> shell-injection protection (<code>MANIFEST_SHELL_INJECTION_META</code>), and benign false-positive guards for array literals (<code>[&quot;eval&quot;]</code>) and <code>RegExp</code> variable <code>.exec()</code>.</li>
+  <li><strong>Strict npm SLSA Provenance Epistemic Boundary (`src/intel/registry-osv.ts`, `src/analysis/parity-and-bisect.ts`, `src/verdict/engine-and-formatters.ts`, `src/cli.ts`):</strong> Explicitly distinguished unverified <code>dist.attestations.url</code> metadata (<code>PROVENANCE_METADATA_UNVERIFIED</code>) and locally verified leaf-cert DSSE + subject SHA-512 bundles (<code>PROVENANCE_UNANCHORED_DSSE</code>) from full Sigstore Fulcio/Rekor trust-root verification (<code>PROVENANCE_ATTESTED</code>); enforced strict npm PURL package and version binding (rejecting missing or non-PURL subject names), private-scope off-origin <code>dist.attestations.url</code> suppression, <code>require_provenance: true</code> fail-closed enforcement in both <code>inspect</code> and <code>resolve-anchor</code>, early-return <code>provenance_status</code> preservation in <code>verifyTarballVsGitParity</code>, and <code>CRITICAL</code> blocking of tampered SLSA subject digests or invalid DSSE signatures (<code>PROVENANCE_DIGEST_MISMATCH</code>, <code>PROVENANCE_DSSE_SIGNATURE_INVALID</code>).</li>
+  <li><strong>Archive, Network, Audit &amp; Bisect Hardening (`src/quarantine/safe-unpack.ts`, `src/intel/registry-osv.ts`, `src/analysis/parity-and-bisect.ts`, `src/compliance/audit-log.ts`, `src/cli.ts`):</strong> Added tar EOF single-zero-block polyglot smuggling detection (<code>ARCHIVE_EOF_POLYGLOT_SMUGGLING</code>), malformed PAX and GNU <code>K</code> LongLink rejection, IPv4-mapped IPv6 SSRF blocking, <code>audit.jsonl</code> extra-field tamper detection, nested <code>package-lock.json</code> and Yarn Berry lockfile containment, KEV-on-HEAD and bounded non-monotonic bisect lookbehind, strict CLI flag parsing, <code>coldpin:provenance-status</code> CycloneDX VEX property, and Windows Node 24 libuv/SQLite clean shutdown handling.</li>
+</ul>
+<p class="prose"><strong>Verification, Code Hygiene &amp; Packaging</strong></p>
+<ul class="doc-list">
+  <li><strong>Expanded Deterministic Verification Suite (`tests/hardening-and-packaging.test.ts`, `tests/benchmark-corpus.ts`, `scripts/run_benchmarks.ts`):</strong> Expanded to <code>27/27</code> tests, a 45-fixture corpus (19 benign + 26 adversarial/fail-closed), 16 real mutation proofs, local mocked HTTP CLI E2E tests (including signed and tampered SLSA attestation endpoints), negative packager link/anchor/icon tests, and <code>BENCHMARK.md</code> dataset-digest freshness validation (including <code>tests/benchmark-corpus.ts</code>).</li>
+  <li><strong>Heading Anchor &amp; Asset Link Verification (`scripts/verify_hygiene.py`, `scripts/pack_plugin.py`):</strong> Added automated <code>#heading-anchor</code>, HTML <code>href</code>/<code>src</code>, and YAML asset validation across repository documentation and packaged multi-host archives.</li>
+  <li><strong>Dynamic Version Sourcing, LF Determinism &amp; Publish Allowlist (`src/analysis/static-triage.ts`, `scripts/self_audit_skillspector.py`, `scripts/lint_skill.py`, `package.json`):</strong> Sourced <code>FALLBACK_RULESET_SPEC.version</code> and <code>computeRulesetSha256()</code> dynamically from <code>ENGINE_VERSION</code>, read SkillSpector self-audit SARIF version from root <code>plugin.json</code> with explicit LF (<code>newline=&quot;\n&quot;</code>) writes to prevent Windows CRLF drift, added <code>skills/coldpin/skill-card.md</code> version parity validation in <code>scripts/lint_skill.py</code>, and added an explicit <code>package.json</code> <code>&quot;files&quot;</code> allowlist excluding tests, caches, <code>.github/</code>, and audit logs.</li>
+</ul>
+<p class="prose"><strong>GitHub CI, Release &amp; Governance Infrastructure</strong></p>
+<ul class="doc-list">
+  <li><strong>Cross-Platform CI Matrix (`.github/workflows/ci.yml`):</strong> Added <code>workflow_dispatch</code> and cross-platform verification (<code>ubuntu-latest</code> and <code>windows-latest</code>, <code>fail-fast: false</code>) running <code>npm run verify:all</code> with commit-SHA-pinned actions and Ubuntu SARIF upload.</li>
+  <li><strong>Tag-Driven Release Automation (`.github/workflows/release.yml`):</strong> Added <code>v*</code> tag and manual dispatch release workflow running <code>npm run verify:all</code>, generating <code>dist/SHA256SUMS.txt</code> over the three reproducible host bundles and self-audit SARIF, and publishing GitHub Releases via built-in <code>gh release create</code>.</li>
+  <li><strong>Repository Governance (`.github/`):</strong> Added <code>.github/dependabot.yml</code> (weekly <code>github-actions</code> updates), <code>.github/CODEOWNERS</code>, <code>.github/PULL_REQUEST_TEMPLATE.md</code>, and <code>.github/ISSUE_TEMPLATE/</code> (<code>config.yml</code>, <code>bug_report.yml</code>, and defensive-only <code>detection_gap.yml</code>).</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-1-0">
+    <summary><span class="summary-text">v1.1.0 — 2026-11-19</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Branding &amp; Naming</strong></p>
+<ul class="doc-list">
+  <li><strong>Renamed to Coldpin (`coldpin`):</strong> Updated package, CLI binary (<code>coldpin</code>), multi-harness plugin manifests, canonical skill directory (<code>skill-src/coldpin/</code>), SARIF/CycloneDX tool metadata, SVG header, and documentation. Canonical policy file is now <code>.coldpin.policy.json</code> (with automatic backward-compatible fallback to <code>.npx-guard.policy.json</code>).</li>
+</ul>
+<p class="prose"><strong>Security &amp; Hardening</strong></p>
+<ul class="doc-list">
+  <li><strong>Closed 8 Static Triage Evasion Vectors (`src/analysis/static-triage.ts`):</strong> Added template-literal <code>${...}</code> expression lexing, <code>\uXXXX</code>/<code>\u{...}</code> Unicode escape decoding, regex-literal lexing (preventing <code>//</code> comment truncation), multi-hop intraprocedural taint propagation, receiver-aware network/DNS sinks (<code>dns.lookup</code>, <code>https.get</code>, <code>axios.post</code>, <code>net.connect</code>), <code>process[&quot;env&quot;]</code> and <code>{ ...process.env }</code> / <code>Object.assign</code> detection, direct <code>child_process</code> dangerous command execution (<code>CHILD_PROCESS_DANGEROUS_EXEC</code>), <code>_0x</code> hex-identifier obfuscators, <code>String.fromCharCode</code> chains, and hex-encoded payload decoding.</li>
+  <li><strong>Hardened Git Forensics &amp; Tarball-Only Compromise Defense (`src/analysis/parity-and-bisect.ts`):</strong> Disabled <code>.git/config</code> execution hooks (<code>core.fsmonitor=false</code>, <code>core.hooksPath=/dev/null</code>, <code>protocol.allow=never</code>, <code>diff.external=</code>), enforced strict <code>https://</code> remote URL validation (<code>CWE-88</code> argument-injection &amp; SSRF defense), validated <code>gitHead</code>/<code>subdir</code>, preserved local Git drift checks even when <code>provenanceAttested=true</code>, and prevented tarball-only compromises with clean Git <code>HEAD</code> from emitting <code>USE_PINNED_LATEST</code>.</li>
+  <li><strong>Hardened Archive &amp; Network Boundaries (`src/quarantine/safe-unpack.ts`, `src/intel/registry-osv.ts`, `src/config/policy.ts`):</strong> Added POSIX tar header checksum validation (<code>ARCHIVE_CORRUPT_HEADER_CHECKSUM</code>), byte-accurate POSIX PAX (<code>g</code> vs <code>x</code>, <code>size</code>, <code>linkpath</code> rejection), Windows illegal-character filtering, SSRF metadata-IP blocking, manual cross-origin redirect handling that strips private registry <code>Authorization</code> bearer tokens (<code>CWE-200</code>), multi-token private-scope query screening (<code>routeDiscoveryQuery</code>), and mixed-case <code>private_registries</code> normalization.</li>
+  <li><strong>Enterprise Concurrency, Caching, Compliance &amp; Observability (`src/cache/sqlite-store.ts`, `src/compliance/audit-log.ts`, `src/verdict/engine-and-formatters.ts`, `src/cli.ts`):</strong> Added <code>SingleFlight</code> producer-once dedup, wired Split-Plane SQLite fact caching into <code>inspect</code>, added atomic lockfile serialization around <code>audit.jsonl</code> appends, added <code>--verbose</code> structured operational JSON logs on <code>stderr</code> and <code>--override-ticket</code>, upgraded CycloneDX 1.5 output with <code>serialNumber</code>/<code>dependencies[]</code>/VEX <code>vulnerabilities[]</code>, expanded local compromise detection to <code>pnpm-lock.yaml</code> &amp; <code>yarn.lock</code>, added structured <code>rea_escalation_plan</code>, and wired OSV release/dep checks + alternative discovery into <code>resolve-anchor</code>.</li>
+</ul>
+<p class="prose"><strong>Governance &amp; Reference-Repo Parity</strong></p>
+<ul class="doc-list">
+  <li><strong>Google EGM Packaging Parity (`scripts/pack_plugin.py`, `assets/icon.svg`):</strong> Added root <code>assets/icon.svg</code>, unified <code>skills/coldpin/</code> layout across all three host bundles (<code>antigravity</code>, <code>claude</code>, <code>openai</code>), added automated packaged-archive manifest &amp; relative Markdown link verification, added <code>--no-overwrite</code> refusal, removed legacy stale bundle zip, and added <code>SECURITY.md</code>, <code>CONTRIBUTING.md</code>, and <code>ACCESSIBILITY.md</code>.</li>
+  <li><strong>Detection-as-Code &amp; Self-Audit Rigor (`rules/triage-rules.json`, `rules/sigma/npx-suspicious-child-process-linux.yml`, `scripts/self_audit_skillspector.py`):</strong> Added formal rule registry manifest, Linux/macOS CI Sigma rule, enterprise <code>.coldpin.policy.example.json</code> / <code>.npmrc.example</code>, and removed whole-file skips from SkillSpector self-audit with dynamic <code>fetch</code>/<code>execFileSync</code> line verification.</li>
+  <li><strong>Expanded Verification (`tests/hardening-and-packaging.test.ts`, `tests/benchmark-corpus.ts`, `scripts/run_benchmarks.ts`):</strong> Expanded corpus to 30 fixtures (15 benign + 15 adversarial), 8 real mutation proofs, warm-vs-cold cache effectiveness checks, and <code>BENCHMARK.md</code> dataset-digest freshness validation.</li>
+</ul>
+    </div>
+  </details>
+  <details class="release-item" id="v1-0-0">
+    <summary><span class="summary-text">v1.0.0 — 2026-11-19</span></summary>
+    <div class="faq-answer">
+<p class="prose"><strong>Added</strong></p>
+<ul class="doc-list">
+  <li><strong>Zero-Dependency Node 24 CLI (`src/cli.ts`)</strong> implementing 5 canonical verbs (<code>discover</code>, <code>inspect</code>, <code>resolve-anchor</code>, <code>verify-confusion</code>, <code>audit-verify</code>) with exit codes <code>0 / 1 / 2 / 3</code>.</li>
+  <li><strong>In-Memory Zero-Execution Tarball Quarantine (`src/quarantine/safe-unpack.ts`):</strong> Streaming <code>node:zlib</code> byte-cap transform, SHA-512 verification, POSIX/PAX/GNU header parsing, Zip-Slip/symlink/hardlink/duplicate-entry/NTFS-ADS/Windows-reserved/case-collision rejection.</li>
+  <li><strong>Deterministic JS/TS Lexical Taint &amp; Hidden-Unicode Engine (`src/analysis/static-triage.ts`):</strong> Single-pass $O(n)$ lexer, constant string folding, Base64 payload decoding, intraprocedural credential-to-network/exec taint, benign env allowlist, hidden/bidi Unicode &amp; prompt-injection detection, native/WASM magic detection, and defanged IOC extraction.</li>
+  <li><strong>3-Tier Tarball-vs-Git Parity &amp; Patient-Zero Commit Bisect (`src/analysis/parity-and-bisect.ts`):</strong> Provenance-first parity, manifest/hook parity, compiled <code>dist/</code> tolerance, <code>git diff-tree --root --first-parent</code>, full-tree blob-cached walk via Split-Plane SQLite (<code>WAL</code> + <code>busy_timeout</code>), and CVE/KEV dual-gate rollback.</li>
+  <li><strong>Private-Scope Isolation &amp; 7-Primitive Squat Shield (`src/config/policy.ts`, `src/discovery/slopsquat-guard.ts`, `src/intel/registry-osv.ts`):</strong> <code>.npmrc</code> + <code>.coldpin.policy.json</code> private-first router, 1-edit/transposition typo block, and <code>verify-confusion</code> (<code>T1195.001</code>).</li>
+  <li><strong>Enterprise Output Formats (`src/verdict/engine-and-formatters.ts`, `src/compliance/audit-log.ts`):</strong> Sanitized <code>Title + Info + Evidence</code> Markdown cards, canonical JSON, SARIF 2.1.0, CycloneDX 1.5 SBOM, local workspace <code>package-lock.json</code> containment cards, and local hash-chained <code>audit.jsonl</code>.</li>
+  <li><strong>Multi-Harness Enterprise Skill Package &amp; Governance Suite:</strong> Google EGM docs/manifests/reproducible packager, NVIDIA Auto-Ontology <code>runtime-contract.yaml</code>/<code>skill-card.md</code>/<code>BENCHMARK.md</code>/<code>skill.oms.sig</code>, NVIDIA SkillSpector self-audit (<code>scripts/self_audit_skillspector.py</code>), Enterprise Commons hygiene/staleness/Fact Ledger, and companion SOC Sigma rule.</li>
+</ul>
+    </div>
+  </details>
+</div>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/verification/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">Verification &amp; Benchmarks</span>
+  </a>
+  <a class="pagination-link pagination-next" href="../../docs/faq/">
+    <span class="pagination-dir">Next</span>
+    <span class="pagination-title">FAQ &amp; Epistemic Limits</span>
+  </a>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#v1-6-0">v1.6.0</a></li>
+          <li><a class="toc-link" href="#v1-5-2">v1.5.2</a></li>
+          <li><a class="toc-link" href="#v1-5-1">v1.5.1</a></li>
+          <li><a class="toc-link" href="#v1-5-0">v1.5.0</a></li>
+          <li><a class="toc-link" href="#v1-4-0">v1.4.0</a></li>
+          <li><a class="toc-link" href="#v1-3-0">v1.3.0</a></li>
+          <li><a class="toc-link" href="#v1-2-1">v1.2.1</a></li>
+          <li><a class="toc-link" href="#v1-2-0">v1.2.0</a></li>
+          <li><a class="toc-link" href="#v1-1-0">v1.1.0</a></li>
+          <li><a class="toc-link" href="#v1-0-0">v1.0.0</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/changelog.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>
