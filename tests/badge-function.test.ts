@@ -160,6 +160,11 @@ function assertSvgSecurityInvariants(svg: string, label: string): void {
       } else {
         assert.doesNotMatch(attrVal, /\burl\s*\(/i, `${label}: forbidden url() in ${attrName}`);
         assert.doesNotMatch(attrVal, /https?:\/\/|javascript:|data:/i, `${label}: forbidden URI in ${attrName}`);
+        assert.doesNotMatch(
+          attrVal,
+          /&(?!(?:amp|lt|gt|quot|apos|#39|#\d+|#x[0-9a-fA-F]+);)/,
+          `${label}: unescaped ampersand in attribute ${attrName}`,
+        );
       }
     }
     assert.equal(
@@ -169,6 +174,15 @@ function assertSvgSecurityInvariants(svg: string, label: string): void {
     );
   }
   assert.equal(tagStack.length, 0, `${label}: unclosed SVG tags: ${tagStack.join(", ")}`);
+
+  // Verify strict XML text nodes (no raw <, >, or unescaped & outside valid XML entities)
+  const textContentOnly = svg.replace(tagRe, "");
+  assert.doesNotMatch(textContentOnly, /[<>]/, `${label}: stray unescaped angle bracket in SVG text node`);
+  assert.doesNotMatch(
+    textContentOnly,
+    /&(?!(?:amp|lt|gt|quot|apos|#39|#\d+|#x[0-9a-fA-F]+);)/,
+    `${label}: unescaped ampersand in SVG text node`,
+  );
 
   const withoutXmlns = svg.replace('xmlns="http://www.w3.org/2000/svg"', "");
   assert.doesNotMatch(withoutXmlns, /https?:\/\/|javascript:|data:/i, `${label}: forbidden external or active URI`);
@@ -198,6 +212,12 @@ describe("First-Party Cloudflare Pages Badge Function (functions/badge/[[path]].
     const raw = readFileSync(BADGE_FN_PATH);
     assert.ok(!raw.subarray(0, 3).equals(Buffer.from([0xef, 0xbb, 0xbf])), "must not contain UTF-8 BOM");
     assert.ok(!raw.includes(Buffer.from("\r\n")), "must use LF line endings only");
+    const sourceText = raw.toString("utf8");
+    assert.doesNotMatch(
+      sourceText,
+      /[\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff\u00ad]/,
+      "source file must not contain literal hidden/bidi Unicode characters",
+    );
 
     const mod = (await import(BADGE_FN_URL)) as BadgeModule;
     assert.equal(mod.PKG, "coldpin");
@@ -645,6 +665,183 @@ describe("First-Party Cloudflare Pages Badge Function (functions/badge/[[path]].
       assert.ok(regDownSvg.includes("831/wk"), "live downloads must still render when only registry fails");
       assert.ok(regDownSvg.includes("Registry fallback"), "must indicate fallback registry state");
       assert.ok(!regDownSvg.includes("SLSA Provenance"), "must not claim verified provenance when registry fails");
+      assert.ok(
+        regDownSvg.includes("registry fallback (provenance unconfirmed)"),
+        "aria/desc must reflect fallback registry state",
+      );
+    } finally {
+      globalThis.fetch = origFetch;
+      (globalThis as Record<string, unknown>)["caches"] = origCaches;
+    }
+  });
+
+  it("rejects numeric overflow, invalid calendar dates, package-identity mismatches, URI-scheme metadata, non-JSON 200 HTML bodies, cache failures, and cancels unread streams", async () => {
+    const mod = (await import(BADGE_FN_URL)) as BadgeModule;
+    const origFetch = globalThis.fetch;
+    const origCaches = (globalThis as Record<string, unknown>)["caches"];
+
+    // 1. Numeric overflow (1e308 + 1e308 -> Infinity) must degrade cleanly rather than caching broken live state
+    const overflowMetrics = mod.computeNpmCardMetrics(
+      {
+        package: "coldpin",
+        end: "2026-11-23",
+        downloads: [
+          { day: "2026-11-22", downloads: 1e308 },
+          { day: "2026-11-23", downloads: 1e308 },
+        ],
+      },
+      buildLiveRegistryPayload(),
+    );
+    assert.equal(overflowMetrics.downloadsAvailable, false);
+    assert.equal(overflowMetrics.weekly, null);
+    assert.equal(overflowMetrics.monthly, null);
+    assert.equal(overflowMetrics.degraded, true);
+    assert.equal(mod.formatCompactCount(1e20), "—");
+    assert.equal(mod.formatCompactCount(1_500_000_000_000), "1.5T");
+    assert.equal(mod.formatCompactCount(999_999_999_999), "1T");
+
+    // 2. Impossible calendar dates ("2026-99-99", "2026-02-31") must be rejected in favor of valid entry day
+    const badDateMetrics = mod.computeNpmCardMetrics(
+      {
+        end: "2026-99-99",
+        downloads: [
+          { day: "2026-11-22", downloads: 50 },
+          { day: "2026-02-31", downloads: 25 },
+        ],
+      },
+      buildLiveRegistryPayload(),
+    );
+    assert.equal(badDateMetrics.endDate, "2026-11-22");
+    assert.equal(badDateMetrics.weekly, 75);
+
+    // 3. Mismatched package identity in upstream payloads must degrade cleanly
+    const wrongPkg = mod.computeNpmCardMetrics(
+      { package: "evil-other-pkg", end: "2026-11-23", downloads: [{ day: "2026-11-23", downloads: 99999 }] },
+      buildLiveRegistryPayload({ name: "evil-other-pkg", version: "9.9.9", dependencies: { a: "1" } }),
+    );
+    assert.equal(wrongPkg.downloadsAvailable, false);
+    assert.equal(wrongPkg.registryAvailable, false);
+    assert.equal(wrongPkg.version, mod.FALLBACK_VERSION);
+    assert.equal(wrongPkg.depsCount, 0);
+    assert.equal(wrongPkg.provenanceVerified, false);
+    assert.equal(wrongPkg.degraded, true);
+
+    // 4. Double-"v" version normalization, large dep count compaction, and URI-scheme stripping in metadata
+    const normalizedMetrics = mod.computeNpmCardMetrics(
+      buildNov2026DownloadsPayload(),
+      buildLiveRegistryPayload({
+        version: "v1.6.0-beta.1234",
+        license: "https://evil.example/MIT",
+      }),
+    );
+    const normalizedSvg = mod.renderNpmCardSvg({ ...normalizedMetrics, depsCount: 12500 }, "dark");
+    assertSvgSecurityInvariants(normalizedSvg, "normalized-metadata");
+    assert.ok(normalizedSvg.includes("v1.6.0-beta.1234"), "leading v must not double-prefix to vv");
+    assert.ok(!normalizedSvg.includes("vv1.6.0"), "must never emit vv prefix");
+    assert.ok(normalizedSvg.includes("12.5k deps"), "large dep counts must compact cleanly");
+    assert.ok(!normalizedSvg.includes("https://"), "URI schemes in upstream license must be stripped");
+
+    try {
+      // 5. Non-JSON 200 OK HTML error page from proxy + non-ok response body cancellation
+      let errorBodyCancelled = false;
+      globalThis.fetch = (async (input: RequestInfo | URL): Promise<Response> => {
+        const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+        if (url.includes("api.npmjs.org")) {
+          return new Response("<html>502 Bad Gateway</html>", {
+            status: 200,
+            headers: { "Content-Type": "text/html" },
+          });
+        }
+        const errStream = new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode("Too Many Requests"));
+            controller.close();
+          },
+          cancel() {
+            errorBodyCancelled = true;
+          },
+        });
+        return new Response(errStream, { status: 429 });
+      }) as typeof fetch;
+      (globalThis as Record<string, unknown>)["caches"] = undefined;
+
+      const htmlProxyRes = await mod.onRequestGet({
+        request: new Request("https://coldpin-docs.pages.dev/badge/npm-card.svg"),
+      });
+      assert.equal(htmlProxyRes.status, 200);
+      assertSvgSecurityHeaders(htmlProxyRes, "html-proxy-degraded");
+      assert.equal(htmlProxyRes.headers.get("x-coldpin-badge-state"), "degraded");
+      assert.equal(htmlProxyRes.headers.get("cache-control"), "public, max-age=300, s-maxage=300");
+      assert.equal(errorBodyCancelled, true, "non-OK upstream response body must be cancelled");
+      const htmlProxySvg = await htmlProxyRes.text();
+      assertSvgSecurityInvariants(htmlProxySvg, "html-proxy-svg");
+      assert.ok(htmlProxySvg.includes("fallback mode"));
+
+      // 6. HEAD cache HIT cancels cached ReadableStream body (zero Cloudflare Workers stream leak)
+      let cachedBodyCancelled = false;
+      (globalThis as Record<string, unknown>)["caches"] = {
+        default: {
+          async match(): Promise<Response> {
+            const stream = new ReadableStream({
+              start(controller) {
+                controller.enqueue(new TextEncoder().encode("<svg></svg>"));
+                controller.close();
+              },
+              cancel() {
+                cachedBodyCancelled = true;
+              },
+            });
+            return new Response(stream, {
+              status: 200,
+              headers: {
+                "Content-Type": "image/svg+xml; charset=utf-8",
+                "Content-Security-Policy": "default-src 'none'; sandbox",
+                "Cross-Origin-Resource-Policy": "cross-origin",
+                "Access-Control-Allow-Origin": "*",
+                "X-Content-Type-Options": "nosniff",
+                "X-Frame-Options": "DENY",
+                "Referrer-Policy": "no-referrer",
+                Vary: "Accept-Encoding",
+                "X-Coldpin-Badge-State": "live",
+              },
+            });
+          },
+          async put(): Promise<void> {},
+        },
+      };
+      const headHit = await mod.onRequestHead({
+        request: new Request("https://coldpin-docs.pages.dev/badge/npm-card.svg", { method: "HEAD" }),
+      });
+      assert.equal(headHit.status, 200);
+      assert.equal(headHit.headers.get("x-coldpin-badge-cache"), "HIT");
+      assert.equal(await headHit.text(), "");
+      assert.equal(cachedBodyCancelled, true, "HEAD cache HIT must cancel unread cached.body stream");
+
+      // 7. Synchronous throwing caches.default.match() and put() never block live rendering
+      globalThis.fetch = (async (input: RequestInfo | URL): Promise<Response> => {
+        const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+        if (url.includes("api.npmjs.org")) {
+          return new Response(JSON.stringify(buildNov2026DownloadsPayload()), { status: 200 });
+        }
+        return new Response(JSON.stringify(buildLiveRegistryPayload()), { status: 200 });
+      }) as typeof fetch;
+      (globalThis as Record<string, unknown>)["caches"] = {
+        default: {
+          match(): never {
+            throw new Error("sync cache match error");
+          },
+          put(): never {
+            throw new Error("sync cache put error");
+          },
+        },
+      };
+      const resilientRes = await mod.onRequestGet({
+        request: new Request("https://coldpin-docs.pages.dev/badge/npm-card.svg"),
+      });
+      assert.equal(resilientRes.status, 200);
+      assert.equal(resilientRes.headers.get("x-coldpin-badge-state"), "live");
+      assert.equal(resilientRes.headers.get("x-coldpin-badge-cache"), "MISS");
+      assertSvgSecurityInvariants(await resilientRes.text(), "cache-throw-resilient");
     } finally {
       globalThis.fetch = origFetch;
       (globalThis as Record<string, unknown>)["caches"] = origCaches;
