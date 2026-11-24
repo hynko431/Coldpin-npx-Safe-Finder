@@ -24,8 +24,9 @@
 /mcp_config.json @hynko431
 /server.json @hynko431
 
-# CI/CD workflows, release automation, documentation portal security headers, and repository governance
+# CI/CD workflows, release automation, documentation portal security headers, edge badge functions, and repository governance
 /.github/ @hynko431
+/functions/ @hynko431
 /scripts/build_docs.ts @hynko431
 /scripts/docs/ @hynko431
 /site/ @hynko431
