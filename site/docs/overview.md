@@ -21,7 +21,7 @@ Select how you run Coldpin. Your choice syncs across this page, updates the **On
 
 ## Antigravity Plugin Setup (5 Native Primitives)
 
-Install directly via `agy plugin install`. Public installs activate on first click with zero mandatory variables, registering **3 skills** (including `/coldpin-audit` and `/coldpin-incident`), **7 read-only aspect agents**, **3 rules**, **3 fail-safe PreToolUse hook groups**, and **1 local stdio MCP server** (`1,628 eager tokens`).
+Install directly via `agy plugin install`. Public installs activate on first click with zero mandatory variables, registering **3 skills** (including `/coldpin-audit` and `/coldpin-incident`), **7 read-only aspect agents**, **3 rules**, **3 fail-safe PreToolUse hook groups**, and **1 local stdio MCP server** (`1,643 eager tokens`).
 
 ```sh
 agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder

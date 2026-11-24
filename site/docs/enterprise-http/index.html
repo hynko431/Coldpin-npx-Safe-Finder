@@ -265,7 +265,7 @@
   </div>
 <p class="prose">Resource <code>ui://coldpin/evidence-card.html</code> (<code>text/html;profile=mcp-app</code>, <code>SEP-1865</code> / <code>io.modelcontextprotocol/ui</code>) renders interactive read-only <code>Title + Info + Evidence</code> cards inline in Antigravity (<code>&gt;= v2.34.0</code>) while hosts without MCP App support continue receiving compact JSON/Markdown summaries automatically.</p>
 <ul class="doc-list">
-  <li><strong>Linked tools (4): </strong><code>inspect_package_artifact</code>, <code>resolve_safe_anchor</code>, <code>verify_confusion</code>, and <code>audit_manifest_batch</code> declare <code>_meta.ui.resourceUri</code> while holding <code>tools/list</code> at <code>1,628 &lt;= 1,800</code> tokens.</li>
+  <li><strong>Linked tools (4): </strong><code>inspect_package_artifact</code>, <code>resolve_safe_anchor</code>, <code>verify_confusion</code>, and <code>audit_manifest_batch</code> declare <code>_meta.ui.resourceUri</code> while holding <code>tools/list</code> at <code>1,643 &lt;= 1,800</code> tokens.</li>
   <li><strong>Security invariants (SS-18): </strong>Default-deny CSP (<code>csp: {}</code>, <code>default-src &#39;none&#39;</code>), zero external URLs, strict <code>createElement</code>/<code>textContent</code> DOM rendering (zero <code>innerHTML</code>), copy-only command button (never executes), Antigravity <code>--color-*</code> theme tokens, and read-only <code>get_artifact_report</code> paging.</li>
 </ul>
 <aside class="callout callout-tip" aria-label="tip callout">

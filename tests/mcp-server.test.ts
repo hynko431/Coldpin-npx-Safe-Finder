@@ -178,6 +178,32 @@ describe("Coldpin Local Zero-Dependency MCP Server & v1.4.0 Security Suite", () 
         assert.equal(pinDisk.catalog_sha256, pinLive.catalog_sha256);
         assert.ok(pinLive.estimated_tokens <= 1800, `Expected <= 1800 tokens, got ${pinLive.estimated_tokens}`);
 
+        // MTC-CAP-007 defense-in-depth: resolve_safe_anchor.repo_url declares strict HTTPS schema pattern
+        const anchorTool = toolsPayload.tools.find((t) => t.name === "resolve_safe_anchor");
+        const repoUrlProp = (anchorTool?.inputSchema?.["properties"] as Record<string, { pattern?: string }> | undefined)?.["repo_url"];
+        assert.equal(typeof repoUrlProp?.pattern, "string", "resolve_safe_anchor.repo_url must declare JSON Schema pattern");
+        const repoUrlRe = new RegExp(repoUrlProp!.pattern!);
+        for (const okUrl of [
+          "https://github.com/org/repo",
+          "https://github.com/org/repo.git",
+          "https://gitlab.acme.internal:8443/team/sub-group/pkg.git",
+        ]) {
+          assert.equal(repoUrlRe.test(okUrl), true, `Expected valid repo_url to match schema pattern: ${okUrl}`);
+        }
+        for (const badUrl of [
+          "http://github.com/org/repo",
+          "file:///etc/passwd",
+          "ext::sh -c id",
+          "https://user:pass@github.com/org/repo",
+          "https://github.com/org/repo?token=secret",
+          "https://github.com/org/repo#frag",
+          "https://github.com",
+          "https://[::1]/repo",
+          "-u evil",
+        ]) {
+          assert.equal(repoUrlRe.test(badUrl), false, `Expected invalid repo_url to be rejected by schema pattern: ${badUrl}`);
+        }
+
         // 6. Chunk-split multi-byte UTF-8 + CRLF framing + malformed JSON recovery (-32700)
         h.sendRaw(Buffer.from("{bad json\r\n", "utf8"));
         const parseErr = await h.nextMessage();
@@ -396,6 +422,20 @@ describe("Coldpin Local Zero-Dependency MCP Server & v1.4.0 Security Suite", () 
       assert.equal(offBody.isError, false);
       assert.equal(offBody.structuredContent.recommended_action, "BLOCK_NO_SAFE_PATH");
       assert.ok(offBody.structuredContent.unknowns.some((u) => u.startsWith("OFFLINE_MODE_GIT_CLONE_BLOCKED")));
+
+      // [MTC-CAP-007]: Invalid repo_url rejected at MCP schema validation gate (-32602) before execution
+      for (const [reqId, badRepoUrl] of [
+        [1201, "http://169.254.169.254/latest/meta-data"],
+        [1202, "https://user:pass@github.com/org/repo.git"],
+        [1203, "https://github.com/org/repo.git?exfil=1"],
+      ] as const) {
+        const badRepoRes = await h.request(
+          "tools/call",
+          { name: "resolve_safe_anchor", arguments: { package_name: "demo", repo_url: badRepoUrl } },
+          reqId,
+        );
+        assert.equal((badRepoRes["error"] as { code: number }).code, JSONRPC_ERRORS.INVALID_PARAMS);
+      }
 
       // [MCP-04]: verify_confusion suppresses check_public without operator COLDPIN_ALLOW_PUBLIC_CONFUSION_PROBE=1
       const confRes = await h.request(

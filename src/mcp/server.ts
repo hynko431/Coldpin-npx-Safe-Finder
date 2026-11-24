@@ -46,7 +46,7 @@ import {
 } from "./evidence-card-app.ts";
 import { BoundedReportStore, REPORT_TEXT_CHUNK_MAX_BYTES, sliceUtf8Safe } from "./report-store.ts";
 import { StdioJsonRpcTransport } from "./stdio-transport.ts";
-import { MCP_PROMPTS, MCP_RESOURCES, MCP_RESOURCE_TEMPLATES, MCP_TOOLS } from "./tool-catalog.ts";
+import { MCP_PROMPTS, MCP_RESOURCES, MCP_RESOURCE_TEMPLATES, MCP_TOOLS, REPO_URL_SCHEMA_RE } from "./tool-catalog.ts";
 import {
   JSONRPC_ERRORS,
   SUPPORTED_PROTOCOL_VERSIONS,
@@ -1077,7 +1077,12 @@ export class ColdpinMcpServer {
       assertAllowedKeys(args, ["package_name", "git_dir", "repo_url", "subdir", "window", "detail"], toolName);
       readRequiredString(args, "package_name", 1, 214);
       readOptionalString(args, "git_dir", 1024, 1);
-      readOptionalString(args, "repo_url", 256, 1);
+      const repoUrl = readOptionalString(args, "repo_url", 256, 1);
+      if (repoUrl !== undefined && !REPO_URL_SCHEMA_RE.test(repoUrl)) {
+        throw new ParamValidationError(
+          "Parameter 'repo_url' must be an HTTPS remote Git URL matching schema pattern (no userinfo, query, or fragment).",
+        );
+      }
       readOptionalString(args, "subdir", 256);
       readOptionalInt(args, "window", 1, 200);
       readOptionalEnum(args, "detail", ["summary", "full"] as const, "summary");
