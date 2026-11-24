@@ -4,13 +4,19 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
 
 [Install](#install) · [Quickstart](#try-your-first-audit) · [Documentation](https://coldpin-docs.pages.dev/) · [Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab/) · [llms.txt](https://coldpin-docs.pages.dev/llms.txt) · [Benchmarks](skills/coldpin/BENCHMARK.md)
 
-<a href="https://mcprush.com/to/coldpin-mcp?ref=badge">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://mcprush.com/badge/coldpin-mcp/score.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://mcprush.com/badge/coldpin-mcp/score.svg?theme=light" />
-    <img height="20" src="https://mcprush.com/badge/coldpin-mcp/score.svg?theme=light" alt="Coldpin MCP on mcprush" />
-  </picture>
-</a>
+<p>
+  <a href="https://npmjs.com/package/coldpin"><img height="20" src="https://img.shields.io/npm/v/coldpin?color=0f766e&label=npm" alt="npm version" /></a>
+  <a href="https://npmjs.com/package/coldpin"><img height="20" src="https://img.shields.io/npm/dw/coldpin?color=0f766e&label=downloads" alt="npm weekly downloads" /></a>
+  <a href="https://npmjs.com/package/coldpin"><img height="20" src="https://img.shields.io/npm/dt/coldpin?color=0f766e&label=total%20downloads" alt="npm total downloads" /></a>
+  <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/actions/workflows/ci.yml"><img height="20" src="https://img.shields.io/github/actions/workflow/status/hynko431/Coldpin-npx-Safe-Finder/ci.yml?branch=main&label=CI" alt="CI status" /></a>
+  <a href="https://mcprush.com/to/coldpin-mcp?ref=badge">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://mcprush.com/badge/coldpin-mcp/score.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="https://mcprush.com/badge/coldpin-mcp/score.svg?theme=light" />
+      <img height="20" src="https://mcprush.com/badge/coldpin-mcp/score.svg?theme=light" alt="Coldpin MCP on mcprush" />
+    </picture>
+  </a>
+</p>
 
 Discover `npx` CLI packages by capability, category, creator, or organization without executing untrusted install scripts. **Coldpin** (`coldpin`) is a zero-dependency Node.js 24 CLI, local-first JSON-RPC 2.0 `stdio` MCP server (`lib/mcp.mjs`), and multi-harness AI agent plugin.
 
