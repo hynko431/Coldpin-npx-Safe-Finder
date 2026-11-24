@@ -75,7 +75,7 @@ Coldpin ships three ready-to-adapt client entries in `examples/mcp_config.http-r
 
 Resource `ui://coldpin/evidence-card.html` (`text/html;profile=mcp-app`, `SEP-1865` / `io.modelcontextprotocol/ui`) renders interactive read-only `Title + Info + Evidence` cards inline in Antigravity (`>= v2.34.0`) while hosts without MCP App support continue receiving compact JSON/Markdown summaries automatically.
 
-- **Linked tools (4): **`inspect_package_artifact`, `resolve_safe_anchor`, `verify_confusion`, and `audit_manifest_batch` declare `_meta.ui.resourceUri` while holding `tools/list` at `1,628 <= 1,800` tokens.
+- **Linked tools (4): **`inspect_package_artifact`, `resolve_safe_anchor`, `verify_confusion`, and `audit_manifest_batch` declare `_meta.ui.resourceUri` while holding `tools/list` at `1,643 <= 1,800` tokens.
 - **Security invariants (SS-18): **Default-deny CSP (`csp: {}`, `default-src 'none'`), zero external URLs, strict `createElement`/`textContent` DOM rendering (zero `innerHTML`), copy-only command button (never executes), Antigravity `--color-*` theme tokens, and read-only `get_artifact_report` paging.
 
 > **TIP — Try the Real MCP App Card Live:** Interact with Coldpin's real compiled `ui://coldpin/evidence-card.html` card across all 4 verdicts and test live `get_artifact_report` paging in the [Interactive Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab/#verdict-explorer).

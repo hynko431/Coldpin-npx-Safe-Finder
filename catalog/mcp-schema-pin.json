@@ -5,10 +5,10 @@
   "resources_count": 2,
   "resource_templates_count": 1,
   "prompts_count": 2,
-  "tools_list_chars": 6509,
-  "estimated_tokens": 1628,
-  "tools_sha256": "48fc70fe2506f166e649772b04f48cc040fb34de4943f5dca1589d311cd65b15",
+  "tools_list_chars": 6572,
+  "estimated_tokens": 1643,
+  "tools_sha256": "69ca5ccebb22c3992980b495f2f342c06f51f1c34e9b9a3e3035fb0a38b42e40",
   "resources_sha256": "eeafdcbf22fe077cbd82e803bebc48d6156f3737481413442ad7d1c5f5ac5db3",
   "prompts_sha256": "7ed0250e16aa025ee47f828e5296a688a1fc3264ab6adf91b40a4483fea48aaf",
-  "catalog_sha256": "9e997561b1a4dd1f54daa0bab536e23f53ede5628b5dd26914fbb15badcee8a4"
+  "catalog_sha256": "47c052d4f7e0f7f5a78fcb8d78c13987f6a700b753126f25dd1a4a4f8ab331db"
 }

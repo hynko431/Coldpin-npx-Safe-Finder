@@ -138,7 +138,7 @@
 
         <header class="hero-block">
           <h1 class="doc-h1">7 MCP Tools, Resources &amp; Prompts</h1>
-          <p class="doc-lead">Coldpin exposes a static, plain-English MCP catalog (<code>MCP 2025-11-25</code>, <code>2025-06-18</code>, <code>2025-03-26</code>) pinned cryptographically in <code>catalog/mcp-schema-pin.json</code> at <code>1,628 &lt;= 1,800</code> estimated tokens (<code>6,509 chars</code>). Control-plane parameters (<code>policy_path</code>, writable <code>audit_log_path</code>, <code>override_ticket_id</code>) are permanently omitted from tool schemas.</p>
+          <p class="doc-lead">Coldpin exposes a static, plain-English MCP catalog (<code>MCP 2025-11-25</code>, <code>2025-06-18</code>, <code>2025-03-26</code>) pinned cryptographically in <code>catalog/mcp-schema-pin.json</code> at <code>1,643 &lt;= 1,800</code> estimated tokens (<code>6,572 chars</code>). Control-plane parameters (<code>policy_path</code>, writable <code>audit_log_path</code>, <code>override_ticket_id</code>) are permanently omitted from tool schemas.</p>
           <div class="surface-chips-row" aria-label="Available on">
             <span class="surface-chips-label">AVAILABLE ON:</span>
             <span class="surface-chip">Local stdio (lib/mcp.mjs)</span>
@@ -225,7 +225,7 @@
   <li><strong>Framing &amp; stdio safety: </strong>Byte-buffered LF/CRLF framing with <code>1 MiB</code> cap, <code>stdout</code> hijack guard, and <code>drain</code> backpressure.</li>
   <li><strong>3-tier workspace root confinement: </strong>Resolves allowed local roots from operator <code>COLDPIN_ALLOWED_ROOTS</code> and MCP <code>roots/list</code> (blocking symlink escapes, path traversal, and NTFS ADS).</li>
   <li><strong>Bounded concurrency &amp; session LRU: </strong>Semaphore caps <code>maxConcurrent=4</code> / <code>maxQueue=16</code> with <code>notifications/cancelled</code> support; ephemeral LRU holds max <code>25</code> reports / <code>30 min</code> TTL / <code>15 MiB</code> cap (never persisted to SQLite).</li>
-  <li><strong>Rug-pull schema pin (SS-11): </strong>Live <code>tools/list</code> + <code>resources/list</code> + <code>prompts/list</code> canonical SHA-256 <code>9e997561b1a4dd1f...</code> is verified automatically on every build and self-audit.</li>
+  <li><strong>Rug-pull schema pin (SS-11): </strong>Live <code>tools/list</code> + <code>resources/list</code> + <code>prompts/list</code> canonical SHA-256 <code>47c052d4f7e0f7f5...</code> is verified automatically on every build and self-audit.</li>
 </ul>
 </section>
 
