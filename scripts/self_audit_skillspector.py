@@ -649,6 +649,8 @@ def scan_repo() -> list[Finding]:
             )
 
     hook_src_path = ROOT / "src" / "hook.ts"
+    hook_core_path = ROOT / "src" / "hook-core.ts"
+    hook_disallowed_apis = ("node:child_process", "node:http", "node:https", "node:net", "node:sqlite", "fetch(", "import.meta.dirname")
     if hook_src_path.exists():
         hsrc = hook_src_path.read_text(encoding="utf-8")
         if not hsrc.startswith("#!/usr/bin/env node\n"):
@@ -662,11 +664,29 @@ def scan_repo() -> list[Finding]:
                 findings.append(
                     Finding("SS-08-HOOK-LEAST-PRIV", "CRITICAL", "src/hook.ts", 1, f"Forbidden hook decision/override token '{tok}' in src/hook.ts", "Reject: hook must never auto-approve or override permissions.", True)
                 )
-        for bad_api in ("node:child_process", "node:http", "node:https", "node:net", "node:sqlite", "fetch(", "import.meta.dirname"):
+        for bad_api in hook_disallowed_apis:
             if bad_api in hsrc_nc:
                 findings.append(
                     Finding("SS-08-HOOK-LEAST-PRIV", "HIGH", "src/hook.ts", 1, f"Disallowed API '{bad_api}' in ES2020 hook src/hook.ts", "Reject: hook must stay pure ES2020 with zero network/subprocess/Node-24-only APIs.", True)
                 )
+
+    if hook_core_path.exists():
+        hc_src = hook_core_path.read_text(encoding="utf-8")
+        hc_nc = re.sub(r"/\*[\s\S]*?\*/|//[^\n]*", "", hc_src)
+        for tok in forbidden_hook_tokens:
+            if f'"{tok}"' in hc_nc or f"'{tok}'" in hc_nc or f"{tok}:" in hc_nc:
+                findings.append(
+                    Finding("SS-08-HOOK-LEAST-PRIV", "CRITICAL", "src/hook-core.ts", 1, f"Forbidden hook decision/override token '{tok}' in src/hook-core.ts", "Reject: hook core must never auto-approve or override permissions.", True)
+                )
+        for bad_api in hook_disallowed_apis:
+            if bad_api in hc_nc:
+                findings.append(
+                    Finding("SS-08-HOOK-LEAST-PRIV", "HIGH", "src/hook-core.ts", 1, f"Disallowed API '{bad_api}' in ES2020 hook core src/hook-core.ts", "Reject: hook core must stay pure ES2020 with zero network/subprocess/Node-24-only APIs.", True)
+                )
+        if re.search(r"""\bfrom\s*["']node:""", hc_nc) or re.search(r"""\bimport\s*\(\s*["']node:""", hc_nc):
+            findings.append(
+                Finding("SS-08-HOOK-LEAST-PRIV", "HIGH", "src/hook-core.ts", 1, "Node builtin import detected in pure browser/Node hook core src/hook-core.ts", "Reject: src/hook-core.ts must have zero node:* imports for browser Policy Lab parity.", True)
+            )
 
     # SS-14: Strictly Read-Only Custom Agent & Subagent Least Privilege (`agents/*.md`)
     agents_dir = ROOT / "agents"
