@@ -166,7 +166,7 @@
   </div>
 <dl class="spec-strip" aria-label="Live synced Coldpin v1.6.0 verification metrics">
   <div class="spec-item"><dt>MCP Schema Pin</dt><dd>1,628 / 1,800 tokens (7 tools)</dd></div>
-  <div class="spec-item"><dt>Core Engine Tests</dt><dd>42/42 + docs portal suite</dd></div>
+  <div class="spec-item"><dt>Automated Tests</dt><dd>42/42 core + docs &amp; badge suites (55/55)</dd></div>
   <div class="spec-item"><dt>Mutation Proofs</dt><dd>38/38 regressions caught</dd></div>
   <div class="spec-item"><dt>SkillSpector Self-Audit</dt><dd>APPROVE 16/100 (0 blocking)</dd></div>
 </dl>
@@ -183,7 +183,7 @@
       <thead><tr><th scope="col" class="nowrap">Verification Gate</th><th scope="col" class="nowrap">Command</th><th scope="col">Measured Result</th></tr></thead>
       <tbody>
       <tr><td data-label="Verification Gate" class="nowrap">Compiled ESM Parity (<code>SS-13</code>)</td><td data-label="Command" class="nowrap"><code>npm run build</code></td><td data-label="Measured Result">25 compiled LF lib/**/*.mjs files syntax-checked &amp; 1:1 SHA-256 verified</td></tr>
-      <tr><td data-label="Verification Gate" class="nowrap">Deterministic Test Suites</td><td data-label="Command" class="nowrap"><code>npm test</code></td><td data-label="Measured Result">42/42 core/MCP/plugin/Phase-E tests + automated docs-site parity suite</td></tr>
+      <tr><td data-label="Verification Gate" class="nowrap">Deterministic Test Suites</td><td data-label="Command" class="nowrap"><code>npm test</code></td><td data-label="Measured Result">55/55 tests across 9 suites (42/42 core/MCP/plugin/Phase-E + docs portal + badge function suites)</td></tr>
       <tr><td data-label="Verification Gate" class="nowrap">49-Fixture Security Corpus</td><td data-label="Command" class="nowrap"><code>npm run bench:check</code></td><td data-label="Measured Result">100.0% recall (28/28 adversarial), 0.0% FPR (0/21 benign), 38/38 mutation proofs</td></tr>
       <tr><td data-label="Verification Gate" class="nowrap">SkillSpector Self-Audit</td><td data-label="Command" class="nowrap"><code>npm run audit:self</code></td><td data-label="Measured Result">SS-03–SS-18: APPROVE (risk 16/100, 0 blocking, 0 SARIF alerts)</td></tr>
       <tr><td data-label="Verification Gate" class="nowrap">MCP Schema Rug-Pull Pin (<code>SS-11</code>)</td><td data-label="Command" class="nowrap"><code>catalog/mcp-schema-pin.json</code></td><td data-label="Measured Result">7 tools, 2 resources, 2 prompts, 1,628 tokens (9e997561b1a4...)</td></tr>
