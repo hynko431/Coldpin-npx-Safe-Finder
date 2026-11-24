@@ -17,7 +17,7 @@ export interface PillarMeta {
 export type InlineSegment =
   | string
   | { readonly code: string }
-  | { readonly strong: string }
+  | { readonly strong: string | readonly InlineSegment[] }
   | { readonly kbd: string }
   | { readonly link: string; readonly href: string; readonly external?: boolean };
 

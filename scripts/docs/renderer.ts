@@ -49,7 +49,7 @@ export function inlineToPlainText(segs: readonly InlineSegment[]): string {
     .map((s) => {
       if (typeof s === "string") return s;
       if ("code" in s) return s.code;
-      if ("strong" in s) return s.strong;
+      if ("strong" in s) return typeof s.strong === "string" ? s.strong : inlineToPlainText(s.strong);
       if ("kbd" in s) return s.kbd;
       return s.link;
     })
@@ -61,7 +61,10 @@ function renderInlineHtml(segs: readonly InlineSegment[], docsRoot: "." | "../..
     .map((s) => {
       if (typeof s === "string") return escapeHtml(s);
       if ("code" in s) return `<code>${escapeHtml(s.code)}</code>`;
-      if ("strong" in s) return `<strong>${escapeHtml(s.strong)}</strong>`;
+      if ("strong" in s) {
+        const inner = typeof s.strong === "string" ? escapeHtml(s.strong) : renderInlineHtml(s.strong, docsRoot);
+        return `<strong>${inner}</strong>`;
+      }
       if ("kbd" in s) return `<kbd class="kbd">${escapeHtml(s.kbd)}</kbd>`;
       const href = relHref(docsRoot, s.href);
       const attrs = s.external ? ' rel="noopener noreferrer"' : "";
@@ -75,7 +78,10 @@ function renderInlineMd(segs: readonly InlineSegment[]): string {
     .map((s) => {
       if (typeof s === "string") return s;
       if ("code" in s) return `\`${s.code}\``;
-      if ("strong" in s) return `**${s.strong}**`;
+      if ("strong" in s) {
+        const inner = typeof s.strong === "string" ? s.strong : renderInlineMd(s.strong);
+        return `**${inner}**`;
+      }
       if ("kbd" in s) return `\`${s.kbd}\``;
       const url = s.external ? s.href : `${SITE_CANONICAL_ORIGIN}${s.href}`;
       return `[${s.link}](${url})`;
@@ -594,7 +600,7 @@ function renderJsonLd(page: DocPage, m: RepoMetrics): string {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     });
   }
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 }
 
 function renderSidebarHtml(pages: readonly DocPage[], current: DocPage, docsRoot: "." | "../.."): string {
@@ -623,6 +629,10 @@ function renderHeaderHtml(pages: readonly DocPage[], current: DocPage | null, do
     return `          <a class="pillar-tab" href="${escapeHtml(pageHref(docsRoot, targetPage))}"${activeAttr}>${escapeHtml(pillar.label)}</a>`;
   }).join("\n");
 
+  const mobileMenuBtnHtml = current
+    ? '\n      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>'
+    : "";
+
   return `<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
   <div class="announcement-inner">
     <span class="announcement-pill">v${escapeHtml(m.version)}</span>
@@ -633,18 +643,17 @@ function renderHeaderHtml(pages: readonly DocPage[], current: DocPage | null, do
 
 <header class="site-header">
   <div class="header-row-1">
-    <div class="header-left">
-      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+    <div class="header-left">${mobileMenuBtnHtml}
       <a class="brand-link" href="${escapeHtml(relHref(docsRoot, "/"))}">
         <img src="${escapeHtml(docsRoot)}/icon.svg" alt="" width="24" height="24">
-        <span>Coldpin Docs</span>
+        <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
         <span class="brand-version">v${escapeHtml(m.version)}</span>
       </a>
     </div>
 
     <div class="header-actions">
       <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
-        <span class="search-trigger-label">Search docs</span>
+        <span class="search-trigger-label">Search<span class="search-label-ext"> docs</span></span>
         <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
       </button>
 
@@ -1138,12 +1147,14 @@ export function buildSearchIndex(pages: readonly DocPage[], m: RepoMetrics): str
   };
 
   const discovery = [
-    { title: "Quickstart Install", href: "/docs/quickstart/", pillar: "Get Started", note: "Install in < 30s" },
-    { title: "Interactive Policy Lab", href: "/docs/policy-lab/", pillar: "Get Started", note: "Exact hook engine + MCP App" },
-    { title: "7 MCP Tools Reference", href: "/docs/mcp-tools/", pillar: "MCP & CLI", note: "1,628-token schema pin" },
-    { title: "Self-Hosted HTTP & Sidecar", href: "/docs/enterprise-http/", pillar: "MCP & CLI", note: "v1.6.0 Phase E" },
-    { title: "Configuration & Private Scopes", href: "/docs/configuration/", pillar: "Enterprise & Security", note: "COLDPIN_* env vars" },
-    { title: "Verification & Checksums", href: "/docs/verification/", pillar: "Verification & Releases", note: "SHA256SUMS & SLSA" },
+    { title: "Quickstart Install", href: "/docs/quickstart/", pillar: "Get Started", pillarId: "get-started", note: "Install in < 30s" },
+    { title: "Interactive Policy Lab", href: "/docs/policy-lab/", pillar: "Get Started", pillarId: "get-started", note: "Exact hook engine + MCP App" },
+    { title: "5-Component Antigravity Plugin", href: "/docs/antigravity-plugin/", pillar: "Plugin & Guardrails", pillarId: "plugin-guardrails", note: "7 agents, 3 rules, 3 hooks, 3 skills" },
+    { title: "PreToolUse Hooks & Guardrails", href: "/docs/hooks/", pillar: "Plugin & Guardrails", pillarId: "plugin-guardrails", note: "Pure ES2020 fail-safe hook contract" },
+    { title: "7 MCP Tools Reference", href: "/docs/mcp-tools/", pillar: "MCP & CLI", pillarId: "mcp-cli", note: "1,628-token schema pin" },
+    { title: "Self-Hosted HTTP & Sidecar", href: "/docs/enterprise-http/", pillar: "MCP & CLI", pillarId: "mcp-cli", note: "v1.6.0 Phase E" },
+    { title: "Configuration & Private Scopes", href: "/docs/configuration/", pillar: "Enterprise & Security", pillarId: "enterprise-security", note: "COLDPIN_* env vars" },
+    { title: "Verification & Checksums", href: "/docs/verification/", pillar: "Verification & Releases", pillarId: "verification-releases", note: "SHA256SUMS & SLSA" },
   ];
 
   return `${JSON.stringify({ version: m.version, synonyms, discovery, entries })}\n`;

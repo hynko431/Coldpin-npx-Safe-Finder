@@ -41,14 +41,14 @@
       <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
       <a class="brand-link" href="../../">
         <img src="../../icon.svg" alt="" width="24" height="24">
-        <span>Coldpin Docs</span>
+        <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
         <span class="brand-version">v1.6.0</span>
       </a>
     </div>
 
     <div class="header-actions">
       <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
-        <span class="search-trigger-label">Search docs</span>
+        <span class="search-trigger-label">Search<span class="search-label-ext"> docs</span></span>
         <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
       </button>
 
@@ -177,7 +177,7 @@
     <table>
       <thead><tr><th scope="col" class="nowrap">Harness / Channel</th><th scope="col">Manifest / Identifier</th><th scope="col">Entrypoint &amp; Install</th><th scope="col">Verification Status</th></tr></thead>
       <tbody>
-      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Antigravity (App, CLI, IDEs)</strong></td><td data-label="Manifest / Identifier"><code>plugin.json</code>, <code>mcp_config.json</code>, <code>hooks.json</code></td><td data-label="Entrypoint &amp; Install"><code>agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder</code></td><td data-label="Verification Status">Live <code>agy plugin validate --strict</code> (`findings: []`) verified locally</td></tr>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Antigravity (App, CLI, IDEs)</strong></td><td data-label="Manifest / Identifier"><code>plugin.json</code>, <code>mcp_config.json</code>, <code>hooks.json</code></td><td data-label="Entrypoint &amp; Install"><code>agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder</code></td><td data-label="Verification Status">Live <code>agy plugin validate --strict</code> (<code>findings: []</code>) verified locally</td></tr>
       <tr><td data-label="Harness / Channel" class="nowrap"><strong>Claude Code</strong></td><td data-label="Manifest / Identifier"><code>.claude-plugin/plugin.json</code> (inline <code>mcpServers</code>)</td><td data-label="Entrypoint &amp; Install"><code>python scripts/pack_plugin.py --target claude --verify</code> → <code>coldpin-claude.zip</code></td><td data-label="Verification Status">Manifest schema &amp; reproducible archive verified; live Claude host trace not run locally</td></tr>
       <tr><td data-label="Harness / Channel" class="nowrap"><strong>Codex CLI / ChatGPT</strong></td><td data-label="Manifest / Identifier"><code>.codex-plugin/plugin.json</code>, <code>.agents/plugins/marketplace.json</code></td><td data-label="Entrypoint &amp; Install"><code>python scripts/pack_plugin.py --target openai --verify</code> → <code>coldpin-openai.zip</code></td><td data-label="Verification Status">Manifest schema &amp; reproducible archive verified; live Codex host trace not run locally</td></tr>
       <tr><td data-label="Harness / Channel" class="nowrap"><strong>Official MCP Registry / npm / Cursor</strong></td><td data-label="Manifest / Identifier"><code>server.json</code> (<code>io.github.hynko431/coldpin</code>), <code>package.json</code></td><td data-label="Entrypoint &amp; Install"><code>npx --ignore-scripts coldpin@1.6.0 mcp</code></td><td data-label="Verification Status">Schema parity, <code>node_modules</code> smoke test &amp; JSON-RPC stdio suite verified</td></tr>

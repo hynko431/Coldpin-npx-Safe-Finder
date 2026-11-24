@@ -280,10 +280,14 @@ select {
   font-weight: 600;
   text-decoration: none;
   border-radius: var(--radius-control);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .skip-link:focus {
   top: var(--raw-space-3);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ==========================================================================
@@ -759,9 +763,11 @@ select {
     position: fixed;
     position-anchor: --md-menu-anchor;
     top: calc(anchor(bottom) + 6px);
+    bottom: auto;
     right: anchor(right);
     left: auto;
-    inset-area: none;
+    max-width: calc(100vw - 1rem);
+    position-try-fallbacks: flip-inline;
   }
 }
 
@@ -2309,7 +2315,16 @@ tbody tr:last-child td {
   .doc-h1 {
     font-size: 1.48rem;
   }
-  .header-row-1,
+  .header-row-1 {
+    padding: 0 0.6rem;
+    gap: 0.4rem;
+  }
+  .header-left {
+    gap: 0.35rem;
+  }
+  .header-actions {
+    gap: 0.35rem;
+  }
   .pillar-tabs-inner {
     padding: 0 var(--raw-space-3);
   }
@@ -2318,8 +2333,15 @@ tbody tr:last-child td {
   }
   .brand-link {
     font-size: 0.92rem;
+    gap: 0.35rem;
   }
-  .brand-version {
+  .brand-link img {
+    width: 20px;
+    height: 20px;
+  }
+  .brand-name-ext,
+  .brand-version,
+  .search-label-ext {
     display: none;
   }
   .search-trigger {
@@ -2329,6 +2351,10 @@ tbody tr:last-child td {
   .theme-opt {
     padding: 0 0.38rem;
     font-size: 0.72rem;
+  }
+  .md-popover.is-fallback-open {
+    left: 0;
+    right: auto;
   }
   .spec-strip,
   .surface-selector,
@@ -2346,19 +2372,39 @@ tbody tr:last-child td {
 }
 
 @media (max-width: 380px) {
-  .brand-link span:not(.brand-version) {
-    font-size: 0.86rem;
+  .header-row-1 {
+    padding: 0 0.45rem;
+    gap: 0.25rem;
   }
-  .search-trigger-label {
-    font-size: 0.76rem;
+  .header-left {
+    gap: 0.25rem;
+  }
+  .header-actions {
+    gap: 0.25rem;
+  }
+  .brand-link {
+    font-size: 0.84rem;
+    gap: 0.28rem;
+  }
+  .brand-link img {
+    width: 18px;
+    height: 18px;
+  }
+  .search-trigger {
+    min-height: 32px;
+    padding: 0 0.42rem;
+    font-size: 0.75rem;
   }
   .icon-btn {
-    padding: 0 0.45rem;
-    font-size: 0.76rem;
+    min-width: 30px;
+    min-height: 32px;
+    padding: 0 0.38rem;
+    font-size: 0.75rem;
   }
   .theme-opt {
-    padding: 0 0.3rem;
-    font-size: 0.7rem;
+    min-height: 26px;
+    padding: 0 0.28rem;
+    font-size: 0.69rem;
   }
 }
 

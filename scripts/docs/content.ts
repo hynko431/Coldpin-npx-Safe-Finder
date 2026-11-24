@@ -73,31 +73,81 @@ function parseChangelog(md: string): RepoMetrics["changelogReleases"] {
   return releases;
 }
 
-function parseInlineMarkdown(raw: string): InlineSegment[] {
+function parseInlineMarkdown(raw: string, allowStrong = true): InlineSegment[] {
   const segs: InlineSegment[] = [];
-  const tokenRe = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
-  let lastIdx = 0;
-  let match: RegExpExecArray | null;
-  while ((match = tokenRe.exec(raw)) !== null) {
-    if (match.index > lastIdx) {
-      segs.push(raw.slice(lastIdx, match.index));
+  let buf = "";
+  let i = 0;
+
+  const flushBuf = () => {
+    if (buf) {
+      segs.push(buf);
+      buf = "";
     }
-    const tok = match[0];
-    if (tok.startsWith("**") && tok.endsWith("**")) {
-      segs.push({ strong: tok.slice(2, -2) });
-    } else if (tok.startsWith("`") && tok.endsWith("`")) {
-      segs.push({ code: tok.slice(1, -1) });
-    } else if (tok.startsWith("[")) {
-      const m = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(tok);
-      if (m) {
-        segs.push({ link: m[1]!, href: m[2]!, external: /^https?:\/\//.test(m[2]!) });
-      } else {
-        segs.push(tok);
+  };
+
+  while (i < raw.length) {
+    // Inline code span: `...`
+    if (raw[i] === "`") {
+      const end = raw.indexOf("`", i + 1);
+      if (end > i + 1) {
+        flushBuf();
+        segs.push({ code: raw.slice(i + 1, end) });
+        i = end + 1;
+        continue;
       }
     }
-    lastIdx = match.index + tok.length;
+
+    // Bold span: **...** (skipping over nested `...` code spans like `lib/**/*.mjs`)
+    if (allowStrong && raw[i] === "*" && raw[i + 1] === "*") {
+      let j = i + 2;
+      let closeIdx = -1;
+      while (j < raw.length - 1) {
+        if (raw[j] === "`") {
+          const cEnd = raw.indexOf("`", j + 1);
+          if (cEnd > j) {
+            j = cEnd + 1;
+            continue;
+          }
+        }
+        if (raw[j] === "*" && raw[j + 1] === "*") {
+          closeIdx = j;
+          break;
+        }
+        j++;
+      }
+      if (closeIdx > i + 2) {
+        flushBuf();
+        const inner = raw.slice(i + 2, closeIdx);
+        const innerSegs = parseInlineMarkdown(inner, false);
+        segs.push({
+          strong: innerSegs.length === 1 && typeof innerSegs[0] === "string" ? innerSegs[0] : innerSegs,
+        });
+        i = closeIdx + 2;
+        continue;
+      }
+    }
+
+    // Markdown link: [label](href)
+    if (raw[i] === "[") {
+      const closeBracket = raw.indexOf("]", i + 1);
+      if (closeBracket > i + 1 && raw[closeBracket + 1] === "(") {
+        const closeParen = raw.indexOf(")", closeBracket + 2);
+        if (closeParen > closeBracket + 2) {
+          const label = raw.slice(i + 1, closeBracket);
+          const href = raw.slice(closeBracket + 2, closeParen);
+          flushBuf();
+          segs.push({ link: label, href, external: /^https?:\/\//.test(href) });
+          i = closeParen + 1;
+          continue;
+        }
+      }
+    }
+
+    buf += raw[i]!;
+    i++;
   }
-  if (lastIdx < raw.length) segs.push(raw.slice(lastIdx));
+
+  flushBuf();
   return segs;
 }
 
@@ -810,7 +860,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
                   [{ strong: "Antigravity (App, CLI, IDEs)" }],
                   [{ code: "plugin.json" }, ", ", { code: "mcp_config.json" }, ", ", { code: "hooks.json" }],
                   [{ code: "agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder" }],
-                  ["Live ", { code: "agy plugin validate --strict" }, " (`findings: []`) verified locally"],
+                  ["Live ", { code: "agy plugin validate --strict" }, " (", { code: "findings: []" }, ") verified locally"],
                 ],
                 [
                   [{ strong: "Claude Code" }],

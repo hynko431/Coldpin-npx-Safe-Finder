@@ -276,17 +276,36 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
       assert.ok(sitemap.includes(`<loc>${loc}</loc>`), `sitemap.xml missing ${loc}`);
     }
 
-    // Search index validity
+    // Search index validity & full 5-pillar discovery coverage
     const searchIdx = JSON.parse(readFileSync(join(SITE_DIR, "search-index.json"), "utf8")) as {
       version: string;
       synonyms: Record<string, string[]>;
-      discovery: unknown[];
+      discovery: Array<{ pillarId: string }>;
       entries: unknown[];
     };
     assert.equal(searchIdx.version, pluginJson.version);
     assert.ok(searchIdx.entries.length >= 40);
-    assert.ok(searchIdx.discovery.length >= 6);
+    assert.ok(searchIdx.discovery.length >= 8);
     assert.ok(Object.keys(searchIdx.synonyms).length >= 10);
+    const discPillars = new Set(searchIdx.discovery.map((d) => d.pillarId));
+    for (const pid of ["get-started", "plugin-guardrails", "mcp-cli", "enterprise-security", "verification-releases"]) {
+      assert.ok(discPillars.has(pid), `search-index.json discovery missing pillarId '${pid}'`);
+    }
+
+    // 404.html must not emit dead mobile-menu-btn pointing to nonexistent #docs-sidebar
+    const notFoundHtml = readFileSync(join(SITE_DIR, "404.html"), "utf8");
+    assert.ok(!notFoundHtml.includes('id="mobile-menu-btn"'), "404.html must not emit dead mobile-menu-btn without #docs-sidebar");
+
+    // Zero stray literal backticks in rendered HTML prose across all HTML pages
+    for (const sf of walkFiles(SITE_DIR)) {
+      if (sf.endsWith(".html")) {
+        const html = readFileSync(sf, "utf8");
+        const prose = html
+          .replace(/<(script|pre|code)\b[\s\S]*?<\/\1>/g, "")
+          .replace(/<[^>]+>/g, " ");
+        assert.ok(!prose.includes("`"), `Stray literal backtick in rendered HTML prose: ${sf}`);
+      }
+    }
 
     // 1,628 tokens & v1.6.0 parity + zero stale 1,563 anywhere in site/
     const verifHtml = readFileSync(join(SITE_DIR, "docs", "verification", "index.html"), "utf8");
@@ -310,6 +329,7 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     assert.ok(css.includes("overflow-wrap: anywhere"));
     assert.ok(css.includes("--surface-code: #f1f5f9"));
     assert.ok(css.includes("::highlight(coldpin-search-match)"));
+    assert.ok(css.includes("position-try-fallbacks: flip-inline"));
     assert.ok(css.includes("@media print"));
     assert.ok(css.includes("@media (forced-colors: active)"));
     assert.ok(css.includes("@media (prefers-reduced-motion: reduce)"));
@@ -461,16 +481,36 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     }
 
     const byName = new Map(registered.map((t) => [t.name, t]));
-    const searchRes = await byName.get("search_coldpin_docs")!.execute({ query: "oauth cimd" });
-    assert.ok(searchRes.content[0]!.text.length <= 1500);
-    assert.ok(searchRes.content[0]!.text.includes("enterprise-http"));
+    for (const q of ["oauth cimd", "oauth", "mcp", "coldpin", "hooks"]) {
+      const searchRes = await byName.get("search_coldpin_docs")!.execute({ query: q });
+      const raw = searchRes.content[0]!.text;
+      assert.ok(raw.length <= 1500, `search_coldpin_docs('${q}') exceeded 1500 chars (${raw.length})`);
+      const parsed = JSON.parse(raw) as { count: number; results: Array<{ href: string }> };
+      assert.ok(parsed.count > 0, `search_coldpin_docs('${q}') returned 0 results`);
+      if (q === "oauth cimd") {
+        assert.ok(raw.includes("enterprise-http"));
+      }
+    }
 
-    const mdRes = await byName.get("get_coldpin_doc_markdown")!.execute({ slug: "enterprise-http", offset: 0 });
-    assert.ok(mdRes.content[0]!.text.length <= 1500);
-    assert.ok(mdRes.content[0]!.text.includes("coldpin-mcp-http"));
+    for (const slug of ALL_SLUGS) {
+      const mdRes = await byName.get("get_coldpin_doc_markdown")!.execute({ slug, offset: 0 });
+      const raw = mdRes.content[0]!.text;
+      assert.ok(raw.length <= 1500, `get_coldpin_doc_markdown('${slug}') exceeded 1500 chars (${raw.length})`);
+      const parsed = JSON.parse(raw) as { slug: string; markdown: string; next_offset: number | null };
+      assert.equal(parsed.slug, slug);
+      assert.ok(parsed.markdown.length > 0);
+      if (slug === "enterprise-http") {
+        assert.ok(parsed.markdown.includes("coldpin-mcp-http"));
+        assert.ok(typeof parsed.next_offset === "number" && parsed.next_offset > 0);
+        const page2 = await byName.get("get_coldpin_doc_markdown")!.execute({ slug, offset: parsed.next_offset });
+        assert.ok(page2.content[0]!.text.length <= 1500);
+        JSON.parse(page2.content[0]!.text);
+      }
+    }
 
     const badSlugRes = await byName.get("get_coldpin_doc_markdown")!.execute({ slug: "../../etc/passwd" });
     assert.ok(badSlugRes.content[0]!.text.includes("invalid_slug"));
+    JSON.parse(badSlugRes.content[0]!.text);
 
     const hookRes = await byName.get("simulate_coldpin_hook")!.execute({
       tool_name: "run_command",
@@ -480,8 +520,17 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     const hookParsed = JSON.parse(hookRes.content[0]!.text) as { output: { decision: string } };
     assert.equal(hookParsed.output.decision, "force_ask");
 
+    const badSubRes = await byName.get("simulate_coldpin_hook")!.execute({
+      tool_name: "define_subagent",
+      payload: "{malformed",
+    });
+    assert.ok(badSubRes.content[0]!.text.length <= 1500);
+    const badSubParsed = JSON.parse(badSubRes.content[0]!.text) as { output: { decision: string } };
+    assert.equal(badSubParsed.output.decision, "force_ask");
+
     const shaRes = await byName.get("get_coldpin_release_checksums")!.execute({});
     assert.ok(shaRes.content[0]!.text.length <= 1500);
-    assert.ok(shaRes.content[0]!.text.includes("7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822"));
+    const shaParsed = JSON.parse(shaRes.content[0]!.text) as { sha256sums: string };
+    assert.ok(shaParsed.sha256sums.includes("7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822"));
   });
 });

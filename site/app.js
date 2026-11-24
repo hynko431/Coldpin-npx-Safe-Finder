@@ -546,11 +546,15 @@
       return { payload: { toolCall: { name: "manage_task", args: { Action: "send_input", Input: val } } } };
     }
     if (toolName === "define_subagent") {
+      var trimmedSub = val.trim();
       var argsObj = {};
       try {
-        var parsed = JSON.parse(val);
+        var parsed = JSON.parse(trimmedSub || "{}");
         if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) argsObj = parsed;
       } catch (_) {
+        if (trimmedSub.charAt(0) === "{" || trimmedSub.charAt(0) === "[") {
+          return { parseError: "Malformed JSON in define_subagent payload; explicit human confirmation required.", rawText: trimmedSub };
+        }
         if (/\b(EnableWriteTools|enable_write_tools)\s*:\s*true\b/i.test(val)) {
           argsObj = { EnableWriteTools: true };
         } else {
@@ -925,6 +929,22 @@
         }, "*");
       }
     });
+
+    function ensureMcpAppBootstrapped() {
+      window.setTimeout(function () {
+        if (!mcpAppReady) {
+          mcpAppReady = true;
+          notifyMcpAppTheme(resolveTheme());
+          pushVerdictToMcpApp(activeVerdictKey);
+        }
+      }, 250);
+    }
+    mcpAppFrame.addEventListener("load", ensureMcpAppBootstrapped);
+    try {
+      if (mcpAppFrame.contentDocument && mcpAppFrame.contentDocument.readyState === "complete") {
+        ensureMcpAppBootstrapped();
+      }
+    } catch (_) {}
   }
 
   /* ========================================================================
@@ -1091,7 +1111,7 @@
 
     if (!q && searchData && Array.isArray(searchData.discovery)) {
       var disc = searchData.discovery.filter(function (d) {
-        return activePillarFilter === "all" || d.pillar.toLowerCase().indexOf(activePillarFilter.split("-")[0]) !== -1;
+        return activePillarFilter === "all" || d.pillarId === activePillarFilter;
       });
       var toShow = disc.length > 0 ? disc : searchData.discovery;
       toShow.forEach(function (card, idx) {
@@ -1186,6 +1206,10 @@
 
   function openSearch() {
     if (!searchDialog || typeof searchDialog.showModal !== "function") return;
+    if (searchDialog.open) {
+      searchDialog.close();
+      return;
+    }
     lastTriggerFocus = document.activeElement;
     searchDialog.showModal();
     if (searchInput) {
@@ -1264,29 +1288,44 @@
      ======================================================================== */
   (function applySearchHighlight() {
     if (typeof CSS === "undefined" || !CSS.highlights || typeof window.Highlight !== "function") return;
-    var term = "";
+    var rawTerm = "";
     try {
-      term = (new URLSearchParams(window.location.search).get("hl") || "").slice(0, 64).trim().toLowerCase();
+      rawTerm = (new URLSearchParams(window.location.search).get("hl") || "").slice(0, 64).trim().toLowerCase();
     } catch (_) { return; }
-    if (term.length < 2) return;
+    if (rawTerm.length < 2) return;
     var article = document.querySelector(".docs-article");
     if (!article) return;
+
+    var seenTok = {};
+    var terms = [];
+    rawTerm.split(/\s+/).forEach(function (tok) {
+      if (tok.length >= 2 && !seenTok[tok] && terms.length < 6) {
+        seenTok[tok] = true;
+        terms.push(tok);
+      }
+    });
+    if (terms.length === 0) return;
 
     var ranges = [];
     var walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
     var node;
     while ((node = walker.nextNode()) && ranges.length < 40) {
+      var parentEl = node.parentElement;
+      if (parentEl && typeof parentEl.closest === "function" && parentEl.closest("[hidden]")) continue;
       var text = node.nodeValue || "";
       var lower = text.toLowerCase();
-      var pos = 0;
-      while (pos < lower.length && ranges.length < 40) {
-        var idx = lower.indexOf(term, pos);
-        if (idx === -1) break;
-        var r = document.createRange();
-        r.setStart(node, idx);
-        r.setEnd(node, idx + term.length);
-        ranges.push(r);
-        pos = idx + term.length;
+      for (var tIdx = 0; tIdx < terms.length && ranges.length < 40; tIdx++) {
+        var term = terms[tIdx];
+        var pos = 0;
+        while (pos < lower.length && ranges.length < 40) {
+          var idx = lower.indexOf(term, pos);
+          if (idx === -1) break;
+          var r = document.createRange();
+          r.setStart(node, idx);
+          r.setEnd(node, idx + term.length);
+          ranges.push(r);
+          pos = idx + term.length;
+        }
       }
     }
     if (ranges.length > 0) {
@@ -1297,14 +1336,36 @@
   })();
 
   /* ========================================================================
-     13. DESKTOP + MOBILE TOC SCROLL-SPY
+     13. DESKTOP + MOBILE TOC SCROLL-SPY & TARGETED <details> AUTO-OPEN
      ======================================================================== */
+  function openTargetDetails(hashStr) {
+    if (!hashStr || hashStr.length < 2) return;
+    var targetId = hashStr.charAt(0) === "#" ? hashStr.slice(1) : hashStr;
+    var targetEl = document.getElementById(targetId);
+    if (!targetEl) return;
+    if (targetEl.tagName === "DETAILS") {
+      targetEl.open = true;
+    } else if (typeof targetEl.closest === "function") {
+      var parentDet = targetEl.closest("details");
+      if (parentDet) parentDet.open = true;
+    }
+  }
+  if (window.location && window.location.hash) {
+    openTargetDetails(window.location.hash);
+  }
+  window.addEventListener("hashchange", function () {
+    if (window.location && window.location.hash) openTargetDetails(window.location.hash);
+  });
+
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll(".toc-link[href^='#']"));
   var observedTargets = [];
   tocLinks.forEach(function (link) {
     var href = link.getAttribute("href");
     var el = href ? document.getElementById(href.slice(1)) : null;
     if (el && observedTargets.indexOf(el) === -1) observedTargets.push(el);
+    link.addEventListener("click", function () {
+      if (href) openTargetDetails(href);
+    });
   });
 
   function setActiveToc(id) {
@@ -1326,12 +1387,59 @@
   }
 
   /* ========================================================================
-     14. READ-ONLY WEBMCP (document.modelContext, <= 1,500-CHAR CAPS)
+     14. READ-ONLY WEBMCP (document.modelContext, <= 1,500-CHAR VALID JSON)
      ======================================================================== */
   function capWebMcpText(obj) {
     var text = typeof obj === "string" ? obj : JSON.stringify(obj);
     if (text.length <= WEBMCP_MAX_CHARS) return text;
-    return text.slice(0, WEBMCP_MAX_CHARS - 24) + "... [truncated <=1500]";
+    return JSON.stringify({ truncated: true, max_chars: WEBMCP_MAX_CHARS, preview: text.slice(0, WEBMCP_MAX_CHARS - 96) });
+  }
+
+  function packSearchResultsJson(queryText, rawMatches) {
+    var snippetCaps = [100, 64, 0];
+    for (var sc = 0; sc < snippetCaps.length; sc++) {
+      var cap = snippetCaps[sc];
+      for (var take = Math.min(6, rawMatches.length); take >= 0; take--) {
+        var list = rawMatches.slice(0, take).map(function (r) {
+          var rec = { title: r.title, pillar: r.pillarLabel, href: r.href, md: "/docs/" + r.slug + ".md" };
+          if (cap > 0) rec.snippet = r.snippet.slice(0, cap);
+          return rec;
+        });
+        var payload = {
+          version: DOC_VERSION,
+          query: queryText,
+          count: list.length,
+          truncated: take < rawMatches.length,
+          results: list
+        };
+        var encoded = JSON.stringify(payload);
+        if (encoded.length <= WEBMCP_MAX_CHARS) return encoded;
+      }
+    }
+    return JSON.stringify({ version: DOC_VERSION, query: queryText.slice(0, 40), count: 0, truncated: true, results: [] });
+  }
+
+  function packMarkdownSliceJson(slug, md, offset) {
+    var remaining = md.length - offset;
+    if (remaining <= 0) {
+      return JSON.stringify({ slug: slug, offset: offset, total_chars: md.length, next_offset: null, markdown: "" });
+    }
+    var low = 0;
+    var high = Math.min(remaining, WEBMCP_MAX_CHARS);
+    var best = "";
+    while (low <= high) {
+      var mid = Math.floor((low + high) / 2);
+      var chunk = md.slice(offset, offset + mid);
+      var nextOff = offset + chunk.length < md.length ? offset + chunk.length : null;
+      var encoded = JSON.stringify({ slug: slug, offset: offset, total_chars: md.length, next_offset: nextOff, markdown: chunk });
+      if (encoded.length <= WEBMCP_MAX_CHARS) {
+        best = encoded;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return best || JSON.stringify({ slug: slug, offset: offset, total_chars: md.length, next_offset: null, markdown: "" });
   }
 
   var webMcpTools = [
@@ -1351,10 +1459,8 @@
         var q = String((args && args.query) || "").slice(0, 128);
         var p = String((args && args.pillar) || "all");
         return loadSearchIndex().then(function (idx) {
-          var results = scoreRrfSearch(idx, q, p).slice(0, 6).map(function (r) {
-            return { title: r.title, pillar: r.pillarLabel, href: r.href, md: "/docs/" + r.slug + ".md", snippet: r.snippet.slice(0, 110) };
-          });
-          return { content: [{ type: "text", text: capWebMcpText({ version: DOC_VERSION, query: q, count: results.length, results: results }) }] };
+          var matches = scoreRrfSearch(idx, q, p);
+          return { content: [{ type: "text", text: packSearchResultsJson(q, matches) }] };
         });
       }
     },
@@ -1382,11 +1488,8 @@
             return r.text();
           })
           .then(function (md) {
-            var sliceLen = 1250;
-            var chunk = md.slice(offset, offset + sliceLen);
-            var nextOff = offset + chunk.length < md.length ? offset + chunk.length : null;
             return {
-              content: [{ type: "text", text: capWebMcpText({ slug: slug, offset: offset, total_chars: md.length, next_offset: nextOff, markdown: chunk }) }]
+              content: [{ type: "text", text: packMarkdownSliceJson(slug, md, offset) }]
             };
           });
       }
