@@ -8,14 +8,14 @@ Every Coldpin release passes a cross-platform 14-gate pipeline across `ubuntu-la
 ## Live Synced Verification Metrics (v1.6.0)
 
 - **MCP Schema Pin:** 1,628 / 1,800 tokens (7 tools)
-- **Core Engine Tests:** 42/42 + docs portal suite
+- **Automated Tests:** 42/42 core + docs & badge suites (56/56)
 - **Mutation Proofs:** 38/38 regressions caught
 - **SkillSpector Self-Audit:** APPROVE 16/100 (0 blocking)
 
 | Verification Gate | Command | Measured Result |
 | --- | --- | --- |
 | Compiled ESM Parity (`SS-13`) | `npm run build` | 25 compiled LF lib/**/*.mjs files syntax-checked & 1:1 SHA-256 verified |
-| Deterministic Test Suites | `npm test` | 42/42 core/MCP/plugin/Phase-E tests + automated docs-site parity suite |
+| Deterministic Test Suites | `npm test` | 56/56 tests across 9 suites (42/42 core/MCP/plugin/Phase-E + docs portal + badge function suites) |
 | 49-Fixture Security Corpus | `npm run bench:check` | 100.0% recall (28/28 adversarial), 0.0% FPR (0/21 benign), 38/38 mutation proofs |
 | SkillSpector Self-Audit | `npm run audit:self` | SS-03–SS-18: APPROVE (risk 16/100, 0 blocking, 0 SARIF alerts) |
 | MCP Schema Rug-Pull Pin (`SS-11`) | `catalog/mcp-schema-pin.json` | 7 tools, 2 resources, 2 prompts, 1,628 tokens (9e997561b1a4...) |

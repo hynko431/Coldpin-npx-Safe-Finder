@@ -12,7 +12,7 @@ sources: Enterprise Commons MAINTENANCE.md; Google EGM runtime_packaging.md; NVI
 | --- | --- | --- |
 | **Every edit** | Compiled ESM runtime build & syntax gate (`25` files under `lib/`) | `npm run build` |
 | **Every edit** | Static documentation portal parity check (`49` files under `site/`, including `hook-eval.js`, `/evidence-card-app/`, raw `.md` twins, and `site/_headers`) | `npm run build:docs:check` (regenerate via `npm run build:docs`) |
-| **Every edit** | Unit, quarantine, taint, provenance, prompt-injection, Git E2E, MCP, Phase E, hook & docs-site tests (`48/48`) | `npm test` |
+| **Every edit** | Unit, quarantine, taint, provenance, prompt-injection, Git E2E, MCP, Phase E, hook, docs-site & badge-function tests (`56/56`) | `npm test` |
 | **Every edit** | Structural skill lint, link check & 13-manifest/vertical-slice parity | `npm run lint:skill` |
 | **Every edit** | Hygiene, BOM, Unicode, secret scan, `#anchor` check, `site/` dual-CSP check & URL allow-list check | `npm run verify:hygiene` |
 | **Every edit** | Static coverage + positive/decoy trigger selection proxy | `npm run eval:static` |
