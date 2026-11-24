@@ -325,6 +325,7 @@ def main() -> int:
 
         headers_path = site_dir / "_headers"
         expected_meta_csp = None
+        expected_app_meta_csp = None
         if headers_path.exists():
             h_txt = headers_path.read_text(encoding="utf-8")
             m_csp = re.search(r"(?m)^/\*\n[\s\S]*?^\s+Content-Security-Policy:\s*(.+)$", h_txt)
@@ -345,6 +346,44 @@ def main() -> int:
                     and d.strip() != "upgrade-insecure-requests"
                 ]
                 expected_meta_csp = "; ".join(meta_parts) + ";"
+
+            if "/evidence-card-app.html" in h_txt:
+                errors.append("site/_headers: must not reference legacy /evidence-card-app.html")
+            app_edge_csps: dict[str, str] = {}
+            for app_route in ("/evidence-card-app", "/evidence-card-app/", "/evidence-card-app/index.html"):
+                block_re = re.compile(
+                    r"(?m)^"
+                    + re.escape(app_route)
+                    + r"\n"
+                    + r"  ! Content-Security-Policy\n"
+                    + r"  ! X-Frame-Options\n"
+                    + r"  Content-Security-Policy: ([^\n]+)\n"
+                    + r"  X-Frame-Options: SAMEORIGIN\n"
+                    + r"  Cache-Control: public, max-age=0, must-revalidate$"
+                )
+                m_app = block_re.search(h_txt)
+                if not m_app:
+                    errors.append(f"site/_headers: missing exact Cloudflare frame-override block for {app_route}")
+                    continue
+                if m_csp and m_app.start() <= m_csp.start():
+                    errors.append(f"site/_headers: {app_route} override block must appear after /* rule")
+                app_csp = m_app.group(1).strip()
+                if "unsafe-inline" in app_csp or "unsafe-eval" in app_csp:
+                    errors.append(f"site/_headers: disallowed 'unsafe-inline'/'unsafe-eval' in {app_route} CSP")
+                if "frame-ancestors 'self'" not in app_csp:
+                    errors.append(f"site/_headers: {app_route} CSP must allow frame-ancestors 'self'")
+                app_edge_csps[app_route] = app_csp
+            if len(set(app_edge_csps.values())) > 1:
+                errors.append("site/_headers: /evidence-card-app* routes declare divergent CSP values")
+            elif "/evidence-card-app/" in app_edge_csps:
+                app_meta_parts = [
+                    d.strip()
+                    for d in app_edge_csps["/evidence-card-app/"].split(";")
+                    if d.strip()
+                    and not d.strip().startswith("frame-ancestors ")
+                    and d.strip() != "upgrade-insecure-requests"
+                ]
+                expected_app_meta_csp = "; ".join(app_meta_parts) + ";"
 
         meta_csp_re = re.compile(
             r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content="([^"]+)"',
@@ -388,9 +427,8 @@ def main() -> int:
                     if "unsafe-inline" in mcsp or "unsafe-eval" in mcsp:
                         errors.append(f"{srel}: disallowed 'unsafe-inline'/'unsafe-eval' in <meta> CSP")
                     if srel == "site/evidence-card-app/index.html":
-                        expected_app_meta_csp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none';"
-                        if mcsp != expected_app_meta_csp:
-                            errors.append(f"{srel}: <meta> CSP drifted from sandboxed MCP App policy ({mcsp} != {expected_app_meta_csp})")
+                        if expected_app_meta_csp and mcsp != expected_app_meta_csp:
+                            errors.append(f"{srel}: <meta> CSP drifted from site/_headers /evidence-card-app/ ({mcsp} != {expected_app_meta_csp})")
                     elif expected_meta_csp and mcsp != expected_meta_csp:
                         errors.append(f"{srel}: <meta> CSP drifted from site/_headers ({mcsp} != {expected_meta_csp})")
             elif sf.suffix.lower() == ".js":

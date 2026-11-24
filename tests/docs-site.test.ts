@@ -231,6 +231,7 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
 
     // Verify Cloudflare Pages detach syntax across all three /evidence-card-app path forms and explicit MIME headers
     assert.ok(!headers.includes("/evidence-card-app.html"), "site/_headers must not reference legacy /evidence-card-app.html");
+    const rootRuleIdx = rootCspMatch.index ?? -1;
     const expectedAppEdgeCsp =
       "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests";
     for (const appRoute of ["/evidence-card-app", "/evidence-card-app/", "/evidence-card-app/index.html"]) {
@@ -244,7 +245,12 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
           `  Cache-Control: public, max-age=0, must-revalidate$`,
         "m",
       );
-      assert.match(headers, blockRe, `site/_headers missing exact Cloudflare frame-override block for ${appRoute}`);
+      const match = blockRe.exec(headers);
+      assert.ok(match, `site/_headers missing exact Cloudflare frame-override block for ${appRoute}`);
+      assert.ok(
+        rootRuleIdx >= 0 && match.index > rootRuleIdx,
+        `site/_headers ${appRoute} detach block must appear after /* rule`,
+      );
     }
     assert.ok(headers.includes("Content-Type: text/markdown; charset=utf-8"));
     assert.ok(headers.includes("Content-Type: text/plain; charset=utf-8"));
@@ -360,6 +366,7 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     // 320px .faq-list CSS guard & design/a11y requirements
     const css = readFileSync(join(SITE_DIR, "styles.css"), "utf8");
     assert.match(css, /\.faq-list,\s*\.release-list\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\);/);
+    assert.match(css, /\.sim-io-grid\s*>\s*div\s*\{[\s\S]*?min-width:\s*0;/);
     assert.match(css, /\.sim-json\s*\{[\s\S]*?white-space:\s*pre-wrap;[\s\S]*?overflow-wrap:\s*anywhere;/);
     assert.ok(css.includes("overflow-wrap: anywhere"));
     assert.ok(css.includes("--surface-code: #f1f5f9"));
@@ -567,5 +574,61 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     assert.ok(shaRes.content[0]!.text.length <= 1500);
     const shaParsed = JSON.parse(shaRes.content[0]!.text) as { sha256sums: string };
     assert.ok(shaParsed.sha256sums.includes("7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822"));
+
+    // 3. Test app.js WITHOUT hook-eval.js (404.html runtime): omit broken simulate_coldpin_hook registration
+    const notFoundRegistered: Array<{ name: string }> = [];
+    const notFoundAttrs = new Map<string, string>([["data-docs-root", "."], ["data-page-slug", "not-found"]]);
+    const notFoundSandbox: Record<string, unknown> = {
+      URL,
+      URLSearchParams,
+      Promise,
+      Set,
+      Map,
+      RegExp,
+      Math,
+      JSON,
+      Object,
+      Array,
+      String,
+      Number,
+      Boolean,
+      Date,
+      encodeURIComponent,
+      setTimeout,
+      fetch: sandbox["fetch"],
+      document: {
+        documentElement: {
+          getAttribute: (k: string) => notFoundAttrs.get(k) ?? null,
+          setAttribute: (k: string, v: string) => { notFoundAttrs.set(k, v); },
+        },
+        getElementById: () => null,
+        querySelector: () => null,
+        querySelectorAll: () => [],
+        addEventListener: () => {},
+        modelContext: {
+          registerTool: (tool: { name: string }) => { notFoundRegistered.push(tool); },
+        },
+        hidden: false,
+      },
+      navigator: {},
+    };
+    notFoundSandbox["window"] = notFoundSandbox;
+    notFoundSandbox["globalThis"] = notFoundSandbox;
+    notFoundSandbox["window"] = Object.assign(notFoundSandbox, {
+      setTimeout,
+      location: { href: "https://coldpin-docs.pages.dev/does-not-exist", search: "", hash: "" },
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      matchMedia: () => ({ matches: false, addEventListener: () => {} }),
+      localStorage: { getItem: () => null, setItem: () => {} },
+      sessionStorage: { getItem: () => null, setItem: () => {} },
+      history: { replaceState: () => {} },
+    });
+    vm.runInNewContext(appJsSrc, notFoundSandbox, { filename: "site/app.js (404)" });
+    assert.deepEqual(
+      notFoundRegistered.map((t) => t.name),
+      ["search_coldpin_docs", "get_coldpin_doc_markdown", "get_coldpin_release_checksums"],
+      "404.html without hook-eval.js must not register broken simulate_coldpin_hook WebMCP tool",
+    );
   });
 });

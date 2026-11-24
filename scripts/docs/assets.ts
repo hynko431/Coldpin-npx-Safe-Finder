@@ -3579,9 +3579,25 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
       }
     });
 
+    function isMcpAppDocumentLoaded() {
+      try {
+        var doc = mcpAppFrame.contentDocument;
+        return Boolean(
+          doc &&
+          doc.readyState === "complete" &&
+          doc.location &&
+          doc.location.href &&
+          doc.location.href !== "about:blank"
+        );
+      } catch (_) {
+        return true;
+      }
+    }
+
     function ensureMcpAppBootstrapped() {
+      if (!isMcpAppDocumentLoaded()) return;
       window.setTimeout(function () {
-        if (!mcpAppReady) {
+        if (!mcpAppReady && isMcpAppDocumentLoaded()) {
           mcpAppReady = true;
           notifyMcpAppTheme(resolveTheme());
           pushVerdictToMcpApp(activeVerdictKey);
@@ -3589,11 +3605,9 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
       }, 250);
     }
     mcpAppFrame.addEventListener("load", ensureMcpAppBootstrapped);
-    try {
-      if (mcpAppFrame.contentDocument && mcpAppFrame.contentDocument.readyState === "complete") {
-        ensureMcpAppBootstrapped();
-      }
-    } catch (_) {}
+    if (isMcpAppDocumentLoaded()) {
+      ensureMcpAppBootstrapped();
+    }
   }
 
   /* ========================================================================
@@ -4091,6 +4105,28 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
     return best || JSON.stringify({ slug: slug, offset: offset, total_chars: md.length, next_offset: null, markdown: "" });
   }
 
+  var simulateHookTool = {
+    name: "simulate_coldpin_hook",
+    description: "Read-only PreToolUse hook simulation using Coldpin's exact ES2020 src/hook-core.ts evaluator (zero execution, <=1500 chars).",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+    inputSchema: {
+      type: "object",
+      required: ["tool_name", "payload"],
+      properties: {
+        tool_name: { type: "string", enum: ["run_command", "write_to_file", "replace_file_content", "edit_file", "define_subagent", "manage_task"] },
+        payload: { type: "string", maxLength: 1024 }
+      }
+    },
+    execute: function (args) {
+      var toolName = String((args && args.tool_name) || "run_command");
+      var payload = String((args && args.payload) || "").slice(0, 1024);
+      var res = evaluateRealHook(toolName, payload);
+      return Promise.resolve({
+        content: [{ type: "text", text: capWebMcpText({ tool_name: toolName, hook_group: res.hookGroup, exit_code: 0, output: res.result }) }]
+      });
+    }
+  };
+
   var webMcpTools = [
     {
       name: "search_coldpin_docs",
@@ -4142,40 +4178,24 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
             };
           });
       }
-    },
-    {
-      name: "simulate_coldpin_hook",
-      description: "Read-only PreToolUse hook simulation using Coldpin's exact ES2020 src/hook-core.ts evaluator (zero execution, <=1500 chars).",
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
-      inputSchema: {
-        type: "object",
-        required: ["tool_name", "payload"],
-        properties: {
-          tool_name: { type: "string", enum: ["run_command", "write_to_file", "replace_file_content", "edit_file", "define_subagent", "manage_task"] },
-          payload: { type: "string", maxLength: 1024 }
-        }
-      },
-      execute: function (args) {
-        var toolName = String((args && args.tool_name) || "run_command");
-        var payload = String((args && args.payload) || "").slice(0, 1024);
-        var res = evaluateRealHook(toolName, payload);
-        return Promise.resolve({
-          content: [{ type: "text", text: capWebMcpText({ tool_name: toolName, hook_group: res.hookGroup, exit_code: 0, output: res.result }) }]
-        });
-      }
-    },
-    {
-      name: "get_coldpin_release_checksums",
-      description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
-      inputSchema: { type: "object", properties: {} },
-      execute: function () {
-        return Promise.resolve({
-          content: [{ type: "text", text: capWebMcpText({ version: DOC_VERSION, release_url: RELEASE_URL, sha256sums: RELEASE_CHECKSUMS }) }]
-        });
-      }
     }
   ];
+
+  if (window.ColdpinHookCore && typeof window.ColdpinHookCore.evaluatePreToolUsePayload === "function") {
+    webMcpTools.push(simulateHookTool);
+  }
+
+  webMcpTools.push({
+    name: "get_coldpin_release_checksums",
+    description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+    inputSchema: { type: "object", properties: {} },
+    execute: function () {
+      return Promise.resolve({
+        content: [{ type: "text", text: capWebMcpText({ version: DOC_VERSION, release_url: RELEASE_URL, sha256sums: RELEASE_CHECKSUMS }) }]
+      });
+    }
+  });
 
   window.ColdpinWebMcpTools = Object.freeze(webMcpTools);
 
