@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none';">
+<title>Coldpin Evidence Card</title>
+<link rel="stylesheet" href="../evidence-card-app.css">
+</head>
+<body>
+<div id="root" class="card" role="region" aria-label="Coldpin Security Evidence Card">
+  <div class="head">
+    <div class="title-wrap">
+      <span class="brand" aria-hidden="true">C</span>
+      <div>
+        <h1 id="title" class="title">Coldpin Evidence Card</h1>
+        <div id="subtitle" class="sub">Waiting for tool result...</div>
+      </div>
+    </div>
+    <span id="verdict" class="badge b-info">READY</span>
+  </div>
+  <div id="body" class="body">
+    <div class="empty">Invoke inspect_package_artifact, audit_manifest_batch, resolve_safe_anchor, or verify_confusion to populate this read-only evidence card.</div>
+  </div>
+  <div class="foot">
+    <span id="meta-left">coldpin v1.6.0 · read-only static triage</span>
+    <span id="meta-right">Zero auto-execution</span>
+  </div>
+</div>
+<script src="../evidence-card-app.js" defer></script>
+</body>
+</html>

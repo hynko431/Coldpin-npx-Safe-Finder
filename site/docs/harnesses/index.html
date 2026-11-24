@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="harnesses" data-pillar="get-started">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>Harnesses &amp; Cross-Platform Distribution — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="One canonical skill source and one zero-dependency ESM runtime targeting Antigravity, Claude Code, Codex CLI, Official MCP Registry, and CI.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/harnesses/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="Harnesses &amp; Cross-Platform Distribution — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="One canonical skill source and one zero-dependency ESM runtime targeting Antigravity, Claude Code, Codex CLI, Official MCP Registry, and CI.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/harnesses/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Harnesses &amp; Cross-Platform Distribution — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="One canonical skill source and one zero-dependency ESM runtime targeting Antigravity, Claude Code, Codex CLI, Official MCP Registry, and CI.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Harnesses & Cross-Platform Distribution","description":"One canonical skill source and one zero-dependency ESM runtime targeting Antigravity, Claude Code, Codex CLI, Official MCP Registry, and CI.","url":"https://coldpin-docs.pages.dev/docs/harnesses/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Get Started","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":3,"name":"Harnesses & Install","item":"https://coldpin-docs.pages.dev/docs/harnesses/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search<span class="search-label-ext"> docs</span></span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../" aria-current="page">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started" open>
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/" aria-current="page">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails">
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli">
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases">
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../">Get Started</a></li><li><span aria-current="page">Harnesses &amp; Install</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/harnesses.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/harnesses.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">Harnesses &amp; Cross-Platform Distribution</h1>
+          <p class="doc-lead">Coldpin maintains <strong>one canonical skill source</strong> under <code>skills/coldpin/</code> and <strong>one compiled zero-dependency ESM runtime</strong> under <code>lib/</code> (built deterministically from <code>src/</code> via <code>npm run build</code>). No agent harness receives forked prose.</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Antigravity</span>
+            <span class="surface-chip">Claude Code</span>
+            <span class="surface-chip">Codex CLI</span>
+            <span class="surface-chip">Cursor / MCP</span>
+            <span class="surface-chip">Standalone CLI</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#install-matrix">Cross-Platform Install Matrix</a></li>
+          <li><a class="toc-link" href="#manual-and-workspace-sync">Manual Install &amp; Workspace Sync</a></li>
+          <li><a class="toc-link" href="#manifest-drift-and-packaging">13-Manifest Parity &amp; Deterministic Zip Packaging</a></li>
+          </ul>
+        </details>
+
+<section id="install-matrix" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Cross-Platform Install Matrix</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="install-matrix" aria-label="Copy link to Cross-Platform Install Matrix">#</button>
+  </div>
+<div class="table-container" id="harnesses-matrix-table" data-table-switcher="true" data-view="cards">
+  <div class="table-view-bar" role="group" aria-label="Mobile layout view">
+    <span class="table-view-label">Mobile view</span>
+    <div class="table-view-btns">
+      <button type="button" class="table-view-btn" data-table-view="cards" aria-pressed="true">Cards</button>
+      <button type="button" class="table-view-btn" data-table-view="table" aria-pressed="false">Table</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col" class="nowrap">Harness / Channel</th><th scope="col">Manifest / Identifier</th><th scope="col">Entrypoint &amp; Install</th><th scope="col">Verification Status</th></tr></thead>
+      <tbody>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Antigravity (App, CLI, IDEs)</strong></td><td data-label="Manifest / Identifier"><code>plugin.json</code>, <code>mcp_config.json</code>, <code>hooks.json</code></td><td data-label="Entrypoint &amp; Install"><code>agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder</code></td><td data-label="Verification Status">Live <code>agy plugin validate --strict</code> (<code>findings: []</code>) verified locally</td></tr>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Claude Code</strong></td><td data-label="Manifest / Identifier"><code>.claude-plugin/plugin.json</code> (inline <code>mcpServers</code>)</td><td data-label="Entrypoint &amp; Install"><code>python scripts/pack_plugin.py --target claude --verify</code> → <code>coldpin-claude.zip</code></td><td data-label="Verification Status">Manifest schema &amp; reproducible archive verified; live Claude host trace not run locally</td></tr>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Codex CLI / ChatGPT</strong></td><td data-label="Manifest / Identifier"><code>.codex-plugin/plugin.json</code>, <code>.agents/plugins/marketplace.json</code></td><td data-label="Entrypoint &amp; Install"><code>python scripts/pack_plugin.py --target openai --verify</code> → <code>coldpin-openai.zip</code></td><td data-label="Verification Status">Manifest schema &amp; reproducible archive verified; live Codex host trace not run locally</td></tr>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Official MCP Registry / npm / Cursor</strong></td><td data-label="Manifest / Identifier"><code>server.json</code> (<code>io.github.hynko431/coldpin</code>), <code>package.json</code></td><td data-label="Entrypoint &amp; Install"><code>npx --ignore-scripts coldpin@1.6.0 mcp</code></td><td data-label="Verification Status">Schema parity, <code>node_modules</code> smoke test &amp; JSON-RPC stdio suite verified</td></tr>
+      <tr><td data-label="Harness / Channel" class="nowrap"><strong>Standalone Node 24 CLI / CI</strong></td><td data-label="Manifest / Identifier"><code>package.json</code> (<code>coldpin</code>, <code>coldpin-mcp</code>, <code>coldpin-mcp-http</code>)</td><td data-label="Entrypoint &amp; Install"><code>node --no-warnings lib/cli.mjs --help</code></td><td data-label="Verification Status">End-to-end tests + 49-fixture corpus verified on Ubuntu &amp; Windows (Node 24 &amp; 26)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="manual-and-workspace-sync" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Manual Install &amp; Workspace Sync</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="manual-and-workspace-sync" aria-label="Copy link to Manual Install &amp; Workspace Sync">#</button>
+  </div>
+<p class="prose">For workspace-scoped discovery inside a cloned repository, sync <code>.agents/skills/coldpin/</code> automatically using the deterministic packager:</p>
+<div class="code-block" data-lang="sh">
+  <div class="code-header">
+    <span class="code-label">Build all verified bundles &amp; sync workspace mirror</span>
+    <button type="button" class="copy-btn" data-copy="harness-sync-code">Copy</button>
+  </div>
+  <pre><code id="harness-sync-code"><span class="tok-cmd">python</span> scripts/pack_plugin.py <span class="tok-flag">--target</span> all <span class="tok-flag">--verify</span> <span class="tok-flag">--sync-workspace</span></code></pre>
+</div>
+<p class="prose">For manual Antigravity installation without the CLI, extract <code>coldpin-antigravity.zip</code> into <code>~/.gemini/config/plugins/coldpin/</code> (removing any prior version first so stale files do not linger), reload the window, and verify <code>coldpin</code> appears in <code>agy plugin list</code>.</p>
+</section>
+
+<section id="manifest-drift-and-packaging" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">13-Manifest Parity &amp; Deterministic Zip Packaging</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="manifest-drift-and-packaging" aria-label="Copy link to 13-Manifest Parity &amp; Deterministic Zip Packaging">#</button>
+  </div>
+<ul class="doc-list">
+  <li><strong>Single source of truth: </strong>Root <code>plugin.json</code> conforms strictly to <code>https://antigravity.google/schemas/v1/plugin.json</code> (<code>additionalProperties: false</code>, zero inline <code>mcpServers</code> or <code>hooks</code>).</li>
+  <li><strong>13-manifest version parity: </strong><code>scripts/lint_skill.py</code> fails if version or metadata drifts across <code>plugin.json</code>, <code>package.json</code>, <code>server.json</code>, <code>.claude-plugin/{plugin,marketplace}.json</code>, <code>.codex-plugin/plugin.json</code>, <code>src/types.ts</code>, <code>catalog/triage-rules.json</code>, <code>catalog/mcp-schema-pin.json</code>, <code>skills/coldpin/{SKILL,skill-card}.md</code>, and <code>skills/coldpin-{audit,incident}/SKILL.md</code>.</li>
+  <li><strong>Reproducible POSIX zips: </strong><code>scripts/pack_plugin.py</code> sorts entries, fixes timestamps (<code>2026-01-01 00:00:00 UTC</code>), sets explicit <code>create_system=3</code> with <code>0100755</code> on <code>lib/{cli,mcp,mcp-http,hook}.mjs</code> and <code>0100644</code> otherwise, isolates Antigravity-only primitives strictly to <code>HOST_GLOBS[&quot;antigravity&quot;]</code>, and verifies byte-for-byte SHA-256 identity across two builds.</li>
+</ul>
+<aside class="callout callout-caution" aria-label="caution callout">
+  <p class="callout-title">Cloud-Only Chat Sessions</p>
+  <p class="callout-body">Cloud-only chat sessions without a local Node.js &gt;= 24 runtime cannot execute <code>lib/mcp.mjs</code> or <code>lib/cli.mjs</code> locally and must fail closed (<code>UNVERIFIABLE_UNKNOWN</code>) unless connected to a self-hosted <a href="../../docs/enterprise-http/">coldpin-mcp-http gateway</a>.</p>
+</aside>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/quickstart/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">Quickstart</span>
+  </a>
+  <a class="pagination-link pagination-next" href="../../docs/policy-lab/">
+    <span class="pagination-dir">Next</span>
+    <span class="pagination-title">Interactive Policy Lab</span>
+  </a>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#install-matrix">Cross-Platform Install Matrix</a></li>
+          <li><a class="toc-link" href="#manual-and-workspace-sync">Manual Install &amp; Workspace Sync</a></li>
+          <li><a class="toc-link" href="#manifest-drift-and-packaging">13-Manifest Parity &amp; Deterministic Zip Packaging</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/harnesses.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>

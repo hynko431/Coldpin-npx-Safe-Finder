@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="agents-and-rules" data-pillar="plugin-guardrails">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>7 Read-Only Aspect Agents &amp; 3 Rules — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="Least-privilege read-only subagent delegation across 6 security aspects and 3 pure Markdown rules enforcing supply-chain invariants.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/agents-and-rules/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="7 Read-Only Aspect Agents &amp; 3 Rules — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="Least-privilege read-only subagent delegation across 6 security aspects and 3 pure Markdown rules enforcing supply-chain invariants.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/agents-and-rules/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="7 Read-Only Aspect Agents &amp; 3 Rules — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="Least-privilege read-only subagent delegation across 6 security aspects and 3 pure Markdown rules enforcing supply-chain invariants.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"7 Read-Only Aspect Agents & 3 Rules","description":"Least-privilege read-only subagent delegation across 6 security aspects and 3 pure Markdown rules enforcing supply-chain invariants.","url":"https://coldpin-docs.pages.dev/docs/agents-and-rules/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Plugin & Guardrails","item":"https://coldpin-docs.pages.dev/docs/antigravity-plugin/"},{"@type":"ListItem","position":3,"name":"Agents & Rules","item":"https://coldpin-docs.pages.dev/docs/agents-and-rules/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search<span class="search-label-ext"> docs</span></span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/" aria-current="page">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started">
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails" open>
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/" aria-current="page">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli">
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases">
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a></li><li><span aria-current="page">Agents &amp; Rules</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/agents-and-rules.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/agents-and-rules.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">7 Read-Only Aspect Agents &amp; 3 Rules</h1>
+          <p class="doc-lead">Every Coldpin security aspect runs inside an isolated read-only subagent with private body rules, <code>commandExecutionPolicy: &quot;off&quot;</code>, and a scoped Coldpin MCP tool allowlist enforced by <code>SS-14-AGENT-LEAST-PRIV</code> and <code>SS-15-RULES-HYGIENE</code>.</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Antigravity App</span>
+            <span class="surface-chip">Antigravity CLI</span>
+            <span class="surface-chip">Antigravity IDEs</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#aspect-agents">7 Read-Only Aspect Agents</a></li>
+          <li><a class="toc-link" href="#markdown-rules">3 Pure Markdown Rules</a></li>
+          </ul>
+        </details>
+
+<section id="aspect-agents" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">7 Read-Only Aspect Agents</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="aspect-agents" aria-label="Copy link to 7 Read-Only Aspect Agents">#</button>
+  </div>
+<div class="table-container" id="agents-table" data-table-switcher="true" data-view="cards">
+  <div class="table-view-bar" role="group" aria-label="Mobile layout view">
+    <span class="table-view-label">Mobile view</span>
+    <div class="table-view-btns">
+      <button type="button" class="table-view-btn" data-table-view="cards" aria-pressed="true">Cards</button>
+      <button type="button" class="table-view-btn" data-table-view="table" aria-pressed="false">Table</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col" class="nowrap">Agent</th><th scope="col">Role &amp; Mode</th><th scope="col">Scoped Coldpin MCP Tools</th><th scope="col">Isolation Controls</th></tr></thead>
+      <tbody>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-auditor</code></td><td data-label="Role &amp; Mode">Primary orchestrator (<code>mainAgent: true</code>)</td><td data-label="Scoped Coldpin MCP Tools">Delegates via <code>invoke_subagent</code> + all 7 read-only Coldpin MCP tools</td><td data-label="Isolation Controls"><code>commandExecutionPolicy: &quot;off&quot;</code>; canonical read-only tools</td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-discoverer</code></td><td data-label="Role &amp; Mode">Capability search &amp; 7-primitive squat screening</td><td data-label="Scoped Coldpin MCP Tools"><code>discover_packages</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-inspector</code></td><td data-label="Role &amp; Mode">In-memory tarball triage, lexical taint &amp; 3-tier parity</td><td data-label="Scoped Coldpin MCP Tools"><code>inspect_package_artifact</code>, <code>get_artifact_report</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-manifest-auditor</code></td><td data-label="Role &amp; Mode">Batch screening of <code>package.json</code> (up to 50 direct deps)</td><td data-label="Scoped Coldpin MCP Tools"><code>audit_manifest_batch</code>, <code>get_artifact_report</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-confusion-auditor</code></td><td data-label="Role &amp; Mode">Private-scope &amp; <code>.npmrc</code> confusion audit (<code>T1195.001</code>)</td><td data-label="Scoped Coldpin MCP Tools"><code>verify_confusion</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-forensics</code></td><td data-label="Role &amp; Mode">Patient-zero Git bisect, rollback anchors &amp; REA Tier-2 planning</td><td data-label="Scoped Coldpin MCP Tools"><code>resolve_safe_anchor</code>, <code>inspect_package_artifact</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      <tr><td data-label="Agent" class="nowrap"><code>coldpin-compliance</code></td><td data-label="Role &amp; Mode">Policy posture, hash-chained <code>audit.jsonl</code> &amp; SARIF/SBOM evidence</td><td data-label="Scoped Coldpin MCP Tools"><code>audit_verify</code>, <code>get_artifact_report</code></td><td data-label="Isolation Controls"><code>inheritCustomizations: false</code>; <code>commandExecutionPolicy: &quot;off&quot;</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<aside class="callout callout-tip" aria-label="tip callout">
+  <p class="callout-title">Why background subagents set inheritCustomizations: false ([PLG-15])</p>
+  <p class="callout-body">When auditing an untrusted cloned repository, malicious <code>.agents/rules/</code> or workspace hooks inside that repository must never hijack Coldpin&#39;s specialist workers. Setting <code>inheritCustomizations: false</code> isolates all 6 leaf workers from untrusted workspace overrides.</p>
+</aside>
+</section>
+
+<section id="markdown-rules" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">3 Pure Markdown Rules</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="markdown-rules" aria-label="Copy link to 3 Pure Markdown Rules">#</button>
+  </div>
+<div class="table-container" id="rules-table" data-table-switcher="true" data-view="cards">
+  <div class="table-view-bar" role="group" aria-label="Mobile layout view">
+    <span class="table-view-label">Mobile view</span>
+    <div class="table-view-btns">
+      <button type="button" class="table-view-btn" data-table-view="cards" aria-pressed="true">Cards</button>
+      <button type="button" class="table-view-btn" data-table-view="table" aria-pressed="false">Table</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col" class="nowrap">Rule File</th><th scope="col" class="nowrap">Trigger Mode</th><th scope="col">Budget / Scope</th><th scope="col">Enforced Guardrails</th></tr></thead>
+      <tbody>
+      <tr><td data-label="Rule File" class="nowrap"><code>rules/AGENTS.md</code></td><td data-label="Trigger Mode" class="nowrap">Always loaded</td><td data-label="Budget / Scope"><code>1,599 bytes</code> (strict <code>&lt;= 1,800 B</code> cap)</td><td data-label="Enforced Guardrails">4 supply-chain invariants (Vet First, Untrusted Data, Private Scopes, Human Gate) + 6-aspect delegation routing table.</td></tr>
+      <tr><td data-label="Rule File" class="nowrap"><code>rules/coldpin-manifest-guard.md</code></td><td data-label="Trigger Mode" class="nowrap"><code>trigger: glob</code></td><td data-label="Budget / Scope">Comma-separated globs for <code>package.json</code>, lockfiles, <code>.npmrc</code>, <code>mcp_config.json</code></td><td data-label="Enforced Guardrails">Requires batch screening, confusion checks, exact <code>X.Y.Z</code> pins + <code>--ignore-scripts</code>, and zero secret tokens in MCP CLI args.</td></tr>
+      <tr><td data-label="Rule File" class="nowrap"><code>rules/coldpin-incident-checklist.md</code></td><td data-label="Trigger Mode" class="nowrap"><code>trigger: model_decision</code></td><td data-label="Budget / Scope">Activates on <code>MALICIOUS_INDICATORS_FOUND</code> or lockfile exposure</td><td data-label="Enforced Guardrails">Halts execution, delegates bisect to <code>coldpin-forensics</code>, preserves hashes, rotates credentials, and surfaces CERT-In / NIS2 / CRA / GDPR clocks.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/antigravity-plugin/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">5-Component Architecture</span>
+  </a>
+  <a class="pagination-link pagination-next" href="../../docs/hooks/">
+    <span class="pagination-dir">Next</span>
+    <span class="pagination-title">PreToolUse Hooks</span>
+  </a>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#aspect-agents">7 Read-Only Aspect Agents</a></li>
+          <li><a class="toc-link" href="#markdown-rules">3 Pure Markdown Rules</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/agents-and-rules.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>

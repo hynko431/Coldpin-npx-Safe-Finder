@@ -2,13 +2,15 @@
 """Deep Enterprise Skill Hygiene, Reference, & URL Allow-List Validator
 (Enterprise Commons `tools/verify.py` parity).
 
-Checks across skills/coldpin/ and docs/:
-1. Zero UTF-8 BOM, zero hidden/bidi/Tag Unicode, zero ASCII control chars.
+Checks across skills/coldpin/, docs/, rules/, agents/, examples/, and site/:
+1. Zero UTF-8 BOM, zero hidden/bidi/Tag Unicode, zero ASCII control chars, LF line endings.
 2. Zero embedded prompt-injection or exploit-payload strings inside operational docs.
 3. Zero hardcoded secrets / credentialed URIs.
-4. Every backticked *.md path resolves cleanly.
+4. Every backticked *.md path, relative Markdown/HTML link, and `#heading-anchor` resolves cleanly.
 5. Reference files carry `last_reviewed:`, `review_by:`, and `status:`.
 6. Every referenced URL host appears in docs/fact-ledger.md allow-list.
+7. Static documentation portal (`site/`, 49 files): `<meta>`-vs-`site/_headers` dual-CSP sync,
+   zero `'unsafe-inline'`, Cloudflare Pages `/evidence-card-app*` detach blocks after `/*`, and zero `innerHTML` in `site/*.js`.
 """
 
 import datetime
@@ -291,13 +293,159 @@ def main() -> int:
             if mirror_rel in svg_bytes_map and svg_bytes_map[mirror_rel] != canonical_icon:
                 errors.append(f"{mirror_rel}: byte mismatch against canonical assets/icon.svg")
 
+    # Validate static documentation portal under site/: zero BOM, LF-only, valid UTF-8,
+    # zero hidden/bidi/control/secret/injection strings, dual-CSP sync, zero 'unsafe-inline',
+    # and zero innerHTML sinks in site/*.js.
+    site_dir = ROOT / "site"
+    site_files_checked = 0
+    if not site_dir.is_dir():
+        errors.append("site/: missing documentation portal directory")
+    else:
+        required_site_files = (
+            "index.html",
+            "404.html",
+            "robots.txt",
+            "sitemap.xml",
+            "llms.txt",
+            "search-index.json",
+            "theme-init.js",
+            "hook-eval.js",
+            "styles.css",
+            "app.js",
+            "evidence-card-app/index.html",
+            "evidence-card-app.css",
+            "evidence-card-app.js",
+            "_headers",
+            ".nojekyll",
+            "icon.svg",
+        )
+        for req_name in required_site_files:
+            if not (site_dir / req_name).exists():
+                errors.append(f"site/{req_name}: missing required documentation portal asset")
+        if (site_dir / "evidence-card-app.html").exists():
+            errors.append("site/evidence-card-app.html: legacy flat HTML route must not exist (use site/evidence-card-app/index.html)")
+
+        headers_path = site_dir / "_headers"
+        expected_meta_csp = None
+        expected_app_meta_csp = None
+        if headers_path.exists():
+            h_txt = headers_path.read_text(encoding="utf-8")
+            m_csp = re.search(r"(?m)^/\*\n[\s\S]*?^\s+Content-Security-Policy:\s*(.+)$", h_txt)
+            if not m_csp:
+                errors.append("site/_headers: missing /* Content-Security-Policy header")
+            else:
+                edge_csp = m_csp.group(1).strip()
+                if "unsafe-inline" in edge_csp or "unsafe-eval" in edge_csp:
+                    errors.append("site/_headers: disallowed 'unsafe-inline'/'unsafe-eval' in /* CSP")
+                if "connect-src 'self'" not in edge_csp:
+                    errors.append("site/_headers: /* CSP must include connect-src 'self'")
+                # Derive expected HTML <meta> CSP by stripping HTTP-header-only directives
+                meta_parts = [
+                    d.strip()
+                    for d in edge_csp.split(";")
+                    if d.strip()
+                    and not d.strip().startswith("frame-ancestors ")
+                    and d.strip() != "upgrade-insecure-requests"
+                ]
+                expected_meta_csp = "; ".join(meta_parts) + ";"
+
+            if "/evidence-card-app.html" in h_txt:
+                errors.append("site/_headers: must not reference legacy /evidence-card-app.html")
+            app_edge_csps: dict[str, str] = {}
+            for app_route in ("/evidence-card-app", "/evidence-card-app/", "/evidence-card-app/index.html"):
+                block_re = re.compile(
+                    r"(?m)^"
+                    + re.escape(app_route)
+                    + r"\n"
+                    + r"  ! Content-Security-Policy\n"
+                    + r"  ! X-Frame-Options\n"
+                    + r"  Content-Security-Policy: ([^\n]+)\n"
+                    + r"  X-Frame-Options: SAMEORIGIN\n"
+                    + r"  Cache-Control: public, max-age=0, must-revalidate$"
+                )
+                m_app = block_re.search(h_txt)
+                if not m_app:
+                    errors.append(f"site/_headers: missing exact Cloudflare frame-override block for {app_route}")
+                    continue
+                if m_csp and m_app.start() <= m_csp.start():
+                    errors.append(f"site/_headers: {app_route} override block must appear after /* rule")
+                app_csp = m_app.group(1).strip()
+                if "unsafe-inline" in app_csp or "unsafe-eval" in app_csp:
+                    errors.append(f"site/_headers: disallowed 'unsafe-inline'/'unsafe-eval' in {app_route} CSP")
+                if "frame-ancestors 'self'" not in app_csp:
+                    errors.append(f"site/_headers: {app_route} CSP must allow frame-ancestors 'self'")
+                app_edge_csps[app_route] = app_csp
+            if len(set(app_edge_csps.values())) > 1:
+                errors.append("site/_headers: /evidence-card-app* routes declare divergent CSP values")
+            elif "/evidence-card-app/" in app_edge_csps:
+                app_meta_parts = [
+                    d.strip()
+                    for d in app_edge_csps["/evidence-card-app/"].split(";")
+                    if d.strip()
+                    and not d.strip().startswith("frame-ancestors ")
+                    and d.strip() != "upgrade-insecure-requests"
+                ]
+                expected_app_meta_csp = "; ".join(app_meta_parts) + ";"
+
+        meta_csp_re = re.compile(
+            r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content="([^"]+)"',
+            re.I,
+        )
+        for sf in sorted(site_dir.rglob("*")):
+            if sf.is_symlink():
+                errors.append(f"{sf.relative_to(ROOT).as_posix()}: symlink not permitted inside site/")
+                continue
+            if not sf.is_file():
+                continue
+            site_files_checked += 1
+            srel = sf.relative_to(ROOT).as_posix()
+            sraw = sf.read_bytes()
+            if sraw.startswith(b"\xef\xbb\xbf"):
+                errors.append(f"{srel}: UTF-8 BOM present")
+            if b"\r\n" in sraw:
+                errors.append(f"{srel}: CRLF line endings present (must be LF)")
+            try:
+                stxt = sraw.decode("utf-8")
+            except UnicodeDecodeError:
+                errors.append(f"{srel}: invalid UTF-8 encoding")
+                continue
+            if HIDDEN_RE.search(stxt):
+                errors.append(f"{srel}: hidden/bidi/Tag Unicode present")
+            if CTRL_RE.search(stxt):
+                errors.append(f"{srel}: ASCII control characters present")
+            if INJECT_RE.search(stxt):
+                errors.append(f"{srel}: embedded prompt-injection phrase present")
+            if SECRET_RE.search(stxt):
+                errors.append(f"{srel}: secret-like token present")
+            if PAYLOAD_RE.search(stxt):
+                errors.append(f"{srel}: exploit-payload pattern present")
+
+            if sf.suffix.lower() == ".html":
+                mm = meta_csp_re.search(stxt)
+                if not mm:
+                    errors.append(f"{srel}: missing <meta http-equiv='Content-Security-Policy'>")
+                else:
+                    mcsp = mm.group(1).strip()
+                    if "unsafe-inline" in mcsp or "unsafe-eval" in mcsp:
+                        errors.append(f"{srel}: disallowed 'unsafe-inline'/'unsafe-eval' in <meta> CSP")
+                    if srel == "site/evidence-card-app/index.html":
+                        if expected_app_meta_csp and mcsp != expected_app_meta_csp:
+                            errors.append(f"{srel}: <meta> CSP drifted from site/_headers /evidence-card-app/ ({mcsp} != {expected_app_meta_csp})")
+                    elif expected_meta_csp and mcsp != expected_meta_csp:
+                        errors.append(f"{srel}: <meta> CSP drifted from site/_headers ({mcsp} != {expected_meta_csp})")
+            elif sf.suffix.lower() == ".js":
+                js_nc = re.sub(r"/\*[\s\S]*?\*/|//[^\n]*", "", stxt)
+                for bad_sink in ("innerHTML", "outerHTML", "insertAdjacentHTML", "document.write"):
+                    if bad_sink in js_nc:
+                        errors.append(f"{srel}: forbidden DOM sink '{bad_sink}' in site JS")
+
     desc_txt = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     dm = re.search(r"description:\s*(?:>-?\s*)?(.*?)\n(?:[a-z_-]+:|---)", desc_txt, re.S)
     desc_len = len(" ".join(dm.group(1).split())) if dm else 0
 
     print(
-        f"Hygiene audit: {len(files_to_check)} docs + {len(svg_bytes_map)} SVGs checked | URL hosts: {len(hosts)} "
-        f"(unlisted: {len(unlisted_hosts)}) | SKILL.md description: {desc_len} chars"
+        f"Hygiene audit: {len(files_to_check)} docs + {len(svg_bytes_map)} SVGs + {site_files_checked} site files checked | "
+        f"URL hosts: {len(hosts)} (unlisted: {len(unlisted_hosts)}) | SKILL.md description: {desc_len} chars"
     )
     if warnings:
         for w in warnings:

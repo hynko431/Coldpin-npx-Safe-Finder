@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-docs-root="../.." data-page-slug="enterprise-http" data-pillar="mcp-cli">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>Self-Hosted HTTP MCP, MCP App &amp; Weekly Sidecar (v1.6+) — Coldpin Docs (v1.6.0)</title>
+  <meta name="description" content="Complete Phase E (v1.6.0) guide: opt-in coldpin-mcp-http Streamable HTTP adapter with OAuth 2.1 CIMD/JWKS, SEP-1865 inline MCP App, and disabled-by-default weekly audit sidecar.">
+  <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/enterprise-http/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Coldpin Documentation">
+  <meta property="og:title" content="Self-Hosted HTTP MCP, MCP App &amp; Weekly Sidecar (v1.6+) — Coldpin Docs (v1.6.0)">
+  <meta property="og:description" content="Complete Phase E (v1.6.0) guide: opt-in coldpin-mcp-http Streamable HTTP adapter with OAuth 2.1 CIMD/JWKS, SEP-1865 inline MCP App, and disabled-by-default weekly audit sidecar.">
+  <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/enterprise-http/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Self-Hosted HTTP MCP, MCP App &amp; Weekly Sidecar (v1.6+) — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:description" content="Complete Phase E (v1.6.0) guide: opt-in coldpin-mcp-http Streamable HTTP adapter with OAuth 2.1 CIMD/JWKS, SEP-1865 inline MCP App, and disabled-by-default weekly audit sidecar.">
+  <link rel="icon" type="image/svg+xml" href="../../icon.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Self-Hosted HTTP MCP, MCP App & Weekly Sidecar (v1.6+)","description":"Complete Phase E (v1.6.0) guide: opt-in coldpin-mcp-http Streamable HTTP adapter with OAuth 2.1 CIMD/JWKS, SEP-1865 inline MCP App, and disabled-by-default weekly audit sidecar.","url":"https://coldpin-docs.pages.dev/docs/enterprise-http/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"MCP & CLI","item":"https://coldpin-docs.pages.dev/docs/mcp-tools/"},{"@type":"ListItem","position":3,"name":"Enterprise HTTP & Sidecar","item":"https://coldpin-docs.pages.dev/docs/enterprise-http/"}]}]}</script>
+  <script src="../../theme-init.js"></script>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../hook-eval.js" defer></script>
+  <script src="../../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
+  <div class="announcement-inner">
+    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
+    <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-row-1">
+    <div class="header-left">
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-controls="docs-sidebar" aria-expanded="false">Menu</button>
+      <a class="brand-link" href="../../">
+        <img src="../../icon.svg" alt="" width="24" height="24">
+        <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
+        <span class="brand-version">v1.6.0</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="search-trigger" id="search-trigger" aria-label="Search documentation (Ctrl+K or /)">
+        <span class="search-trigger-label">Search<span class="search-label-ext"> docs</span></span>
+        <span class="search-kbd-group" aria-hidden="true"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+      </button>
+
+      <div class="theme-segmented" role="group" aria-label="Color theme">
+        <button type="button" class="theme-opt" data-theme-set="auto" aria-pressed="true">Auto</button>
+        <button type="button" class="theme-opt" data-theme-set="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
+      </div>
+
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <nav class="header-row-2" aria-label="Documentation sections">
+    <div class="pillar-tabs-inner">
+          <a class="pillar-tab" href="../../">Get Started</a>
+          <a class="pillar-tab" href="../../docs/antigravity-plugin/">Plugin &amp; Guardrails</a>
+          <a class="pillar-tab" href="../../docs/mcp-tools/" aria-current="page">MCP &amp; CLI</a>
+          <a class="pillar-tab" href="../../docs/configuration/">Enterprise &amp; Security</a>
+          <a class="pillar-tab" href="../../docs/verification/">Verification &amp; Releases</a>
+    </div>
+  </nav>
+</header>
+
+  <div class="docs-shell">
+    <nav id="docs-sidebar" class="sidebar" aria-label="Documentation navigation">
+      <details class="nav-group" data-nav-group="get-started">
+        <summary class="nav-group-title">Get Started</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../">Overview</a></li>
+        <li><a class="nav-link" href="../../docs/quickstart/">Quickstart</a></li>
+        <li><a class="nav-link" href="../../docs/harnesses/">Harnesses &amp; Install</a></li>
+        <li><a class="nav-link" href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="plugin-guardrails">
+        <summary class="nav-group-title">Plugin &amp; Guardrails</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/antigravity-plugin/">5-Component Architecture</a></li>
+        <li><a class="nav-link" href="../../docs/agents-and-rules/">Agents &amp; Rules</a></li>
+        <li><a class="nav-link" href="../../docs/hooks/">PreToolUse Hooks</a></li>
+        <li><a class="nav-link" href="../../docs/slash-commands/">Slash Commands</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="mcp-cli" open>
+        <summary class="nav-group-title">MCP &amp; CLI</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/mcp-tools/">7 MCP Tools</a></li>
+        <li><a class="nav-link" href="../../docs/cli-reference/">6 CLI Verbs &amp; Exit Codes</a></li>
+        <li><a class="nav-link" href="../../docs/enterprise-http/" aria-current="page">Enterprise HTTP &amp; Sidecar</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="enterprise-security">
+        <summary class="nav-group-title">Enterprise &amp; Security</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/configuration/">Configuration &amp; Policy</a></li>
+        <li><a class="nav-link" href="../../docs/privacy/">Privacy &amp; Data Handling</a></li>
+        <li><a class="nav-link" href="../../docs/security/">Security &amp; Compliance</a></li>
+        </ul>
+      </details>
+      <details class="nav-group" data-nav-group="verification-releases">
+        <summary class="nav-group-title">Verification &amp; Releases</summary>
+        <ul class="nav-list">
+        <li><a class="nav-link" href="../../docs/verification/">Verification &amp; Benchmarks</a></li>
+        <li><a class="nav-link" href="../../docs/changelog/">Changelog</a></li>
+        <li><a class="nav-link" href="../../docs/faq/">FAQ &amp; Epistemic Limits</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <main id="main-content" class="docs-main">
+      <article class="docs-article">
+        <div class="article-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Docs</a></li><li><a href="../../docs/mcp-tools/">MCP &amp; CLI</a></li><li><span aria-current="page">Enterprise HTTP &amp; Sidecar</span></li></ol></nav>
+          <div class="md-menu-wrap">
+            <button type="button" class="md-menu-btn" id="md-menu-btn" popovertarget="md-menu-popover" aria-haspopup="menu" aria-expanded="false">
+              <span>Markdown</span><span aria-hidden="true">▾</span>
+            </button>
+            <div id="md-menu-popover" class="md-popover" popover="auto" role="menu" aria-labelledby="md-menu-btn">
+              <button type="button" class="md-popover-item" role="menuitem" data-copy-md="../../docs/enterprise-http.md">Copy Markdown</button>
+              <a class="md-popover-item" role="menuitem" href="../../docs/enterprise-http.md">View Markdown (.md)</a>
+            </div>
+          </div>
+        </div>
+
+        <header class="hero-block">
+          <h1 class="doc-h1">Self-Hosted HTTP MCP, MCP App &amp; Weekly Sidecar (v1.6+)</h1>
+          <p class="doc-lead">Introduced in <code>v1.6.0</code> (Phase E), all three enterprise extensions are strictly opt-in and preserve Coldpin&#39;s <strong>$0/mo</strong> maintainer cost and default local <code>stdio</code>-only zero-socket posture (<code>mcp_config.json</code> → <code>lib/mcp.mjs</code>).</p>
+          <div class="surface-chips-row" aria-label="Available on">
+            <span class="surface-chips-label">AVAILABLE ON:</span>
+            <span class="surface-chip">Self-Hosted VPC / Cloud Run</span>
+            <span class="surface-chip">Antigravity &gt;= v2.34.0 (MCP App)</span>
+            <span class="surface-chip">MCP 2025-11-25</span>
+          </div>
+          
+          
+        </header>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#http-adapter-overview">Opt-In Streamable HTTP MCP Adapter (coldpin-mcp-http)</a></li>
+          <li><a class="toc-link" href="#http-env-vars">HTTP &amp; OAuth 2.1 Environment Variables</a></li>
+          <li><a class="toc-link" href="#http-remote-config">Antigravity Remote HTTP &amp; Cloud Run Config Templates</a></li>
+          <li><a class="toc-link" href="#inline-mcp-app">Zero-Dependency Inline MCP App (ui://coldpin/evidence-card.html)</a></li>
+          <li><a class="toc-link" href="#weekly-sidecar">Disabled-by-Default Scheduled Weekly Audit Sidecar</a></li>
+          </ul>
+        </details>
+
+<section id="http-adapter-overview" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Opt-In Streamable HTTP MCP Adapter (coldpin-mcp-http)</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="http-adapter-overview" aria-label="Copy link to Opt-In Streamable HTTP MCP Adapter (coldpin-mcp-http)">#</button>
+  </div>
+<p class="prose">Binary <code>coldpin-mcp-http</code> (<code>lib/mcp-http.mjs</code>, POSIX <code>0100755</code>) exposes Coldpin&#39;s exact 7 read-only MCP tools over Streamable HTTP (<code>MCP 2025-11-25</code>) on your own VPC or Cloud Run infrastructure. It is isolated from <code>lib/mcp.mjs</code> and enforced by SkillSpector rule <code>SS-16-HTTP-ADAPTER-HARDENING</code>.</p>
+<aside class="callout callout-caution" aria-label="caution callout">
+  <p class="callout-title">Fail-Closed Startup Requirements</p>
+  <p class="callout-body"><code>coldpin-mcp-http</code> refuses to start unless BOTH <code>COLDPIN_HTTP_RESOURCE_URL</code> (must be <code>https://</code>) and <code>COLDPIN_HTTP_AUTH_MODE</code> (<code>oauth</code>, <code>api_key</code>, or <code>both</code>) are explicitly configured. Plaintext <code>http://</code> is rejected unless loopback-bound with <code>COLDPIN_HTTP_ALLOW_LOOPBACK_INSECURE=1</code>.</p>
+</aside>
+<ul class="doc-list">
+  <li><strong>OAuth 2.1 + PKCE (S256) + CIMD: </strong>Serves RFC 9728 Protected Resource Metadata on both <code>/.well-known/oauth-protected-resource</code> and path-inserted forms, supports Antigravity CIMD (<code>https://antigravity.google/oauth/client-metadata.json</code>), verifies <code>RS256</code> / <code>ES256</code> JWTs via pure Node 24 <code>node:crypto</code> against pinned JWKS (strictly rejecting <code>alg: none</code> and <code>HS*</code>), and enforces RFC 8707 <code>aud</code> + required scope (<code>403 insufficient_scope</code>).</li>
+  <li><strong>Constant-Time SHA-256 API Keys: </strong>Accepts <code>&gt;= 32</code>-char <code>cpk_live_*</code> bearer keys compared against <code>COLDPIN_MCP_API_KEY_SHA256</code> via <code>crypto.timingSafeEqual</code> (rejecting unexpanded <code>${VAR}</code> placeholders).</li>
+  <li><strong>Transport Hardening: </strong>Anti-DNS-rebinding <code>Host</code> + browser <code>Origin</code> allowlists (<code>403</code>), <code>1 MiB</code> request body cap (<code>413</code>), per-principal rate limiting (<code>429</code> + <code>Retry-After</code>), and principal-bound cryptographic <code>Mcp-Session-Id</code> (<code>403</code> on cross-principal reuse, <code>DELETE /mcp</code> returns <code>204</code>).</li>
+</ul>
+</section>
+
+<section id="http-env-vars" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">HTTP &amp; OAuth 2.1 Environment Variables</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="http-env-vars" aria-label="Copy link to HTTP &amp; OAuth 2.1 Environment Variables">#</button>
+  </div>
+<div class="table-container" id="http-env-table" data-table-switcher="true" data-view="cards">
+  <div class="table-view-bar" role="group" aria-label="Mobile layout view">
+    <span class="table-view-label">Mobile view</span>
+    <div class="table-view-btns">
+      <button type="button" class="table-view-btn" data-table-view="cards" aria-pressed="true">Cards</button>
+      <button type="button" class="table-view-btn" data-table-view="table" aria-pressed="false">Table</button>
+    </div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col" class="nowrap">Environment Variable</th><th scope="col" class="nowrap">Default / Required</th><th scope="col">Purpose &amp; Hardening Behavior</th></tr></thead>
+      <tbody>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_RESOURCE_URL</code></td><td data-label="Default / Required" class="nowrap">Required</td><td data-label="Purpose &amp; Hardening Behavior">Canonical <code>https://</code> MCP endpoint URI (e.g. <code>https://coldpin.acme.internal/mcp</code>) used for RFC 9728 metadata and RFC 8707 <code>aud</code> validation.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_AUTH_MODE</code></td><td data-label="Default / Required" class="nowrap">Required</td><td data-label="Purpose &amp; Hardening Behavior">Authentication policy: <code>oauth</code>, <code>api_key</code>, or <code>both</code>.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_HOST</code></td><td data-label="Default / Required" class="nowrap"><code>127.0.0.1</code></td><td data-label="Purpose &amp; Hardening Behavior">Bind address (keep <code>127.0.0.1</code> behind a TLS reverse proxy / Cloud Run ingress).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_PORT</code></td><td data-label="Default / Required" class="nowrap"><code>8787</code></td><td data-label="Purpose &amp; Hardening Behavior">TCP listen port (<code>0..65535</code>).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_ALLOWED_HOSTS</code></td><td data-label="Default / Required" class="nowrap">Resource host</td><td data-label="Purpose &amp; Hardening Behavior">Comma-separated additional <code>Host</code> headers permitted by anti-DNS-rebinding policy.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_ALLOWED_ORIGINS</code></td><td data-label="Default / Required" class="nowrap">None (non-browser)</td><td data-label="Purpose &amp; Hardening Behavior">Comma-separated browser <code>Origin</code> allowlist (requests without <code>Origin</code> pass; unknown browser origins get <code>403</code>).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_RATE_LIMIT_PER_MIN</code></td><td data-label="Default / Required" class="nowrap"><code>60</code></td><td data-label="Purpose &amp; Hardening Behavior">Per-principal sliding-window request limit per minute (returns <code>429</code> + <code>Retry-After</code>).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_HTTP_ALLOW_LOOPBACK_INSECURE</code></td><td data-label="Default / Required" class="nowrap"><code>0</code> (false)</td><td data-label="Purpose &amp; Hardening Behavior">Set to <code>1</code> strictly for local loopback testing over <code>http://127.0.0.1</code>.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_OAUTH_ISSUER</code></td><td data-label="Default / Required" class="nowrap">Required (oauth/both)</td><td data-label="Purpose &amp; Hardening Behavior">Expected JWT <code>iss</code> claim (exact match after trailing-slash normalization).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_OAUTH_AUTH_SERVERS</code></td><td data-label="Default / Required" class="nowrap">Falls back to issuer</td><td data-label="Purpose &amp; Hardening Behavior">Comma-separated RFC 9728 <code>authorization_servers</code> URIs advertised to MCP clients.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_OAUTH_REQUIRED_SCOPE</code></td><td data-label="Default / Required" class="nowrap"><code>coldpin:read</code></td><td data-label="Purpose &amp; Hardening Behavior">Required JWT <code>scope</code> or <code>scp</code> entry; missing scope returns <code>403 insufficient_scope</code>.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_OAUTH_JWKS_URL</code></td><td data-label="Default / Required" class="nowrap">OAuth (XOR path)</td><td data-label="Purpose &amp; Hardening Behavior">HTTPS JWKS endpoint fetched via SSRF-guarded <code>fetchJwksJson()</code> (5-min TTL, 10s min refresh).</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_OAUTH_JWKS_PATH</code></td><td data-label="Default / Required" class="nowrap">OAuth (XOR URL)</td><td data-label="Purpose &amp; Hardening Behavior">Local filesystem JWKS JSON file for offline or air-gapped OAuth key pinning.</td></tr>
+      <tr><td data-label="Environment Variable" class="nowrap"><code>COLDPIN_MCP_API_KEY_SHA256</code></td><td data-label="Default / Required" class="nowrap">Required (api_key/both)</td><td data-label="Purpose &amp; Hardening Behavior">Comma-separated 64-hex SHA-256 digests of <code>&gt;= 32</code>-char <code>cpk_live_*</code> read-only keys (raw keys never stored on server).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="http-remote-config" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Antigravity Remote HTTP &amp; Cloud Run Config Templates</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="http-remote-config" aria-label="Copy link to Antigravity Remote HTTP &amp; Cloud Run Config Templates">#</button>
+  </div>
+<p class="prose">Coldpin ships three ready-to-adapt client entries in <code>examples/mcp_config.http-remote.example.json</code> covering OAuth 2.1 CIMD, scoped API key <code>variables</code>, and Google Cloud Run <code>google_credentials</code> ADC:</p>
+<div class="code-block" data-lang="json">
+  <div class="code-header">
+    <span class="code-label">examples/mcp_config.http-remote.example.json</span>
+    <button type="button" class="copy-btn" data-copy="eh-remote-json">Copy</button>
+  </div>
+  <pre><code id="eh-remote-json">{
+  <span class="tok-key">&quot;mcpServers&quot;</span>: {
+    <span class="tok-key">&quot;coldpin-oauth-cimd&quot;</span>: {
+      <span class="tok-key">&quot;serverUrl&quot;</span>: <span class="tok-str">&quot;https://coldpin.acme.internal/mcp&quot;</span>,
+      <span class="tok-key">&quot;timeoutSeconds&quot;</span>: <span class="tok-num">300</span>
+    },
+    <span class="tok-key">&quot;coldpin-api-key&quot;</span>: {
+      <span class="tok-key">&quot;serverUrl&quot;</span>: <span class="tok-str">&quot;https://coldpin.acme.internal/mcp&quot;</span>,
+      <span class="tok-key">&quot;headers&quot;</span>: {
+        <span class="tok-key">&quot;Authorization&quot;</span>: <span class="tok-str">&quot;Bearer ${COLDPIN_MCP_API_KEY}&quot;</span>
+      },
+      <span class="tok-key">&quot;timeoutSeconds&quot;</span>: <span class="tok-num">300</span>,
+      <span class="tok-key">&quot;variables&quot;</span>: [
+        {
+          <span class="tok-key">&quot;name&quot;</span>: <span class="tok-str">&quot;COLDPIN_MCP_API_KEY&quot;</span>,
+          <span class="tok-key">&quot;title&quot;</span>: <span class="tok-str">&quot;Coldpin Scoped MCP API Key (Optional)&quot;</span>,
+          <span class="tok-key">&quot;description&quot;</span>: <span class="tok-str">&quot;Read-only &gt;=256-bit cpk_live_* bearer key verified via constant-time SHA-256 on self-hosted lib/mcp-http.mjs. Leave unset when using OAuth 2.1 CIMD or Google Cloud Run ADC.&quot;</span>,
+          <span class="tok-key">&quot;sensitive&quot;</span>: <span class="tok-kw">true</span>,
+          <span class="tok-key">&quot;required&quot;</span>: <span class="tok-kw">false</span>,
+          <span class="tok-key">&quot;link&quot;</span>: <span class="tok-str">&quot;https://coldpin-docs.pages.dev/docs/enterprise-http/&quot;</span>
+        }
+      ]
+    },
+    <span class="tok-key">&quot;coldpin-cloud-run-adc&quot;</span>: {
+      <span class="tok-key">&quot;serverUrl&quot;</span>: <span class="tok-str">&quot;https://coldpin.acme.internal/mcp&quot;</span>,
+      <span class="tok-key">&quot;authProviderType&quot;</span>: <span class="tok-str">&quot;google_credentials&quot;</span>,
+      <span class="tok-key">&quot;timeoutSeconds&quot;</span>: <span class="tok-num">300</span>
+    }
+  }
+}</code></pre>
+</div>
+</section>
+
+<section id="inline-mcp-app" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Zero-Dependency Inline MCP App (ui://coldpin/evidence-card.html)</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="inline-mcp-app" aria-label="Copy link to Zero-Dependency Inline MCP App (ui://coldpin/evidence-card.html)">#</button>
+  </div>
+<p class="prose">Resource <code>ui://coldpin/evidence-card.html</code> (<code>text/html;profile=mcp-app</code>, <code>SEP-1865</code> / <code>io.modelcontextprotocol/ui</code>) renders interactive read-only <code>Title + Info + Evidence</code> cards inline in Antigravity (<code>&gt;= v2.34.0</code>) while hosts without MCP App support continue receiving compact JSON/Markdown summaries automatically.</p>
+<ul class="doc-list">
+  <li><strong>Linked tools (4): </strong><code>inspect_package_artifact</code>, <code>resolve_safe_anchor</code>, <code>verify_confusion</code>, and <code>audit_manifest_batch</code> declare <code>_meta.ui.resourceUri</code> while holding <code>tools/list</code> at <code>1,628 &lt;= 1,800</code> tokens.</li>
+  <li><strong>Security invariants (SS-18): </strong>Default-deny CSP (<code>csp: {}</code>, <code>default-src &#39;none&#39;</code>), zero external URLs, strict <code>createElement</code>/<code>textContent</code> DOM rendering (zero <code>innerHTML</code>), copy-only command button (never executes), Antigravity <code>--color-*</code> theme tokens, and read-only <code>get_artifact_report</code> paging.</li>
+</ul>
+<aside class="callout callout-tip" aria-label="tip callout">
+  <p class="callout-title">Try the Real MCP App Card Live</p>
+  <p class="callout-body">Interact with Coldpin&#39;s real compiled <code>ui://coldpin/evidence-card.html</code> card across all 4 verdicts and test live <code>get_artifact_report</code> paging in the <a href="../../docs/policy-lab/#verdict-explorer">Interactive Policy Lab</a>.</p>
+</aside>
+</section>
+
+<section id="weekly-sidecar" class="doc-section">
+  <div class="heading-row">
+    <h2 class="doc-h2">Disabled-by-Default Scheduled Weekly Audit Sidecar</h2>
+    <button type="button" class="heading-anchor-btn" data-copy-anchor="weekly-sidecar" aria-label="Copy link to Disabled-by-Default Scheduled Weekly Audit Sidecar">#</button>
+  </div>
+<p class="prose">Organizations wanting recurring weekly supply-chain audits can opt into <code>examples/sidecar.weekly-audit.example.json</code>. Per <code>SS-17-SIDECAR-LEAST-PRIV</code>, no active <code>sidecars/</code> directory ships at the plugin root, and <code>agent_permissions.access_grants</code> permits strictly three read-only Coldpin MCP tools (zero shell or file-write grants):</p>
+<div class="code-block" data-lang="json">
+  <div class="code-header">
+    <span class="code-label">examples/sidecar.weekly-audit.example.json</span>
+    <button type="button" class="copy-btn" data-copy="eh-sidecar-json">Copy</button>
+  </div>
+  <pre><code id="eh-sidecar-json">{
+  <span class="tok-key">&quot;display_name&quot;</span>: <span class="tok-str">&quot;Coldpin Weekly Dependency Audit&quot;</span>,
+  <span class="tok-key">&quot;description&quot;</span>: <span class="tok-str">&quot;Read-only weekly supply-chain screening of package.json and .npmrc using Coldpin MCP (disabled by default; copy to ~/.gemini/config/sidecars/coldpin-weekly-audit/sidecar.json and enable explicitly).&quot;</span>,
+  <span class="tok-key">&quot;builtin&quot;</span>: <span class="tok-str">&quot;schedule&quot;</span>,
+  <span class="tok-key">&quot;restart_policy&quot;</span>: <span class="tok-str">&quot;always&quot;</span>,
+  <span class="tok-key">&quot;args&quot;</span>: [
+    <span class="tok-str">&quot;CRON_TZ=UTC 0 9 * * 1&quot;</span>,
+    <span class="tok-str">&quot;agentapi&quot;</span>,
+    <span class="tok-str">&quot;new-conversation&quot;</span>,
+    <span class="tok-str">&quot;--&quot;</span>,
+    <span class="tok-str">&quot;In ${workspace_dir}, run Coldpin audit_manifest_batch and verify_confusion on package.json in strictly read-only mode. Summarize flagged dependencies, private-scope confusion findings, unknowns, and exact pinned upgrade candidates without running shell commands or editing files.&quot;</span>
+  ],
+  <span class="tok-key">&quot;arguments&quot;</span>: [
+    {
+      <span class="tok-key">&quot;key&quot;</span>: <span class="tok-str">&quot;workspace_dir&quot;</span>,
+      <span class="tok-key">&quot;description&quot;</span>: <span class="tok-str">&quot;Workspace folder containing package.json to screen weekly&quot;</span>,
+      <span class="tok-key">&quot;workspace_arg&quot;</span>: {}
+    }
+  ],
+  <span class="tok-key">&quot;agent_permissions&quot;</span>: {
+    <span class="tok-key">&quot;workspace_uris&quot;</span>: [
+      <span class="tok-str">&quot;${workspace_dir}&quot;</span>
+    ],
+    <span class="tok-key">&quot;access_grants&quot;</span>: [
+      <span class="tok-str">&quot;mcp(coldpin_coldpin/audit_manifest_batch)&quot;</span>,
+      <span class="tok-str">&quot;mcp(coldpin_coldpin/verify_confusion)&quot;</span>,
+      <span class="tok-str">&quot;mcp(coldpin_coldpin/get_artifact_report)&quot;</span>
+    ]
+  }
+}</code></pre>
+</div>
+<div class="code-block" data-lang="sh">
+  <div class="code-header">
+    <span class="code-label">Explicit opt-in installation path</span>
+    <button type="button" class="copy-btn" data-copy="eh-sidecar-enable">Copy</button>
+  </div>
+  <pre><code id="eh-sidecar-enable"><span class="tok-cmd">mkdir</span> <span class="tok-flag">-p</span> ~/.gemini/config/sidecars/<span class="tok-cmd">coldpin</span><span class="tok-flag">-weekly-audit</span>
+<span class="tok-cmd">cp</span> examples/sidecar.weekly<span class="tok-flag">-audit</span>.example.json ~/.gemini/config/sidecars/<span class="tok-cmd">coldpin</span><span class="tok-flag">-weekly-audit</span>/sidecar.json</code></pre>
+</div>
+</section>
+
+        <nav class="doc-pagination" aria-label="Page pagination">
+  <a class="pagination-link pagination-prev" href="../../docs/cli-reference/">
+    <span class="pagination-dir">Previous</span>
+    <span class="pagination-title">6 CLI Verbs &amp; Exit Codes</span>
+  </a>
+  <a class="pagination-link pagination-next" href="../../docs/configuration/">
+    <span class="pagination-dir">Next</span>
+    <span class="pagination-title">Configuration &amp; Policy</span>
+  </a>
+</nav>
+<footer class="site-footer">
+  <div class="footer-panel">
+    <div class="footer-top">
+      <div>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+      </div>
+      <div class="footer-links">
+        <a href="../../docs/changelog/">Changelog</a>
+        <a href="../../docs/security/">Security</a>
+        <a href="../../docs/privacy/">Privacy</a>
+        <a href="../../docs/verification/">Verification</a>
+        <a href="../../docs/faq/">FAQ</a>
+        <a href="../../llms.txt">llms.txt</a>
+        <a href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">
+      Static triage does not replace runtime isolation or human judgment. Engineering guidance, not legal, medical, or financial advice; confirm decisions with qualified counsel.
+    </p>
+  </div>
+</footer>
+      </article>
+    </main>
+
+    <aside class="toc-aside" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list">
+          <li><a class="toc-link is-active" href="#http-adapter-overview">Opt-In Streamable HTTP MCP Adapter (coldpin-mcp-http)</a></li>
+          <li><a class="toc-link" href="#http-env-vars">HTTP &amp; OAuth 2.1 Environment Variables</a></li>
+          <li><a class="toc-link" href="#http-remote-config">Antigravity Remote HTTP &amp; Cloud Run Config Templates</a></li>
+          <li><a class="toc-link" href="#inline-mcp-app">Zero-Dependency Inline MCP App (ui://coldpin/evidence-card.html)</a></li>
+          <li><a class="toc-link" href="#weekly-sidecar">Disabled-by-Default Scheduled Weekly Audit Sidecar</a></li>
+      </ul>
+      <div class="toc-meta">
+        <p class="toc-meta-title">Quick Links</p>
+        <ul>
+          <li><a href="../../docs/enterprise-http.md">Raw Markdown (.md)</a></li>
+          <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
+          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../llms.txt">llms.txt Index</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="Search Coldpin documentation">
+  <div class="search-dialog-head">
+    <input
+      id="search-input"
+      class="search-dialog-input"
+      type="search"
+      placeholder="Search docs, CLI verbs, MCP tools, env vars, hooks..."
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="128"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="search-results"
+      aria-label="Search Coldpin documentation"
+    >
+    <button type="button" class="icon-btn" id="search-close" aria-label="Close search"><kbd class="kbd">Esc</kbd></button>
+  </div>
+  <div class="search-chips" role="group" aria-label="Filter search by section">
+      <button type="button" class="search-chip" data-search-pillar="all" aria-pressed="true">All</button>
+      <button type="button" class="search-chip" data-search-pillar="get-started" aria-pressed="false">Get Started</button>
+      <button type="button" class="search-chip" data-search-pillar="plugin-guardrails" aria-pressed="false">Plugin</button>
+      <button type="button" class="search-chip" data-search-pillar="mcp-cli" aria-pressed="false">MCP &amp; CLI</button>
+      <button type="button" class="search-chip" data-search-pillar="enterprise-security" aria-pressed="false">Enterprise</button>
+      <button type="button" class="search-chip" data-search-pillar="verification-releases" aria-pressed="false">Verification</button>
+  </div>
+  <div id="search-status" class="sr-only" aria-live="polite"></div>
+  <ul id="search-results" class="search-results" role="listbox" aria-label="Search results"></ul>
+  <div class="search-dialog-foot">
+    <span><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navigate</span>
+    <span><kbd class="kbd">Enter</kbd> Open</span>
+    <span><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Jump</span>
+    <span><kbd class="kbd">Esc</kbd> Close</span>
+  </div>
+</dialog>
+</body>
+</html>

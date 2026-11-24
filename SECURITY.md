@@ -6,12 +6,13 @@
 
 | Version | Supported |
 |---|---|
-| `1.5.x` | Yes (active maintenance; requires Antigravity `>= v1.5.13` for `PreToolUse` hooks) |
-| `1.4.x` | Security fixes via upgrade to `1.5.x` |
-| `1.3.x` | Security fixes via upgrade to `1.5.x` |
-| `1.2.x` | Security fixes via upgrade to `1.5.x` |
-| `1.1.x` | Security fixes via upgrade to `1.5.x` |
-| `1.0.x` | Security fixes via upgrade to `1.5.x` |
+| `1.6.x` | Yes (active maintenance; requires Antigravity `>= v1.5.13` for `PreToolUse` hooks and `>= v2.34.0` for inline MCP Apps) |
+| `1.5.x` | Security fixes via upgrade to `1.6.x` |
+| `1.4.x` | Security fixes via upgrade to `1.6.x` |
+| `1.3.x` | Security fixes via upgrade to `1.6.x` |
+| `1.2.x` | Security fixes via upgrade to `1.6.x` |
+| `1.1.x` | Security fixes via upgrade to `1.6.x` |
+| `1.0.x` | Security fixes via upgrade to `1.6.x` |
 
 ## Reporting a Vulnerability
 

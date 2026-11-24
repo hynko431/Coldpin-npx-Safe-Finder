@@ -188,7 +188,10 @@ EXIT CODES:
   0 = VERIFIED_CLEAN_WITHIN_SCOPE / check passed
   2 = QUARANTINE_SUSPICIOUS or UNVERIFIABLE_UNKNOWN
   3 = MALICIOUS_INDICATORS_FOUND / confusion or audit integrity failure
-  1 = CLI usage or runtime error`;
+  1 = CLI usage or runtime error
+
+DOCS:
+  https://coldpin-docs.pages.dev/  (AI/LLM index: https://coldpin-docs.pages.dev/llms.txt)`;
   process.stdout.write(`${help}\n`);
 }
 
