@@ -1,6 +1,6 @@
 # Harnesses & Cross-Platform Distribution
 
-> **Coldpin v1.6.0** · Section: Get Started · Available on: Antigravity, Claude Code, Codex CLI, Cursor / MCP, Standalone CLI
+> **Coldpin v1.6.1** · Section: Get Started · Available on: Antigravity, Claude Code, Codex CLI, Cursor / MCP, Standalone CLI
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/harnesses/
 
 Coldpin maintains **one canonical skill source** under `skills/coldpin/` and **one compiled zero-dependency ESM runtime** under `lib/` (built deterministically from `src/` via `npm run build`). No agent harness receives forked prose.
@@ -12,7 +12,7 @@ Coldpin maintains **one canonical skill source** under `skills/coldpin/` and **o
 | **Antigravity (App, CLI, IDEs)** | `plugin.json`, `mcp_config.json`, `hooks.json` | `agy plugin install https://github.com/hynko431/Coldpin-npx-Safe-Finder` | Live `agy plugin validate --strict` (`findings: []`) verified locally |
 | **Claude Code** | `.claude-plugin/plugin.json` (inline `mcpServers`) | `python scripts/pack_plugin.py --target claude --verify` → `coldpin-claude.zip` | Manifest schema & reproducible archive verified; live Claude host trace not run locally |
 | **Codex CLI / ChatGPT** | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | `python scripts/pack_plugin.py --target openai --verify` → `coldpin-openai.zip` | Manifest schema & reproducible archive verified; live Codex host trace not run locally |
-| **Official MCP Registry / npm / Cursor** | `server.json` (`io.github.hynko431/coldpin`), `package.json` | `npx --ignore-scripts coldpin@1.6.0 mcp` | Schema parity, `node_modules` smoke test & JSON-RPC stdio suite verified |
+| **Official MCP Registry / npm / Cursor** | `server.json` (`io.github.hynko431/coldpin`), `package.json` | `npx --ignore-scripts coldpin@1.6.1 mcp` | Schema parity, `node_modules` smoke test & JSON-RPC stdio suite verified |
 | **Standalone Node 24 CLI / CI** | `package.json` (`coldpin`, `coldpin-mcp`, `coldpin-mcp-http`) | `node --no-warnings lib/cli.mjs --help` | End-to-end tests + 49-fixture corpus verified on Ubuntu & Windows (Node 24 & 26) |
 
 ## Manual Install & Workspace Sync
@@ -35,4 +35,4 @@ For manual Antigravity installation without the CLI, extract `coldpin-antigravit
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

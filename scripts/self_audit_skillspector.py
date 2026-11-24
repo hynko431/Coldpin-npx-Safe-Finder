@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SkillSpector-class Deterministic Self-Audit for Coldpin (v1.6.0).
+"""SkillSpector-class Deterministic Self-Audit for Coldpin (v1.6.1).
 
 Audits skills/coldpin/, skills/coldpin-audit/, skills/coldpin-incident/, src/, scripts/, catalog/,
 rules/, agents/, hooks.json, examples/, and multi-harness/MCP manifests across

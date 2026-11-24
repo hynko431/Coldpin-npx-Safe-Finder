@@ -1,6 +1,6 @@
 # Fail-Safe PreToolUse Hooks
 
-> **Coldpin v1.6.0** · Section: Plugin & Guardrails · Available on: Antigravity >= v1.5.13, Node 18/20/22/24/26 (ES2020)
+> **Coldpin v1.6.1** · Section: Plugin & Guardrails · Available on: Antigravity >= v1.5.13, Node 18/20/22/24/26 (ES2020)
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/hooks/
 
 Coldpin ships 3 default-enabled `PreToolUse` hook groups in root `hooks.json` backed by pure ES2020 `src/hook-core.ts` + `src/hook.ts` → `./lib/hook.mjs`. The exact same engine powers the browser [Interactive Policy Lab](https://coldpin-docs.pages.dev/docs/policy-lab/).
@@ -72,7 +72,7 @@ Coldpin ships 3 default-enabled `PreToolUse` hook groups in root `hooks.json` ba
 | Shell wrappers & subshells | `sh -c "npx evil"`, `cmd /c npx evil`, `echo $(npx evil)` | `deny` | `coldpin-npx-guard` |
 | Alternative runners & remote initializers | `pnpm dlx`, `yarn dlx`, `bunx`, `corepack`, `npm init create-x` | `deny` | `coldpin-npx-guard` |
 | Download-and-execute pipes & interactive stdin | `curl https://... \| sh`, `irm ... \| iex`, `manage_task(send_input)` | `deny` | `coldpin-npx-guard` |
-| Exact-pinned Coldpin `--ignore-scripts` standalone | `npx --ignore-scripts coldpin@1.6.0 mcp`, `npx --yes --ignore-scripts --package=semver@7.7.1 -- semver` | `force_ask` | `coldpin-npx-guard` |
+| Exact-pinned Coldpin `--ignore-scripts` standalone | `npx --ignore-scripts coldpin@1.6.1 mcp`, `npx --yes --ignore-scripts --package=semver@7.7.1 -- semver` | `force_ask` | `coldpin-npx-guard` |
 | Sensitive config edits (all 6 file-edit tools + shell) | `.npmrc`, `.coldpin.policy.json`, `hooks.json`, `mcp_config.json`, `lib/hook.mjs`, `agy plugin disable` | `force_ask` | `coldpin-config-guard` |
 | Writable dynamic subagent requests | `define_subagent({ EnableWriteTools: true })` | `force_ask` | `coldpin-delegation-guard` |
 
@@ -80,4 +80,4 @@ Coldpin ships 3 default-enabled `PreToolUse` hook groups in root `hooks.json` ba
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

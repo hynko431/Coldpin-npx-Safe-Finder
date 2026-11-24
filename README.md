@@ -54,7 +54,7 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
 Run a zero-execution cold inspection directly from your terminal (Node.js `>= 24.0.0`, zero runtime dependencies):
 
 ```sh
-npx --ignore-scripts coldpin@1.6.0 inspect semver@7.7.1
+npx --ignore-scripts coldpin@1.6.1 inspect semver@7.7.1
 ```
 
 *(From a local clone with zero `npm install`, run `node --no-warnings lib/cli.mjs inspect semver@7.7.1`.)*
@@ -96,11 +96,11 @@ Choose your coding agent, MCP client, or standalone CLI. Coldpin maintains one c
 
 | Target | Entrypoint / Manifest | Install Path | Details |
 | --- | --- | --- | --- |
-| **Standalone CLI & Local MCP** | `lib/cli.mjs`, `lib/mcp.mjs` (`Node >= 24`) | `npx --ignore-scripts coldpin@1.6.0 mcp` or `git clone` | [Getting Started](docs/getting_started.md) |
+| **Standalone CLI & Local MCP** | `lib/cli.mjs`, `lib/mcp.mjs` (`Node >= 24`) | `npx --ignore-scripts coldpin@1.6.1 mcp` or `git clone` | [Getting Started](docs/getting_started.md) |
 | **Antigravity (`>= v1.5.13`)** | `plugin.json`, `mcp_config.json`, `hooks.json`, `rules/`, `agents/`, `skills/` | `agy plugin install ./coldpin-antigravity` | [Harnesses](docs/harnesses.md#antigravity-app-and-antigravity-for-ides) |
 | **Claude Code** | `.claude-plugin/plugin.json`, `skills/coldpin/` | `python scripts/pack_plugin.py --target claude --verify` | [Harnesses](docs/harnesses.md) |
 | **Codex CLI / ChatGPT Desktop** | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | `python scripts/pack_plugin.py --target openai --verify` | [Harnesses](docs/harnesses.md) |
-| **Official MCP Registry / Cursor** | `server.json` (`io.github.hynko431/coldpin`) | `npx --ignore-scripts coldpin@1.6.0 mcp` | [Harnesses](docs/harnesses.md) |
+| **Official MCP Registry / Cursor** | `server.json` (`io.github.hynko431/coldpin`) | `npx --ignore-scripts coldpin@1.6.1 mcp` | [Harnesses](docs/harnesses.md) |
 | **OCI Container (GHCR)** | `Dockerfile` (`ghcr.io/hynko431/coldpin`) | `docker run --rm ghcr.io/hynko431/coldpin:latest inspect semver@7.7.1` | [Testing](TESTING.md) |
 
 <details>
@@ -113,7 +113,7 @@ node --no-warnings lib/cli.mjs --help
 node --no-warnings lib/mcp.mjs        # Start local stdio MCP server (or: coldpin mcp)
 ```
 
-Or run via npm without global install: `npx --ignore-scripts coldpin@1.6.0 mcp`.
+Or run via npm without global install: `npx --ignore-scripts coldpin@1.6.1 mcp`.
 
 </details>
 

@@ -472,7 +472,7 @@ describe("First-Party Cloudflare Pages Badge Function (functions/badge/[[path]].
         ],
       );
       for (const reqInfo of seenRequests) {
-        assert.equal(reqInfo.ua, "coldpin-badge/1.6.0 (+https://coldpin-docs.pages.dev)");
+        assert.equal(reqInfo.ua, "coldpin-badge/1.6.1 (+https://coldpin-docs.pages.dev)");
         assert.equal(reqInfo.hasSignal, true);
       }
 

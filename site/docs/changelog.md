@@ -1,11 +1,24 @@
 # Changelog
 
-> **Coldpin v1.6.0** · Section: Verification & Releases · Available on: Latest: v1.6.0, Semantic Versioning, Apache-2.0
+> **Coldpin v1.6.1** · Section: Verification & Releases · Available on: Latest: v1.6.1, Semantic Versioning, Apache-2.0
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/changelog/
 
 All notable changes to `coldpin` following Keep a Changelog and Semantic Versioning. Jump to any release from the version index or toggle all entries below.
 
-## Release History (v1.0.0 – v1.6.0)
+## Release History (v1.0.0 – v1.6.1)
+
+### v1.6.1 — 2026-11-24
+
+**Added**
+
+- **Multi-Architecture GHCR Container Distribution (`Dockerfile`, `.dockerignore`, `.github/workflows/release.yml`):** Added a zero-dependency, non-root (`USER node`), Alpine Node 24 container image with OCI repository labels (`org.opencontainers.image.source`) and a default-deny `.dockerignore` allowlist (`lib/`, `catalog/`, `package.json`, `LICENSE`), plus a keyless `publish-ghcr` release job building and smoke-testing `linux/amd64` + `linux/arm64` images at `ghcr.io/hynko431/coldpin` with SLSA build provenance (`actions/attest-build-provenance`).
+- **Real-Network End-to-End & Tier-3 Multi-Agent Skill Evaluation Suites (`tests/live-network-e2e.test.ts`, `tests/tier3-skill-eval.ts`, `tests/tier3-skill-eval.test.ts`, `.github/workflows/ci.yml`):** Added `npm run test:live` (zero-mock CLI + spawned stdio MCP verification against live `registry.npmjs.org` and `api.osv.dev`, wired into the read-only non-fork `live-network-smoke` CI job with `timeout-minutes: 5`) and `npm run eval:tier3` (isolated 4-scenario live harness evaluator for `agy`, `claude`, and `codex` with Windows PowerShell 5.1 argument recovery, `.cmd` stdin shims, session-only least-privilege `agy --settings` MCP allow-rules, and deterministic fixture/grader unit tests).
+- **Zero-Dependency 5-Pillar Documentation Portal & Shared ES2020 Hook Core (`scripts/docs/`, `site/`, `src/hook-core.ts`):** Rebuilt `site/` as a 17-page, 5-pillar static portal (`49` files) with raw `.md` twins, `/llms.txt`, `sitemap.xml`, real `404.html`, interactive `PreToolUse` Policy Lab powered by the shared zero-Node `src/hook-core.ts`, live `/evidence-card-app/` MCP App preview with Cloudflare `_headers` parity, and `npm run build:docs:check` parity enforcement (`tests/docs-site.test.ts`).
+- **First-Party Official `npmjs.com` Package Card & Downloads Pill (`functions/badge/[[path]].js`, `tests/badge-function.test.ts`, `README.md`):** Added a zero-dependency Cloudflare Pages Function serving live adaptive light/dark SVGs at `/badge/npm-card.svg` and `/badge/npm-downloads.svg` backed directly by `api.npmjs.org` and `registry.npmjs.org` with edge caching, strict SVG presentation-attribute security invariants, degraded fallbacks, and reorganized `README.md`.
+
+**Security & Hardening**
+
+- **Closed `MTC-CAP-007` Arbitrary URL Schema Surface (`src/mcp/tool-catalog.ts`, `src/mcp/server.ts`, `catalog/mcp-schema-pin.json`):** Hardened `resolve_safe_anchor.repo_url` with a JSON Schema `pattern` (`^https://[A-Za-z0-9._-]+/[A-Za-z0-9._/@-]+$`) and `maxLength: 256` at both tool-schema advertisement and server runtime validation boundaries (holding `tools/list` at `1,643 <= 1,800` tokens), paired with negative schema/runtime regression tests in `tests/mcp-server.test.ts`.
 
 ### v1.6.0 — 2026-11-23
 
@@ -138,4 +151,4 @@ All notable changes to `coldpin` following Keep a Changelog and Semantic Version
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

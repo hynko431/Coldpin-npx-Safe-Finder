@@ -1,6 +1,6 @@
 # Privacy & Data Handling
 
-> **Coldpin v1.6.0** · Section: Enterprise & Security · Available on: Local CLI & stdio MCP, Offline Mode, Self-Hosted HTTP MCP
+> **Coldpin v1.6.1** · Section: Enterprise & Security · Available on: Local CLI & stdio MCP, Offline Mode, Self-Hosted HTTP MCP
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/privacy/
 
 Coldpin operates no hosted backend service, telemetry endpoint, analytics collector, cookies, or external database. No account or license key is required, and this documentation portal itself collects zero analytics and sets zero cookies.
@@ -26,4 +26,4 @@ When invoked inside an AI host (Antigravity, Claude Code, Codex, Cursor), prompt
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

@@ -333,7 +333,7 @@
 
   rpcRequest("ui/initialize", {
     protocolVersion: PROTOCOL_VERSION,
-    appInfo: { name: "Coldpin Evidence Card", version: "1.6.0" },
+    appInfo: { name: "Coldpin Evidence Card", version: "1.6.1" },
     appCapabilities: {}
   }).then((initRes) => {
     if (initRes && initRes.hostContext) applyHostContext(initRes.hostContext);

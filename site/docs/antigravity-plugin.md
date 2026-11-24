@@ -1,6 +1,6 @@
 # Antigravity 5-Component Architecture
 
-> **Coldpin v1.6.0** · Section: Plugin & Guardrails · Available on: Antigravity >= v1.5.13, MCP Apps >= v2.34.0
+> **Coldpin v1.6.1** · Section: Plugin & Guardrails · Available on: Antigravity >= v1.5.13, MCP Apps >= v2.34.0
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/antigravity-plugin/
 
 Coldpin conforms strictly to the official Antigravity plugin manifest schema (`https://antigravity.google/schemas/v1/plugin.json`). Scanner rule data lives cleanly in `catalog/` so `rules/` holds strictly pure agent Markdown rules.
@@ -85,4 +85,4 @@ Zero mandatory `variables` keeps public installs active immediately; enterprises
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

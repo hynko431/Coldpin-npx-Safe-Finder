@@ -1,11 +1,11 @@
 # Verification, Benchmarks & Provenance
 
-> **Coldpin v1.6.0** · Section: Verification & Releases · Available on: Node 24 & 26 CI Matrix, Ubuntu & Windows, SLSA Build Provenance, Dual DSSE
+> **Coldpin v1.6.1** · Section: Verification & Releases · Available on: Node 24 & 26 CI Matrix, Ubuntu & Windows, SLSA Build Provenance, Dual DSSE
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/verification/
 
 Every Coldpin release passes a cross-platform 14-gate pipeline across `ubuntu-latest` and `windows-latest` on Node `24` LTS and Node `26` Active LTS, followed by keyless npm OIDC Trusted Publishing and GitHub SLSA Build Provenance attestations.
 
-## Live Synced Verification Metrics (v1.6.0)
+## Live Synced Verification Metrics (v1.6.1)
 
 - **MCP Schema Pin:** 1,643 / 1,800 tokens (7 tools)
 - **Automated Tests:** 42/42 core + docs, badge & Tier-3 suites (59/59)
@@ -23,7 +23,7 @@ Every Coldpin release passes a cross-platform 14-gate pipeline across `ubuntu-la
 | Antigravity Strict Validation | `agy plugin validate --strict` | agents: 7, hooks: 3, mcpServers: 1, rules: 3, skills: 3, sidecars: 0, findings: [] |
 | Static Docs Parity & Hygiene | `npm run build:docs -- --check` & `npm run verify:hygiene` | Zero broken links/anchors, dual-CSP sync, 100% hook-eval.js parity, LF-only UTF-8 |
 
-## Release v1.6.0 Verified SHA256SUMS.txt
+## Release v1.6.1 Verified SHA256SUMS.txt
 
 ```
 7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822  coldpin-antigravity.zip
@@ -40,4 +40,4 @@ Verify GitHub SLSA Build Provenance attestations online at [GitHub Attestations]
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

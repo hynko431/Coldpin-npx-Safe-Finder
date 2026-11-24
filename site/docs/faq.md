@@ -1,6 +1,6 @@
 # FAQ & Epistemic Limits
 
-> **Coldpin v1.6.0** · Section: Verification & Releases · Available on: Epistemic Rigor, All Harnesses
+> **Coldpin v1.6.1** · Section: Verification & Releases · Available on: Epistemic Rigor, All Harnesses
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/faq/
 
 Security tooling should never overstate what static analysis can prove. These answers define Coldpin's exact epistemic boundaries and how it complements runtime isolation and private registries.
@@ -37,4 +37,4 @@ Yes: Socket.dev, Snyk, GuardDog, OSV-Scanner, and private registries (Verdaccio,
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

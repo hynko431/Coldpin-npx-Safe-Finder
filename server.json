@@ -3,7 +3,7 @@
   "name": "io.github.hynko431/coldpin",
   "title": "Coldpin",
   "description": "Zero-execution npx/npm security auditor: static taint, Git parity, clean anchors, batch triage.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "repository": {
     "url": "https://github.com/hynko431/Coldpin-npx-Safe-Finder",
     "source": "github"
@@ -13,7 +13,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "coldpin",
-      "version": "1.6.0",
+      "version": "1.6.1",
       "runtimeHint": "npx",
       "runtimeArguments": [
         { "type": "positional", "value": "--ignore-scripts" }

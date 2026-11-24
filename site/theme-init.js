@@ -13,7 +13,7 @@
       var legacy = window.localStorage.getItem("coldpin-docs-theme");
       if (legacy === "light" || legacy === "dark") mode = legacy;
     }
-    if (window.localStorage.getItem("coldpin-docs-announce-v1.6.0") === "dismissed") {
+    if (window.localStorage.getItem("coldpin-docs-announce-v1.6.1") === "dismissed") {
       root.setAttribute("data-announce-dismissed", "true");
     }
   } catch (_) {}
