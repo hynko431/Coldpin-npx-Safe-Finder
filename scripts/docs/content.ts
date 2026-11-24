@@ -545,7 +545,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
                 {
                   pillar: "Verification & Releases",
                   title: "Benchmarks, Checksums & Provenance",
-                  description: "Live synced schema pin (1,628 tokens), 38/38 mutation proofs, SS-03..SS-18 audit, and v1.6.0 SHA256SUMS.",
+                  description: `Live synced schema pin (${m.mcpEstimatedTokens.toLocaleString("en-US")} tokens), 38/38 mutation proofs, SS-03..SS-18 audit, and v${v} release provenance.`,
                   href: "/docs/verification/",
                 },
               ],
@@ -2365,7 +2365,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
       title: "Verification, Benchmarks & Provenance",
       shortTitle: "Verification & Benchmarks",
       description:
-        "Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.0 SHA256SUMS.",
+        `Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v${v} release provenance.`,
       lead: [
         "Every Coldpin release passes a cross-platform 14-gate pipeline across ",
         { code: "ubuntu-latest" },
@@ -2489,7 +2489,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
       title: "Changelog",
       shortTitle: "Changelog",
       description:
-        "Complete release history of Coldpin from v1.0.0 through v1.6.0, synced directly from CHANGELOG.md.",
+        `Complete release history of Coldpin from v1.0.0 through v${v}, synced directly from CHANGELOG.md.`,
       lead: [
         "All notable changes to ",
         { code: "coldpin" },
@@ -2500,6 +2500,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
         "changelog",
         "releases",
         "history",
+        "v1.6.1",
         "v1.6.0",
         "v1.5.2",
         "v1.5.1",

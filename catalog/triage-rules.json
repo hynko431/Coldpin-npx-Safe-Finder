@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "ruleset_version": "1.6.0",
+  "ruleset_version": "1.6.1",
   "owner": "AppSec / Skill Maintainer",
   "rules": [
     {

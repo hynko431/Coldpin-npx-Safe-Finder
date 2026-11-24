@@ -1,6 +1,6 @@
 # 7 MCP Tools, Resources & Prompts
 
-> **Coldpin v1.6.0** · Section: MCP & CLI · Available on: Local stdio (lib/mcp.mjs), Self-Hosted HTTP (lib/mcp-http.mjs), Official MCP Registry
+> **Coldpin v1.6.1** · Section: MCP & CLI · Available on: Local stdio (lib/mcp.mjs), Self-Hosted HTTP (lib/mcp-http.mjs), Official MCP Registry
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/mcp-tools/
 
 Coldpin exposes a static, plain-English MCP catalog (`MCP 2025-11-25`, `2025-06-18`, `2025-03-26`) pinned cryptographically in `catalog/mcp-schema-pin.json` at `1,643 <= 1,800` estimated tokens (`6,572 chars`). Control-plane parameters (`policy_path`, writable `audit_log_path`, `override_ticket_id`) are permanently omitted from tool schemas.
@@ -36,4 +36,4 @@ Coldpin exposes a static, plain-English MCP catalog (`MCP 2025-11-25`, `2025-06-
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

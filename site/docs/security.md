@@ -1,6 +1,6 @@
 # Security Policy & Compliance Reference
 
-> **Coldpin v1.6.0** · Section: Enterprise & Security · Available on: v1.6.x Active Maintenance, SARIF 2.1.0, CycloneDX 1.5, Sigma EDR
+> **Coldpin v1.6.1** · Section: Enterprise & Security · Available on: v1.6.x Active Maintenance, SARIF 2.1.0, CycloneDX 1.5, Sigma EDR
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/security/
 
 Coldpin treats every scanned npm tarball, `README.md`, manifest field, and Git commit message as hostile untrusted input. Verdicts are computed deterministically in TypeScript code outside LLM context.
@@ -36,4 +36,4 @@ When malicious indicators or lockfile exposure are confirmed, `rules/coldpin-inc
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

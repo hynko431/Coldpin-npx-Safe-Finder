@@ -7,7 +7,7 @@ description: >-
   audit.jsonl logs, and cold-inspect any flagged packages without execution.
 license: Apache-2.0
 metadata:
-  version: "1.6.0"
+  version: "1.6.1"
   author: "hynko431"
   tags:
     - npx

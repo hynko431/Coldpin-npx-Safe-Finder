@@ -1,6 +1,6 @@
 # Slash Commands (/coldpin-audit & /coldpin-incident)
 
-> **Coldpin v1.6.0** · Section: Plugin & Guardrails · Available on: Antigravity App, Antigravity CLI, Antigravity IDEs
+> **Coldpin v1.6.1** · Section: Plugin & Guardrails · Available on: Antigravity App, Antigravity CLI, Antigravity IDEs
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/slash-commands/
 
 Coldpin bundles two dedicated Antigravity slash skills under `skills/coldpin-audit/` and `skills/coldpin-incident/`. Both are strictly read-only — they never execute shell commands, edit files, or recommend unvetted `npx` runs.
@@ -41,4 +41,4 @@ Halts unvetted execution, runs --first-parent Git commit bisect via resolve_safe
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

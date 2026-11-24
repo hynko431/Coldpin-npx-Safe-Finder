@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <meta name="referrer" content="no-referrer">
-  <title>Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.0)</title>
+  <title>Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.1)</title>
   <meta name="description" content="Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.">
   <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/hooks/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Coldpin Documentation">
-  <meta property="og:title" content="Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.0)">
+  <meta property="og:title" content="Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.1)">
   <meta property="og:description" content="Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.">
   <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/hooks/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.0)">
+  <meta name="twitter:title" content="Fail-Safe PreToolUse Hooks — Coldpin Docs (v1.6.1)">
   <meta name="twitter:description" content="Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.">
   <link rel="icon" type="image/svg+xml" href="../../icon.svg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Fail-Safe PreToolUse Hooks","description":"Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.","url":"https://coldpin-docs.pages.dev/docs/hooks/","inLanguage":"en","version":"1.6.0","dateModified":"2026-11-23","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Plugin & Guardrails","item":"https://coldpin-docs.pages.dev/docs/antigravity-plugin/"},{"@type":"ListItem","position":3,"name":"PreToolUse Hooks","item":"https://coldpin-docs.pages.dev/docs/hooks/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Fail-Safe PreToolUse Hooks","description":"Pure ES2020 PreToolUse hook architecture enforcing zero unvetted package runners, config tamper gates, and writable subagent confirmation.","url":"https://coldpin-docs.pages.dev/docs/hooks/","inLanguage":"en","version":"1.6.1","dateModified":"2026-11-24","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Plugin & Guardrails","item":"https://coldpin-docs.pages.dev/docs/antigravity-plugin/"},{"@type":"ListItem","position":3,"name":"PreToolUse Hooks","item":"https://coldpin-docs.pages.dev/docs/hooks/"}]}]}</script>
   <script src="../../theme-init.js"></script>
   <link rel="stylesheet" href="../../styles.css">
   <script src="../../hook-eval.js" defer></script>
@@ -29,7 +29,7 @@
 
 <div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
   <div class="announcement-inner">
-    <span class="announcement-pill">v1.6.0</span>
+    <span class="announcement-pill">v1.6.1</span>
     <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
     <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
   </div>
@@ -42,7 +42,7 @@
       <a class="brand-link" href="../../">
         <img src="../../icon.svg" alt="" width="24" height="24">
         <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
-        <span class="brand-version">v1.6.0</span>
+        <span class="brand-version">v1.6.1</span>
       </a>
     </div>
 
@@ -58,7 +58,7 @@
         <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
       </div>
 
-      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.1" rel="noopener noreferrer">Release</a>
       <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
       <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
     </div>
@@ -251,7 +251,7 @@
       <tr><td data-label="Vector / Category">Shell wrappers &amp; subshells</td><td data-label="Example Input"><code>sh -c &quot;npx evil&quot;</code>, <code>cmd /c npx evil</code>, <code>echo $(npx evil)</code></td><td data-label="Hook Decision" class="nowrap"><code>deny</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-npx-guard</code></td></tr>
       <tr><td data-label="Vector / Category">Alternative runners &amp; remote initializers</td><td data-label="Example Input"><code>pnpm dlx</code>, <code>yarn dlx</code>, <code>bunx</code>, <code>corepack</code>, <code>npm init create-x</code></td><td data-label="Hook Decision" class="nowrap"><code>deny</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-npx-guard</code></td></tr>
       <tr><td data-label="Vector / Category">Download-and-execute pipes &amp; interactive stdin</td><td data-label="Example Input"><code>curl https://... | sh</code>, <code>irm ... | iex</code>, <code>manage_task(send_input)</code></td><td data-label="Hook Decision" class="nowrap"><code>deny</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-npx-guard</code></td></tr>
-      <tr><td data-label="Vector / Category">Exact-pinned Coldpin <code>--ignore-scripts</code> standalone</td><td data-label="Example Input"><code>npx --ignore-scripts coldpin@1.6.0 mcp</code>, <code>npx --yes --ignore-scripts --package=semver@7.7.1 -- semver</code></td><td data-label="Hook Decision" class="nowrap"><code>force_ask</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-npx-guard</code></td></tr>
+      <tr><td data-label="Vector / Category">Exact-pinned Coldpin <code>--ignore-scripts</code> standalone</td><td data-label="Example Input"><code>npx --ignore-scripts coldpin@1.6.1 mcp</code>, <code>npx --yes --ignore-scripts --package=semver@7.7.1 -- semver</code></td><td data-label="Hook Decision" class="nowrap"><code>force_ask</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-npx-guard</code></td></tr>
       <tr><td data-label="Vector / Category">Sensitive config edits (all 6 file-edit tools + shell)</td><td data-label="Example Input"><code>.npmrc</code>, <code>.coldpin.policy.json</code>, <code>hooks.json</code>, <code>mcp_config.json</code>, <code>lib/hook.mjs</code>, <code>agy plugin disable</code></td><td data-label="Hook Decision" class="nowrap"><code>force_ask</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-config-guard</code></td></tr>
       <tr><td data-label="Vector / Category">Writable dynamic subagent requests</td><td data-label="Example Input"><code>define_subagent({ EnableWriteTools: true })</code></td><td data-label="Hook Decision" class="nowrap"><code>force_ask</code></td><td data-label="Hook Group" class="nowrap"><code>coldpin-delegation-guard</code></td></tr>
       </tbody>
@@ -278,7 +278,7 @@
   <div class="footer-panel">
     <div class="footer-top">
       <div>
-        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.0) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.1) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
       </div>
       <div class="footer-links">
         <a href="../../docs/changelog/">Changelog</a>
@@ -310,7 +310,7 @@
         <ul>
           <li><a href="../../docs/hooks.md">Raw Markdown (.md)</a></li>
           <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
-          <li><a href="../../docs/verification/">v1.6.0 Checksums</a></li>
+          <li><a href="../../docs/verification/">v1.6.1 Checksums</a></li>
           <li><a href="../../llms.txt">llms.txt Index</a></li>
         </ul>
       </div>

@@ -8,10 +8,10 @@
 (function () {
   "use strict";
 
-  var DOC_VERSION = "1.6.0";
+  var DOC_VERSION = "1.6.1";
   var VALID_SLUGS = ["overview","quickstart","harnesses","policy-lab","antigravity-plugin","agents-and-rules","hooks","slash-commands","mcp-tools","cli-reference","enterprise-http","configuration","privacy","security","verification","changelog","faq"];
   var RELEASE_CHECKSUMS = "7983b4d4f02cf556de1de458e986d0d6394030f360722bc6e645feeee0ef2822  coldpin-antigravity.zip\n3b520c6688d56f88dcd213470f9d10d9e1345fd73d16909c6055989d65f9e50a  coldpin-claude.zip\n723fc06ed8a8989c738d7f8e216b5f12e018efd2a0ae82a6f6b901dd988223df  coldpin-openai.zip\n929682d1dd7ef2b40b82e8e8cce3ac25344631399987ab9493cbd0a98a73caf9  skillspector-self-audit.sarif";
-  var RELEASE_URL = "https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.0";
+  var RELEASE_URL = "https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.1";
   var MAX_INPUT_LEN = 4096;
   var WEBMCP_MAX_CHARS = 1500;
 

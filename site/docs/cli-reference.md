@@ -1,6 +1,6 @@
 # CLI Reference & Exit Codes
 
-> **Coldpin v1.6.0** · Section: MCP & CLI · Available on: Standalone CLI, GitHub Actions / CI, Node.js >= 24
+> **Coldpin v1.6.1** · Section: MCP & CLI · Available on: Standalone CLI, GitHub Actions / CI, Node.js >= 24
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/cli-reference/
 
 Both the standalone CLI (`lib/cli.mjs` / `coldpin`) and the MCP servers execute the exact same pure async workflows under `src/core/workflows.ts`.
@@ -39,8 +39,8 @@ Both the standalone CLI (`lib/cli.mjs` / `coldpin`) and the MCP servers execute 
 | `--limit <1..50>` / `--include-dev` | `discover`, `audit-batch` | Bound result count (max 50 direct deps for `audit-batch`) or include `devDependencies` |
 | `--policy <file>` / `--audit-log <file>` | All verbs | Explicit `.coldpin.policy.json` path or append-only hash-chained `audit.jsonl` |
 | `--override-ticket <id>` | `inspect` | Record approval ticket ID in `audit.jsonl` (never alters deterministic verdict) |
-| `--verbose` / `--version` (`-V`) | All verbs | Structured JSON operational logs on `stderr` or print `coldpin v1.6.0` |
+| `--verbose` / `--version` (`-V`) | All verbs | Structured JSON operational logs on `stderr` or print `coldpin v1.6.1` |
 
 ---
 
-*Coldpin v1.6.0 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
