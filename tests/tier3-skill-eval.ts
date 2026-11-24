@@ -251,9 +251,27 @@ export function buildHarnessCommand(
   const targetBin = resolved?.path ?? harness;
   const addDirArgs = extraDir ? ["--add-dir", extraDir] : [];
   if (harness === "agy") {
+    // Session-only, never-saved least-privilege MCP allow-rule so headless `agy -p` can call
+    // read-only Coldpin MCP tools without `--dangerously-skip-permissions`.
+    const agySessionSettings = JSON.stringify({
+      permissions: {
+        allow: ["mcp(coldpin_coldpin/*)", "mcp(coldpin/*)"],
+      },
+    });
     return {
       bin: targetBin,
-      args: ["-p", promptText, "--output-format", "text", "--sandbox", "--print-timeout", "180s", ...addDirArgs],
+      args: [
+        "-p",
+        promptText,
+        "--output-format",
+        "text",
+        "--sandbox",
+        "--print-timeout",
+        "180s",
+        "--settings",
+        agySessionSettings,
+        ...addDirArgs,
+      ],
     };
   }
   if (harness === "claude") {

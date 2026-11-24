@@ -104,11 +104,14 @@ describe("Tier-3 Skill Eval Harness & GHCR Container Hardening", () => {
     const pDry = parseTier3Args([], {});
     assert.equal(pDry.shouldRun, false);
 
-    // Authoritative harness invocation flag shapes (agy -p <prompt>, codex exec --skip-git-repo-check via stdin)
+    // Authoritative harness invocation flag shapes (agy -p <prompt> + least-privilege MCP settings, codex exec --skip-git-repo-check via stdin)
     const agyCmd = buildHarnessCommand("agy", "inspect test.tgz", "/repo");
     assert.equal(agyCmd.args[0], "-p");
     assert.equal(agyCmd.args[1], "inspect test.tgz");
     assert.ok(agyCmd.args.includes("--sandbox") && agyCmd.args.includes("--add-dir") && agyCmd.args.includes("/repo"));
+    assert.ok(!agyCmd.args.includes("--dangerously-skip-permissions"), "agy eval must never use --dangerously-skip-permissions");
+    const settingsIdx = agyCmd.args.indexOf("--settings");
+    assert.ok(settingsIdx >= 0 && agyCmd.args[settingsIdx + 1]?.includes("mcp(coldpin_coldpin/*)"));
 
     const codexCmd = buildHarnessCommand("codex", "inspect test.tgz", "/repo");
     assert.ok(codexCmd.args.includes("--skip-git-repo-check") && codexCmd.args.includes("--ephemeral") && codexCmd.args.includes("-"));
