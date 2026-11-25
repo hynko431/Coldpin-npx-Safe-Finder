@@ -64,24 +64,34 @@ describe("Live-Network E2E: Real Compiled CLI & Spawned Stdio MCP Against regist
     }
   });
 
-  it("dogfoods live coldpin@1.6.0 from registry.npmjs.org and verifies npm Sigstore SLSA provenance", async () => {
+  it("dogfoods live coldpin@1.6.1 from registry.npmjs.org and verifies npm Sigstore SLSA provenance", async () => {
     const cacheDir = mkdtempSync(join(tmpdir(), "coldpin-live-dogfood-"));
     try {
-      const res = await runCompiledCli(["inspect", "coldpin@1.6.0", "--json", "--cache-dir", cacheDir]);
+      const res = await runCompiledCli(["inspect", "coldpin@1.6.1", "--json", "--cache-dir", cacheDir]);
       assert.ok(res.code === 0 || res.code === 2, `Unexpected exit code ${res.code}: ${res.stderr}`);
       const report = JSON.parse(res.stdout) as {
         title: { package_name: string; version: string };
-        info: { provenance_attested: boolean; provenance_status: string; parity_tier: string };
+        info: { provenance_attested: boolean; provenance_status: string; parity_tier: string; lifecycle_scripts: unknown[] };
         verdict: string;
         pinned_execution: { tarball_sha512?: string };
+        evidence: Array<{ observations: Array<{ severity: string; code: string }> }>;
       };
       assert.equal(report.title.package_name, "coldpin");
-      assert.equal(report.title.version, "1.6.0");
+      assert.equal(report.title.version, "1.6.1");
+      assert.equal(report.info.lifecycle_scripts.length, 0);
       assert.match(report.pinned_execution.tarball_sha512 ?? "", /^sha512-/);
-      assert.notEqual(report.verdict, "MALICIOUS_INDICATORS_FOUND");
+      // Coldpin never self-whitelists its own malware-detection signature strings (e.g., `.npmrc`, prompt-injection
+      // regexes) or <72h release cooldown, so dogfooding coldpin@1.6.1 yields QUARANTINE_SUSPICIOUS (exit 2) with
+      // strictly zero CRITICAL observations (no exfil taint, no MAL-* advisories, no provenance tamper).
+      assert.ok(
+        report.verdict === "QUARANTINE_SUSPICIOUS" || report.verdict === "VERIFIED_CLEAN_WITHIN_SCOPE",
+        `Unexpected verdict on coldpin@1.6.1: ${report.verdict}`,
+      );
+      const criticalObs = report.evidence.flatMap((e) => e.observations).filter((o) => o.severity === "CRITICAL");
+      assert.equal(criticalObs.length, 0, `Unexpected CRITICAL findings on coldpin@1.6.1: ${JSON.stringify(criticalObs)}`);
       assert.ok(
         report.info.provenance_attested === true || report.info.provenance_status === "dsse_leaf_verified_unanchored",
-        `Expected live npm SLSA provenance attestation on coldpin@1.6.0, got status=${report.info.provenance_status}`,
+        `Expected live npm SLSA provenance attestation on coldpin@1.6.1, got status=${report.info.provenance_status}`,
       );
     } finally {
       rmSync(cacheDir, { recursive: true, force: true });

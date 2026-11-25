@@ -207,7 +207,7 @@ Measured deterministic Tier 1–2 results from [BENCHMARK.md](skills/coldpin/BEN
 | Adversarial Recall (`49`-fixture corpus) | `100.0%` (`28/28` adversarial & fail-closed fixtures caught) | `N/A` (not run offline) |
 | False-Positive Rate | `0.0%` (`0/21` benign CLIs misclassified; target `< 5%`) | `N/A` (not run offline) |
 | Mutation Proofs & Trigger Proxy | `38/38` regressions caught red · `10/10` selection (`5` pos + `5` decoys) | `N/A` (not run offline) |
-| Tier-1 Latency & Self-Audit | Benign p50 `4.01 ms`, p95 `12.43 ms` · `SS-03`–`SS-18` `APPROVE` (`16/100`, `0` blocking) | `N/A` (not run offline) |
+| Tier-1 Latency & Self-Audit | Benign p50 `6.04 ms`, p95 `16.56 ms` · `SS-03`–`SS-18` `APPROVE` (`16/100`, `0` blocking) | `N/A` (not run offline) |
 
 Explicit operational boundaries:
 

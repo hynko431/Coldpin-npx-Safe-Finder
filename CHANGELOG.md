@@ -11,7 +11,7 @@ All notable changes to `coldpin` (Coldpin; originally drafted under working titl
 - **First-Party Official `npmjs.com` Package Card & Downloads Pill (`functions/badge/[[path]].js`, `tests/badge-function.test.ts`, `README.md`):** Added a zero-dependency Cloudflare Pages Function serving live adaptive light/dark SVGs at `/badge/npm-card.svg` and `/badge/npm-downloads.svg` backed directly by `api.npmjs.org` and `registry.npmjs.org` with edge caching, strict SVG presentation-attribute security invariants, degraded fallbacks, and reorganized `README.md`.
 
 ### Security & Hardening
-- **Closed `MTC-CAP-007` Arbitrary URL Schema Surface (`src/mcp/tool-catalog.ts`, `src/mcp/server.ts`, `catalog/mcp-schema-pin.json`):** Hardened `resolve_safe_anchor.repo_url` with a JSON Schema `pattern` (`^https://[A-Za-z0-9._-]+/[A-Za-z0-9._/@-]+$`) and `maxLength: 256` at both tool-schema advertisement and server runtime validation boundaries (holding `tools/list` at `1,643 <= 1,800` tokens), paired with negative schema/runtime regression tests in `tests/mcp-server.test.ts`.
+- **Closed `MTC-CAP-007` Arbitrary URL Schema Surface (`src/mcp/tool-catalog.ts`, `src/mcp/server.ts`, `catalog/mcp-schema-pin.json`):** Hardened `resolve_safe_anchor.repo_url` with a JSON Schema `pattern` (`^https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?/[^\s?#]+$`) and `maxLength: 256` at both tool-schema advertisement and server runtime validation boundaries (holding `tools/list` at `1,643 <= 1,800` tokens), paired with negative schema/runtime regression tests in `tests/mcp-server.test.ts`.
 
 ## [1.6.0] - 2026-11-23
 

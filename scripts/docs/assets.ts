@@ -4130,7 +4130,7 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
   var webMcpTools = [
     {
       name: "search_coldpin_docs",
-      description: "Read-only search across Coldpin v" + DOC_VERSION + " documentation pages and sections (synonym-aware RRF, <=1500 chars).",
+      description: ${JSON.stringify(`Read-only search across Coldpin v${m.version} documentation pages and sections (synonym-aware RRF, <=1500 chars).`)},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: {
         type: "object",
@@ -4181,7 +4181,7 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
     },
     {
       name: "get_coldpin_release_checksums",
-      description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
+      description: ${JSON.stringify(`Return verified Coldpin v${m.version} SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).`)},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: { type: "object", properties: {} },
       execute: function () {
