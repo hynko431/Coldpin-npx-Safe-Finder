@@ -188,7 +188,7 @@
 </ul>
 <p class="prose"><strong>Security &amp; Hardening</strong></p>
 <ul class="doc-list">
-  <li><strong>Closed <code>MTC-CAP-007</code> Arbitrary URL Schema Surface (<code>src/mcp/tool-catalog.ts</code>, <code>src/mcp/server.ts</code>, <code>catalog/mcp-schema-pin.json</code>):</strong> Hardened <code>resolve_safe_anchor.repo_url</code> with a JSON Schema <code>pattern</code> (<code>^https://[A-Za-z0-9._-]+/[A-Za-z0-9._/@-]+$</code>) and <code>maxLength: 256</code> at both tool-schema advertisement and server runtime validation boundaries (holding <code>tools/list</code> at <code>1,643 &lt;= 1,800</code> tokens), paired with negative schema/runtime regression tests in <code>tests/mcp-server.test.ts</code>.</li>
+  <li><strong>Closed <code>MTC-CAP-007</code> Arbitrary URL Schema Surface (<code>src/mcp/tool-catalog.ts</code>, <code>src/mcp/server.ts</code>, <code>catalog/mcp-schema-pin.json</code>):</strong> Hardened <code>resolve_safe_anchor.repo_url</code> with a JSON Schema <code>pattern</code> (<code>^https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?/[^\s?#]+$</code>) and <code>maxLength: 256</code> at both tool-schema advertisement and server runtime validation boundaries (holding <code>tools/list</code> at <code>1,643 &lt;= 1,800</code> tokens), paired with negative schema/runtime regression tests in <code>tests/mcp-server.test.ts</code>.</li>
 </ul>
     </div>
   </details>

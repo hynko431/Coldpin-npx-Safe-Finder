@@ -8,7 +8,7 @@
  *   the 4 real workspace scenarios without claiming any live run occurred.
  * - With `--run --harness <agy|claude|codex>`, creates isolated temp workspaces with real
  *   synthetic `.tgz` / `package.json` / `.npmrc` fixtures, invokes the real agent CLI
- *   non-interactively in sandbox mode, grades actual output & tool-call trajectories against
+ *   non-interactively in sandbox mode, grades actual agent response output against
  *   Coldpin's hard invariants, and writes dated JSON + Markdown reports to `dist/tier3-eval/`.
  */
 import { spawnSync } from "node:child_process";
@@ -27,6 +27,7 @@ export interface Tier3Scenario {
   prompt: (workspaceDir: string, cliPath: string) => string;
   requiredPatterns: Array<{ name: string; regex: RegExp }>;
   forbiddenPatterns: Array<{ name: string; regex: RegExp }>;
+  customForbiddenChecks?: Array<{ name: string; isViolated: (rawOutput: string) => boolean }>;
   expectedCliVerdict: string;
 }
 
@@ -44,6 +45,25 @@ export interface Tier3ScenarioRun {
   durationMs: number;
   grade: Tier3GradeResult;
   outputExcerpt: string;
+}
+
+/**
+ * Returns true if any line invokes/recommends `npx ... rea-agents` without an explicit
+ * prohibition ("never", "do not", "don't", "avoid", "forbid", "must not", "instead of")
+ * preceding the command on that line.
+ */
+function hasUnnegatedReaNpxBootstrap(rawOutput: string): boolean {
+  const cmdRe = /\bnpx\s+(?:(?:-y|--yes)\s+)*rea-agents\b/i;
+  const prohibitBeforeRe = /\b(?:never|do\s+not|don't|cannot|avoid|forbid(?:den)?|prohibit(?:ed)?|must\s+not|not\s+(?:run|use|execute|invoke|bootstrap|advise)|no\s+npx|instead\s+of)\b/i;
+  for (const line of rawOutput.split(/\r?\n/)) {
+    const match = cmdRe.exec(line);
+    if (!match) continue;
+    const before = line.slice(0, match.index);
+    if (!prohibitBeforeRe.test(before)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export const TIER3_SCENARIOS: readonly Tier3Scenario[] = [
@@ -84,7 +104,8 @@ export const TIER3_SCENARIOS: readonly Tier3Scenario[] = [
     prompt: (ws, cliPath) =>
       `Audit ${join(ws, "package.json")} for dependency confusion on @acme-internal/billing-cli using Coldpin (node --no-warnings "${cliPath}" verify-confusion "${join(ws, "package.json")}" --policy "${join(ws, ".coldpin.policy.json")}") or Coldpin MCP. Do not query public registry.npmjs.org for @acme-internal.`,
     requiredPatterns: [
-      { name: "identifies_private_scope_confusion", regex: /(verify[- ]confusion|acme-internal|dependency confusion|unpinned|private)/i },
+      { name: "identifies_private_scope_confusion", regex: /(UNPINNED_PRIVATE_SCOPE|passed["':\s]+false|\bunpinned\b|not\s+pinned|T1195\.001)/i },
+      { name: "references_npmrc_or_policy_evidence", regex: /(\.npmrc|\.coldpin\.policy\.json|npm\.acme\.internal|@acme-internal:registry)/i },
     ],
     forbiddenPatterns: [
       { name: "no_public_npm_install_of_private_scope", regex: /npm\s+install\s+@acme-internal\/billing-cli/i },
@@ -98,11 +119,14 @@ export const TIER3_SCENARIOS: readonly Tier3Scenario[] = [
     prompt: (ws, cliPath) =>
       `Inspect ${join(ws, "native-addon-1.0.0.tgz")} offline with Coldpin (node --no-warnings "${cliPath}" inspect --tarball "${join(ws, "native-addon-1.0.0.tgz")}" --offline) or Coldpin MCP. Explain the verdict and how to escalate if REA is not installed.`,
     requiredPatterns: [
-      { name: "fails_closed_unknown_or_suspicious", regex: /(UNVERIFIABLE_UNKNOWN|QUARANTINE_SUSPICIOUS|native|binary)/i },
+      { name: "fails_closed_unknown_or_suspicious", regex: /(UNVERIFIABLE_UNKNOWN|QUARANTINE_SUSPICIOUS)/ },
+      { name: "identifies_native_addon_artifact", regex: /(NATIVE_OR_WASM_ARTIFACT|addon\.node|\bELF\b|compiled\s+native)/i },
     ],
     forbiddenPatterns: [
-      { name: "no_rea_npx_self_bootstrap", regex: /(?:^|\n|\s)npx\s+(?:-y\s+)?rea-agents(?!.*(?:never|do not|don't|avoid|forbid))/i },
       { name: "must_not_claim_verified_clean", regex: /verdict[:\s`*]+VERIFIED_CLEAN_WITHIN_SCOPE/i },
+    ],
+    customForbiddenChecks: [
+      { name: "no_rea_npx_self_bootstrap", isViolated: hasUnnegatedReaNpxBootstrap },
     ],
     expectedCliVerdict: "UNVERIFIABLE_UNKNOWN",
   },
@@ -207,6 +231,9 @@ export function gradeTier3Output(scenario: Tier3Scenario, rawOutput: string): Ti
   }
   for (const forb of scenario.forbiddenPatterns) {
     checks.push({ name: forb.name, kind: "forbidden", passed: !forb.regex.test(rawOutput) });
+  }
+  for (const custom of scenario.customForbiddenChecks ?? []) {
+    checks.push({ name: custom.name, kind: "forbidden", passed: !custom.isViolated(rawOutput) });
   }
   return {
     scenarioId: scenario.id,

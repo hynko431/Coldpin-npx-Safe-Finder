@@ -18,7 +18,7 @@ All notable changes to `coldpin` following Keep a Changelog and Semantic Version
 
 **Security & Hardening**
 
-- **Closed `MTC-CAP-007` Arbitrary URL Schema Surface (`src/mcp/tool-catalog.ts`, `src/mcp/server.ts`, `catalog/mcp-schema-pin.json`):** Hardened `resolve_safe_anchor.repo_url` with a JSON Schema `pattern` (`^https://[A-Za-z0-9._-]+/[A-Za-z0-9._/@-]+$`) and `maxLength: 256` at both tool-schema advertisement and server runtime validation boundaries (holding `tools/list` at `1,643 <= 1,800` tokens), paired with negative schema/runtime regression tests in `tests/mcp-server.test.ts`.
+- **Closed `MTC-CAP-007` Arbitrary URL Schema Surface (`src/mcp/tool-catalog.ts`, `src/mcp/server.ts`, `catalog/mcp-schema-pin.json`):** Hardened `resolve_safe_anchor.repo_url` with a JSON Schema `pattern` (`^https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?/[^\s?#]+$`) and `maxLength: 256` at both tool-schema advertisement and server runtime validation boundaries (holding `tools/list` at `1,643 <= 1,800` tokens), paired with negative schema/runtime regression tests in `tests/mcp-server.test.ts`.
 
 ### v1.6.0 — 2026-11-23
 

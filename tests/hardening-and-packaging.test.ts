@@ -577,7 +577,7 @@ describe("Enterprise Hardening, Evasion Closure, Network Isolation, Concurrency 
 
       const pkgJson = JSON.parse(readFileSync(resolve("package.json"), "utf8")) as { version: string; files?: string[] };
       assert.equal(pkgJson.version, ENGINE_VERSION);
-      assert.ok(Array.isArray(pkgJson.files) && pkgJson.files.includes("src/") && !pkgJson.files.some((f) => f.startsWith("tests") || f.startsWith(".github")));
+      assert.ok(Array.isArray(pkgJson.files) && pkgJson.files.includes("lib/") && !pkgJson.files.includes("src/") && !pkgJson.files.some((f) => f.startsWith("tests") || f.startsWith(".github")));
       const expectedRulesetHash = createHash("sha256")
         .update(`v${ENGINE_VERSION}|${readFileSync(resolve("catalog/triage-rules.json"), "utf8")}`)
         .digest("hex");
