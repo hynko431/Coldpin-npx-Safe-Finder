@@ -1481,7 +1481,7 @@
   var webMcpTools = [
     {
       name: "search_coldpin_docs",
-      description: "Read-only search across Coldpin v" + DOC_VERSION + " documentation pages and sections (synonym-aware RRF, <=1500 chars).",
+      description: "Read-only search across Coldpin v1.6.1 documentation pages and sections (synonym-aware RRF, <=1500 chars).",
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: {
         type: "object",
@@ -1532,7 +1532,7 @@
     },
     {
       name: "get_coldpin_release_checksums",
-      description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
+      description: "Return verified Coldpin v1.6.1 SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: { type: "object", properties: {} },
       execute: function () {
