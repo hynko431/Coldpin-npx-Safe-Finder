@@ -4178,24 +4178,23 @@ export function renderAppJs(m: RepoMetrics, validSlugs: readonly string[]): stri
             };
           });
       }
+    },
+    {
+      name: "get_coldpin_release_checksums",
+      description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+      inputSchema: { type: "object", properties: {} },
+      execute: function () {
+        return Promise.resolve({
+          content: [{ type: "text", text: capWebMcpText({ version: DOC_VERSION, release_url: RELEASE_URL, sha256sums: RELEASE_CHECKSUMS }) }]
+        });
+      }
     }
   ];
 
   if (window.ColdpinHookCore && typeof window.ColdpinHookCore.evaluatePreToolUsePayload === "function") {
     webMcpTools.push(simulateHookTool);
   }
-
-  webMcpTools.push({
-    name: "get_coldpin_release_checksums",
-    description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
-    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-    inputSchema: { type: "object", properties: {} },
-    execute: function () {
-      return Promise.resolve({
-        content: [{ type: "text", text: capWebMcpText({ version: DOC_VERSION, release_url: RELEASE_URL, sha256sums: RELEASE_CHECKSUMS }) }]
-      });
-    }
-  });
 
   window.ColdpinWebMcpTools = Object.freeze(webMcpTools);
 
