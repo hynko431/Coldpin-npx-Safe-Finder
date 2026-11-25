@@ -452,7 +452,7 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     // 2. Test app.js WebMCP registration + actual execution of all 4 read-only tools
     const hookEvalSrc = readFileSync(join(SITE_DIR, "hook-eval.js"), "utf8");
     const appJsSrc = readFileSync(join(SITE_DIR, "app.js"), "utf8");
-    const registered: Array<{ name: string; annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean }; execute: (a: Record<string, unknown>) => Promise<{ content: Array<{ text: string }> }> }> = [];
+    const registered: Array<{ name: string; annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean; idempotentHint?: boolean; openWorldHint?: boolean }; execute: (a: Record<string, unknown>) => Promise<{ content: Array<{ text: string }> }> }> = [];
     const attrs = new Map<string, string>([["data-docs-root", "."], ["data-page-slug", "overview"], ["data-pillar", "get-started"]]);
     const noopEl = {
       addEventListener: () => {},
@@ -521,6 +521,8 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     for (const tool of registered) {
       assert.equal(tool.annotations?.readOnlyHint, true, `WebMCP tool ${tool.name} must be readOnlyHint=true`);
       assert.equal(tool.annotations?.destructiveHint, false, `WebMCP tool ${tool.name} must be destructiveHint=false`);
+      assert.equal(tool.annotations?.idempotentHint, true, `WebMCP tool ${tool.name} must be idempotentHint=true`);
+      assert.equal(tool.annotations?.openWorldHint, false, `WebMCP tool ${tool.name} must be openWorldHint=false`);
     }
 
     const byName = new Map(registered.map((t) => [t.name, t]));

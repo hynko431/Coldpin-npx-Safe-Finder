@@ -16,6 +16,7 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
       <img height="20" src="https://mcprush.com/badge/coldpin-mcp/score.svg?theme=light" alt="Coldpin MCP trust score on MCPRush" />
     </picture>
   </a>
+  <a href="https://m8ven.ai/mcp/hynko431-coldpin-npx-safe-finder-yksxpp?s=readme"><img height="20" src="https://m8ven.ai/badge/mcp/hynko431-coldpin-npx-safe-finder-yksxpp?v=646b36986a4cb8051eb18e5681fbf13f&variant=verified" alt="M8ven Score" /></a>
 </p>
 
 <p>

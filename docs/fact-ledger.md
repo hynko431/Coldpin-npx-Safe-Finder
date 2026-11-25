@@ -1,6 +1,6 @@
 ---
-last_reviewed: 2026-11-24
-review_by: 2027-02-24
+last_reviewed: 2026-11-25
+review_by: 2027-02-25
 status: current
 owner_lens: fact-ledger
 sources: see rows
@@ -34,7 +34,8 @@ Rule: every volatile regulatory date, standard revision, and external security t
 | 15 | MCP Apps UI extension (`SEP-1865`, `io.modelcontextprotocol/ui`, `text/html;profile=mcp-app`, Antigravity `>= v2.34.0`) and Antigravity Sidecar schedule contract (`builtin: schedule`, `agent_permissions.access_grants`) | `antigravity.google`, `modelcontextprotocol.io` | P | 2026-11-22 | `src/mcp/evidence-card-app.ts`, `examples/sidecar.weekly-audit.example.json`, `docs/harnesses.md` | 2027-02-22 |
 | 16 | Live dynamic npm version, weekly downloads, license, and GitHub Actions CI status badges rendered via Shields.io SVG endpoints (`img.shields.io/npm/{v,dw,l}/coldpin`, `img.shields.io/github/actions/workflow/status/...`; `/npm/dt/` dropped due to upstream rate limits) | `img.shields.io` | P | 2026-11-24 | `README.md` | 2027-02-24 |
 | 17 | Multi-arch non-root OCI container published to GitHub Container Registry (`ghcr.io/hynko431/coldpin`) with SLSA Build Provenance via `.github/workflows/release.yml` | `ghcr.io`, `github.com` | P | 2026-11-24 | `Dockerfile`, `.github/workflows/release.yml`, `README.md`, `TESTING.md` | 2027-02-24 |
+| 18 | M8ven Trust Index public MCP server listing (`m8ven.ai/mcp/hynko431-coldpin-npx-safe-finder-yksxpp`, Verified Publisher live-monitored via GitHub App) and `?variant=verified` live README badge | `m8ven.ai` | P | 2026-11-25 | `README.md` | 2027-02-25 |
 
 ## Approved URL Host Allow-List (Checked by `scripts/verify_hygiene.py`)
 
-`registry.npmjs.org`, `api.npmjs.org`, `api.osv.dev`, `json.schemastore.org`, `github.com`, `ghcr.io`, `attack.mitre.org`, `atlas.mitre.org`, `owasp.org`, `cert-in.org.in`, `meity.gov.in`, `eur-lex.europa.eu`, `oasis-open.org`, `cyclonedx.org`, `cisa.gov`, `slsa.dev`, `in-toto.io`, `sigstore.dev`, `www.apache.org`, `artifactory.acme.internal`, `coldpin.acme.internal`, `idp.acme.internal`, `model_signing`, `keepachangelog.com`, `modelcontextprotocol.io`, `static.modelcontextprotocol.io`, `registry.modelcontextprotocol.io`, `antigravity.google`, `npmjs.com`, `nodejs.org`, `forms.gle`, `datatracker.ietf.org`, `coldpin-docs.pages.dev`, `hynko431.github.io`, `mcprush.com`, `img.shields.io`.
+`registry.npmjs.org`, `api.npmjs.org`, `api.osv.dev`, `json.schemastore.org`, `github.com`, `ghcr.io`, `attack.mitre.org`, `atlas.mitre.org`, `owasp.org`, `cert-in.org.in`, `meity.gov.in`, `eur-lex.europa.eu`, `oasis-open.org`, `cyclonedx.org`, `cisa.gov`, `slsa.dev`, `in-toto.io`, `sigstore.dev`, `www.apache.org`, `artifactory.acme.internal`, `coldpin.acme.internal`, `idp.acme.internal`, `model_signing`, `keepachangelog.com`, `modelcontextprotocol.io`, `static.modelcontextprotocol.io`, `registry.modelcontextprotocol.io`, `antigravity.google`, `npmjs.com`, `nodejs.org`, `forms.gle`, `datatracker.ietf.org`, `coldpin-docs.pages.dev`, `hynko431.github.io`, `mcprush.com`, `m8ven.ai`, `img.shields.io`.

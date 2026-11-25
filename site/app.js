@@ -1459,7 +1459,7 @@
   var simulateHookTool = {
     name: "simulate_coldpin_hook",
     description: "Read-only PreToolUse hook simulation using Coldpin's exact ES2020 src/hook-core.ts evaluator (zero execution, <=1500 chars).",
-    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: {
       type: "object",
       required: ["tool_name", "payload"],
@@ -1482,7 +1482,7 @@
     {
       name: "search_coldpin_docs",
       description: "Read-only search across Coldpin v" + DOC_VERSION + " documentation pages and sections (synonym-aware RRF, <=1500 chars).",
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: {
         type: "object",
         required: ["query"],
@@ -1503,7 +1503,7 @@
     {
       name: "get_coldpin_doc_markdown",
       description: "Fetch a read-only raw Markdown slice (<=1500 chars) for an allowlisted Coldpin documentation slug.",
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       inputSchema: {
         type: "object",
         required: ["slug"],
@@ -1539,7 +1539,7 @@
   webMcpTools.push({
     name: "get_coldpin_release_checksums",
     description: "Return verified Coldpin v" + DOC_VERSION + " SHA256SUMS.txt digests and SLSA provenance links (read-only, <=1500 chars).",
-    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: { type: "object", properties: {} },
     execute: function () {
       return Promise.resolve({
