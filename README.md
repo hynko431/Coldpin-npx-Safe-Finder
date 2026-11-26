@@ -17,6 +17,7 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
     </picture>
   </a>
   <a href="https://m8ven.ai/mcp/hynko431-coldpin-npx-safe-finder-yksxpp?s=readme"><img height="20" src="https://m8ven.ai/badge/mcp/hynko431-coldpin-npx-safe-finder-yksxpp?v=646b36986a4cb8051eb18e5681fbf13f&variant=verified" alt="M8ven Score" /></a>
+  <a href="https://glama.ai/mcp/servers/hynko431/Coldpin-npx-Safe-Finder"><img height="20" src="https://glama.ai/mcp/servers/hynko431/Coldpin-npx-Safe-Finder/badges/score.svg" alt="Coldpin MCP server – quality and maintenance score on Glama" /></a>
 </p>
 
 <p>
@@ -34,9 +35,10 @@ Inspect `npx` packages cold in memory. Pin clean releases with verifiable eviden
       <img width="380" height="200" src="https://mcprush.com/badge/coldpin-mcp/card.svg?theme=light" alt="Coldpin MCP server listing on MCPRush" />
     </picture>
   </a>
+  <a href="https://glama.ai/mcp/servers/hynko431/Coldpin-npx-Safe-Finder"><img width="380" height="200" src="https://glama.ai/mcp/servers/hynko431/Coldpin-npx-Safe-Finder/badges/card.svg" alt="Coldpin MCP server – quality and maintenance score on Glama" /></a>
 </p>
 
-*Both download counts originate from the official [npmjs.com](https://npmjs.com/package/coldpin) registry (`api.npmjs.org`, measuring tarball GETs); MCPRush polls npm on a ~24h lag and serves zero hosted proxy traffic.*
+*Download counts across these cards originate from the official [npmjs.com](https://npmjs.com/package/coldpin) registry (`api.npmjs.org`, measuring tarball GETs); MCPRush and Glama poll npm asynchronously.*
 
 ## Why Coldpin
 
