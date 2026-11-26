@@ -290,12 +290,12 @@ describe("Coldpin Documentation Portal v2 (Deterministic Build, Hook Parity, Lin
     }
   });
 
-  it("ships crawler/AI artifacts, all 17 .md twins, MCP schema token & v1.6.1 parity, 320px CSS guards, safe prompts & read-only WebMCP", () => {
+  it("ships crawler/AI artifacts, all 17 .md twins, MCP schema token & v1.6.2 parity, 320px CSS guards, safe prompts & read-only WebMCP", () => {
     const pluginJson = JSON.parse(readFileSync(join(REPO_ROOT, "plugin.json"), "utf8")) as { version: string };
     const schemaPin = JSON.parse(readFileSync(join(REPO_ROOT, "catalog", "mcp-schema-pin.json"), "utf8")) as {
       estimated_tokens: number;
     };
-    assert.equal(pluginJson.version, "1.6.1");
+    assert.equal(pluginJson.version, "1.6.2");
     assert.ok(schemaPin.estimated_tokens > 0 && schemaPin.estimated_tokens <= 1800, `Unexpected token count: ${schemaPin.estimated_tokens}`);
 
     // Required top-level files

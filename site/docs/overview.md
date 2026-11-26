@@ -1,9 +1,9 @@
 # Inspect npx packages cold. Pin clean releases.
 
-> **Coldpin v1.6.1** · Section: Get Started · Available on: Antigravity >= v1.5.13, MCP Apps >= v2.34.0, Node.js >= 24, Claude Code, Codex CLI
+> **Coldpin v1.6.2** · Section: Get Started · Available on: Antigravity >= v1.5.13, MCP Apps >= v2.34.0, Node.js >= 24, Claude Code, Codex CLI
 > Canonical HTML: https://coldpin-docs.pages.dev/
 
-Coldpin (`coldpin v1.6.1`) is a zero-dependency Node.js 24 CLI, local `stdio` MCP server (`io.github.hynko431/coldpin`), and native Antigravity plugin that vets npm tarballs in memory, verifies 3-tier tarball-to-source parity, and recovers pre-compromise release anchors without executing untrusted install scripts.
+Coldpin (`coldpin v1.6.2`) is a zero-dependency Node.js 24 CLI, local `stdio` MCP server (`io.github.hynko431/coldpin`), and native Antigravity plugin that vets npm tarballs in memory, verifies 3-tier tarball-to-source parity, and recovers pre-compromise release anchors without executing untrusted install scripts.
 
 - **Runtime & Cost:** Node >= 24, 0 deps, $0/mo
 - **Antigravity Strict:** 0 findings (5 primitives)
@@ -36,9 +36,9 @@ agy --agent coldpin-auditor
 Run Coldpin directly on Node.js `>= 24.0.0` with zero runtime dependencies. Every CLI verb returns deterministic exit codes (`0` clean, `2` suspicious/unknown, `3` malicious, `1` error) and supports `--json`, `--sarif`, and `--sbom`.
 
 ```sh
-npx --ignore-scripts coldpin@1.6.1 inspect semver@7.7.1
-npx --ignore-scripts coldpin@1.6.1 audit-batch ./package.json --limit 50
-npx --ignore-scripts coldpin@1.6.1 mcp
+npx --ignore-scripts coldpin@1.6.2 inspect semver@7.7.1
+npx --ignore-scripts coldpin@1.6.2 audit-batch ./package.json --limit 50
+npx --ignore-scripts coldpin@1.6.2 mcp
 ```
 
 ## Claude Code, Codex CLI & Official MCP Registry
@@ -78,8 +78,8 @@ Coldpin separates untrusted package content from deterministic static analysis a
 - **Interactive Policy Lab** (Get Started): Run Coldpin's real ES2020 PreToolUse hook engine in your browser and inspect the live SEP-1865 MCP App card. — https://coldpin-docs.pages.dev/docs/policy-lab/
 - **5-Component Antigravity Plugin** (Plugin & Guardrails): 7 read-only aspect agents, 3 Markdown rules, 3 PreToolUse hook groups, and /coldpin-audit & /coldpin-incident. — https://coldpin-docs.pages.dev/docs/antigravity-plugin/
 - **Self-Hosted HTTP MCP & Sidecar (v1.6)** (MCP & CLI): Deploy coldpin-mcp-http with OAuth 2.1 CIMD, RFC 9728/8707, inline MCP Apps, and opt-in weekly audits. — https://coldpin-docs.pages.dev/docs/enterprise-http/
-- **Benchmarks, Checksums & Provenance** (Verification & Releases): Live synced schema pin (1,643 tokens), 38/38 mutation proofs, SS-03..SS-18 audit, and v1.6.1 release provenance. — https://coldpin-docs.pages.dev/docs/verification/
+- **Benchmarks, Checksums & Provenance** (Verification & Releases): Live synced schema pin (1,643 tokens), 38/38 mutation proofs, SS-03..SS-18 audit, and v1.6.2 release provenance. — https://coldpin-docs.pages.dev/docs/verification/
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

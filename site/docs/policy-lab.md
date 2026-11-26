@@ -1,6 +1,6 @@
 # Interactive Policy Lab
 
-> **Coldpin v1.6.1** · Section: Get Started · Available on: Browser Sandbox (0 Network), Exact lib/hook.mjs Engine, Live SEP-1865 MCP App
+> **Coldpin v1.6.2** · Section: Get Started · Available on: Browser Sandbox (0 Network), Exact lib/hook.mjs Engine, Live SEP-1865 MCP App
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/policy-lab/
 
 Everything below runs 100% locally in your browser with zero outbound network requests. The Hook Simulator executes `site/hook-eval.js` compiled directly from Coldpin's real `src/hook-core.ts` engine (100% parity with `lib/hook.mjs`), and the Verdict Explorer feeds live SEP-1865 JSON-RPC messages into Coldpin's real `ui://coldpin/evidence-card.html` MCP App.
@@ -19,4 +19,4 @@ Interactive 4-state Verdict Explorer (`VERIFIED_CLEAN_WITHIN_SCOPE`, `QUARANTINE
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

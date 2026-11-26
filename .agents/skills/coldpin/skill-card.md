@@ -56,7 +56,7 @@ See [BENCHMARK.md](BENCHMARK.md) for the executed 49-fixture adversarial/benign 
 | Skill Self-Audit (SkillSpector-class) | APPROVE (0 blocking findings) | N/A (not run offline) |
 
 ## Skill Version(s): <br>
-1.6.1 (source: `SKILL.md` frontmatter) <br>
+1.6.2 (source: `SKILL.md` frontmatter) <br>
 
 ## Ethical Considerations & Security Reporting: <br>
 This skill is strictly for defensive software supply-chain security and authorized inspection. Never detonate suspected malware outside an isolated lab. Engineering guidance, not legal, medical or financial advice; confirm compliance decisions with qualified counsel. <br>

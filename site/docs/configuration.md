@@ -1,6 +1,6 @@
 # Configuration & Private-Scope Isolation
 
-> **Coldpin v1.6.1** · Section: Enterprise & Security · Available on: Local CLI, Local stdio MCP, Self-Hosted HTTP MCP, Antigravity Variables
+> **Coldpin v1.6.2** · Section: Enterprise & Security · Available on: Local CLI, Local stdio MCP, Self-Hosted HTTP MCP, Antigravity Variables
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/configuration/
 
 Coldpin enforces an operator-only control plane: security policy, private scopes, registry credentials, and allowed local roots are configured strictly through startup environment variables or pinned operator policy files — never mutable by untrusted tool calls.
@@ -73,4 +73,4 @@ Default `mcp_config.json` declares zero mandatory `variables` so public installs
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

@@ -1,6 +1,6 @@
 # 7 Read-Only Aspect Agents & 3 Rules
 
-> **Coldpin v1.6.1** · Section: Plugin & Guardrails · Available on: Antigravity App, Antigravity CLI, Antigravity IDEs
+> **Coldpin v1.6.2** · Section: Plugin & Guardrails · Available on: Antigravity App, Antigravity CLI, Antigravity IDEs
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/agents-and-rules/
 
 Every Coldpin security aspect runs inside an isolated read-only subagent with private body rules, `commandExecutionPolicy: "off"`, and a scoped Coldpin MCP tool allowlist enforced by `SS-14-AGENT-LEAST-PRIV` and `SS-15-RULES-HYGIENE`.
@@ -29,4 +29,4 @@ Every Coldpin security aspect runs inside an isolated read-only subagent with pr
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

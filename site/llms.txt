@@ -1,4 +1,4 @@
-# Coldpin Documentation (v1.6.1)
+# Coldpin Documentation (v1.6.2)
 
 > Inspect npx packages cold in memory, verify tarball-to-source parity, and pin verified clean releases with zero execution.
 
@@ -36,6 +36,6 @@
 
 ## Verification & Releases
 
-- [Verification, Benchmarks & Provenance](https://coldpin-docs.pages.dev/docs/verification.md): Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.1 release provenance.
-- [Changelog](https://coldpin-docs.pages.dev/docs/changelog.md): Complete release history of Coldpin from v1.0.0 through v1.6.1, synced directly from CHANGELOG.md.
+- [Verification, Benchmarks & Provenance](https://coldpin-docs.pages.dev/docs/verification.md): Live-synced Coldpin verification gates: 49-fixture corpus (100% recall, 0% FPR), 38/38 mutation proofs, SkillSpector SS-03..SS-18, MCP schema pin, and v1.6.2 release provenance.
+- [Changelog](https://coldpin-docs.pages.dev/docs/changelog.md): Complete release history of Coldpin from v1.0.0 through v1.6.2, synced directly from CHANGELOG.md.
 - [FAQ & Epistemic Limits](https://coldpin-docs.pages.dev/docs/faq.md): Honest answers about what static tarball triage can and cannot prove, stock npx transitive caveats, REA escalation, and alternatives.

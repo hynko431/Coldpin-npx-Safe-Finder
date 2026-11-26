@@ -1,11 +1,22 @@
 # Changelog
 
-> **Coldpin v1.6.1** · Section: Verification & Releases · Available on: Latest: v1.6.1, Semantic Versioning, Apache-2.0
+> **Coldpin v1.6.2** · Section: Verification & Releases · Available on: Latest: v1.6.2, Semantic Versioning, Apache-2.0
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/changelog/
 
 All notable changes to `coldpin` following Keep a Changelog and Semantic Versioning. Jump to any release from the version index or toggle all entries below.
 
-## Release History (v1.0.0 – v1.6.1)
+## Release History (v1.0.0 – v1.6.2)
+
+### v1.6.2 — 2026-11-26
+
+**Changed**
+
+- **Slimmer Compiled-Only npm Package (`package.json`, `tests/hardening-and-packaging.test.ts`):** Removed duplicate TypeScript sources (`src/`) from `package.json` `"files"` while keeping all `25` compiled zero-dependency ESM modules under `lib/`, shrinking the published npm tarball from `114` files (`1.56 MB` unpacked) to `89` files (`910 KB` unpacked) and eliminating duplicate static-scanner source hits without altering any runtime or security behavior.
+- **Verified WebMCP Static Metadata & README Badge (`scripts/docs/assets.ts`, `site/app.js`, `README.md`, `docs/fact-ledger.md`, `tests/docs-site.test.ts`):** Declared all 4 browser WebMCP tools with explicit 4-hint boolean annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`), inline `get_coldpin_release_checksums` registration, and build-time static plain-string descriptions, and added the M8ven `?variant=verified` live publisher badge with `m8ven.ai` allowlisted in `docs/fact-ledger.md`.
+
+**Fixed**
+
+- **Tighter Live Dogfooding, Tier-3 Grader & Docs Accuracy (`tests/live-network-e2e.test.ts`, `tests/tier3-skill-eval.ts`, `tests/tier3-skill-eval.test.ts`, `CHANGELOG.md`, `README.md`):** Updated live E2E dogfooding to inspect published `coldpin@1.6.1` with explicit zero-`CRITICAL` and zero-lifecycle-hook assertions, hardened Tier-3 grading to reject prompt-parroting and trailing-negation `npx rea-agents` bypasses, synced `CHANGELOG.md`'s `REPO_URL_SCHEMA_PATTERN` regex with `src/mcp/tool-catalog.ts`, and synced `README.md` Tier-1 latency with `skills/coldpin/BENCHMARK.md`.
 
 ### v1.6.1 — 2026-11-24
 
@@ -151,4 +162,4 @@ All notable changes to `coldpin` following Keep a Changelog and Semantic Version
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

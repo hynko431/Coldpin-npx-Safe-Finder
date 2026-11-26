@@ -1,6 +1,6 @@
 # Quickstart Install
 
-> **Coldpin v1.6.1** · Section: Get Started · Available on: Antigravity >= v1.5.13, Node.js >= 24, Git >= 2.25, Offline / Air-Gapped
+> **Coldpin v1.6.2** · Section: Get Started · Available on: Antigravity >= v1.5.13, Node.js >= 24, Git >= 2.25, Offline / Air-Gapped
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/quickstart/
 
 Coldpin runs 100% locally with zero mandatory credentials, zero npm runtime dependencies, and **$0/mo** steady-state cost. Pick an install method and run your first cold tarball inspection.
@@ -27,12 +27,12 @@ Enables immediately with zero required variables: 3 skills, 7 read-only aspect a
 ### npm / Standalone CLI
 
 ```sh
-npx --ignore-scripts coldpin@1.6.1 mcp
-npx --ignore-scripts coldpin@1.6.1 inspect semver@7.7.1
-npx --ignore-scripts coldpin@1.6.1 audit-batch ./package.json --limit 50
+npx --ignore-scripts coldpin@1.6.2 mcp
+npx --ignore-scripts coldpin@1.6.2 inspect semver@7.7.1
+npx --ignore-scripts coldpin@1.6.2 audit-batch ./package.json --limit 50
 ```
 
-Published as [coldpin@1.6.1](https://npmjs.com/package/coldpin) on npm and indexed in the [Official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin) as `io.github.hynko431/coldpin`.
+Published as [coldpin@1.6.2](https://npmjs.com/package/coldpin) on npm and indexed in the [Official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin) as `io.github.hynko431/coldpin`.
 
 ### SLSA Release Bundle
 
@@ -92,4 +92,4 @@ node --no-warnings lib/cli.mjs audit-verify ./audit.jsonl
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
