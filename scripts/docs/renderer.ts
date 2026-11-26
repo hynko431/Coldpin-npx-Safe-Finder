@@ -202,7 +202,7 @@ function renderSurfaceSelector(): string {
       id: "npm-cli",
       title: "npm & Standalone CLI",
       badge: "Zero Deps",
-      desc: "Run coldpin@1.6.1 on Node.js >= 24 for terminal triage, SARIF 2.1.0, CycloneDX 1.5 SBOM, and CI exit codes.",
+      desc: "Run coldpin@1.6.2 on Node.js >= 24 for terminal triage, SARIF 2.1.0, CycloneDX 1.5 SBOM, and CI exit codes.",
     },
     {
       id: "mcp-hosts",

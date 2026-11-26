@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <meta name="referrer" content="no-referrer">
-  <title>CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.1)</title>
+  <title>CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.2)</title>
   <meta name="description" content="Complete command, flag, output format, and exit-code reference for Coldpin&#39;s zero-dependency Node.js 24 CLI.">
   <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/cli-reference/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Coldpin Documentation">
-  <meta property="og:title" content="CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.1)">
+  <meta property="og:title" content="CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.2)">
   <meta property="og:description" content="Complete command, flag, output format, and exit-code reference for Coldpin&#39;s zero-dependency Node.js 24 CLI.">
   <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/cli-reference/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.1)">
+  <meta name="twitter:title" content="CLI Reference &amp; Exit Codes — Coldpin Docs (v1.6.2)">
   <meta name="twitter:description" content="Complete command, flag, output format, and exit-code reference for Coldpin&#39;s zero-dependency Node.js 24 CLI.">
   <link rel="icon" type="image/svg+xml" href="../../icon.svg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"CLI Reference & Exit Codes","description":"Complete command, flag, output format, and exit-code reference for Coldpin's zero-dependency Node.js 24 CLI.","url":"https://coldpin-docs.pages.dev/docs/cli-reference/","inLanguage":"en","version":"1.6.1","dateModified":"2026-11-24","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"MCP & CLI","item":"https://coldpin-docs.pages.dev/docs/mcp-tools/"},{"@type":"ListItem","position":3,"name":"6 CLI Verbs & Exit Codes","item":"https://coldpin-docs.pages.dev/docs/cli-reference/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"CLI Reference & Exit Codes","description":"Complete command, flag, output format, and exit-code reference for Coldpin's zero-dependency Node.js 24 CLI.","url":"https://coldpin-docs.pages.dev/docs/cli-reference/","inLanguage":"en","version":"1.6.2","dateModified":"2026-11-26","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"MCP & CLI","item":"https://coldpin-docs.pages.dev/docs/mcp-tools/"},{"@type":"ListItem","position":3,"name":"6 CLI Verbs & Exit Codes","item":"https://coldpin-docs.pages.dev/docs/cli-reference/"}]}]}</script>
   <script src="../../theme-init.js"></script>
   <link rel="stylesheet" href="../../styles.css">
   <script src="../../hook-eval.js" defer></script>
@@ -29,7 +29,7 @@
 
 <div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
   <div class="announcement-inner">
-    <span class="announcement-pill">v1.6.1</span>
+    <span class="announcement-pill">v1.6.2</span>
     <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
     <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
   </div>
@@ -42,7 +42,7 @@
       <a class="brand-link" href="../../">
         <img src="../../icon.svg" alt="" width="24" height="24">
         <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
-        <span class="brand-version">v1.6.1</span>
+        <span class="brand-version">v1.6.2</span>
       </a>
     </div>
 
@@ -58,7 +58,7 @@
         <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
       </div>
 
-      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.1" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.2" rel="noopener noreferrer">Release</a>
       <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
       <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
     </div>
@@ -241,7 +241,7 @@
       <tr><td data-label="Flag" class="nowrap"><code>--limit &lt;1..50&gt;</code> / <code>--include-dev</code></td><td data-label="Applies To" class="nowrap"><code>discover</code>, <code>audit-batch</code></td><td data-label="Behavior">Bound result count (max 50 direct deps for <code>audit-batch</code>) or include <code>devDependencies</code></td></tr>
       <tr><td data-label="Flag" class="nowrap"><code>--policy &lt;file&gt;</code> / <code>--audit-log &lt;file&gt;</code></td><td data-label="Applies To" class="nowrap">All verbs</td><td data-label="Behavior">Explicit <code>.coldpin.policy.json</code> path or append-only hash-chained <code>audit.jsonl</code></td></tr>
       <tr><td data-label="Flag" class="nowrap"><code>--override-ticket &lt;id&gt;</code></td><td data-label="Applies To" class="nowrap"><code>inspect</code></td><td data-label="Behavior">Record approval ticket ID in <code>audit.jsonl</code> (never alters deterministic verdict)</td></tr>
-      <tr><td data-label="Flag" class="nowrap"><code>--verbose</code> / <code>--version</code> (<code>-V</code>)</td><td data-label="Applies To" class="nowrap">All verbs</td><td data-label="Behavior">Structured JSON operational logs on <code>stderr</code> or print <code>coldpin v1.6.1</code></td></tr>
+      <tr><td data-label="Flag" class="nowrap"><code>--verbose</code> / <code>--version</code> (<code>-V</code>)</td><td data-label="Applies To" class="nowrap">All verbs</td><td data-label="Behavior">Structured JSON operational logs on <code>stderr</code> or print <code>coldpin v1.6.2</code></td></tr>
       </tbody>
     </table>
   </div>
@@ -262,7 +262,7 @@
   <div class="footer-panel">
     <div class="footer-top">
       <div>
-        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.1) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.2) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
       </div>
       <div class="footer-links">
         <a href="../../docs/changelog/">Changelog</a>
@@ -294,7 +294,7 @@
         <ul>
           <li><a href="../../docs/cli-reference.md">Raw Markdown (.md)</a></li>
           <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
-          <li><a href="../../docs/verification/">v1.6.1 Checksums</a></li>
+          <li><a href="../../docs/verification/">v1.6.2 Checksums</a></li>
           <li><a href="../../llms.txt">llms.txt Index</a></li>
         </ul>
       </div>

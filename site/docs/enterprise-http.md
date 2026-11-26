@@ -1,9 +1,9 @@
 # Self-Hosted HTTP MCP, MCP App & Weekly Sidecar (v1.6+)
 
-> **Coldpin v1.6.1** · Section: MCP & CLI · Available on: Self-Hosted VPC / Cloud Run, Antigravity >= v2.34.0 (MCP App), MCP 2025-11-25
+> **Coldpin v1.6.2** · Section: MCP & CLI · Available on: Self-Hosted VPC / Cloud Run, Antigravity >= v2.34.0 (MCP App), MCP 2025-11-25
 > Canonical HTML: https://coldpin-docs.pages.dev/docs/enterprise-http/
 
-Introduced in `v1.6.1` (Phase E), all three enterprise extensions are strictly opt-in and preserve Coldpin's **$0/mo** maintainer cost and default local `stdio`-only zero-socket posture (`mcp_config.json` → `lib/mcp.mjs`).
+Introduced in `v1.6.2` (Phase E), all three enterprise extensions are strictly opt-in and preserve Coldpin's **$0/mo** maintainer cost and default local `stdio`-only zero-socket posture (`mcp_config.json` → `lib/mcp.mjs`).
 
 ## Opt-In Streamable HTTP MCP Adapter (coldpin-mcp-http)
 
@@ -124,4 +124,4 @@ cp examples/sidecar.weekly-audit.example.json ~/.gemini/config/sidecars/coldpin-
 
 ---
 
-*Coldpin v1.6.1 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*
+*Coldpin v1.6.2 (Apache-2.0). Static triage does not replace runtime isolation or human judgment.*

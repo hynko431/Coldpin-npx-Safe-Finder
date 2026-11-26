@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <meta name="referrer" content="no-referrer">
-  <title>Quickstart Install — Coldpin Docs (v1.6.1)</title>
+  <title>Quickstart Install — Coldpin Docs (v1.6.2)</title>
   <meta name="description" content="Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.">
   <link rel="canonical" href="https://coldpin-docs.pages.dev/docs/quickstart/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Coldpin Documentation">
-  <meta property="og:title" content="Quickstart Install — Coldpin Docs (v1.6.1)">
+  <meta property="og:title" content="Quickstart Install — Coldpin Docs (v1.6.2)">
   <meta property="og:description" content="Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.">
   <meta property="og:url" content="https://coldpin-docs.pages.dev/docs/quickstart/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Quickstart Install — Coldpin Docs (v1.6.1)">
+  <meta name="twitter:title" content="Quickstart Install — Coldpin Docs (v1.6.2)">
   <meta name="twitter:description" content="Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.">
   <link rel="icon" type="image/svg+xml" href="../../icon.svg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Quickstart Install","description":"Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.","url":"https://coldpin-docs.pages.dev/docs/quickstart/","inLanguage":"en","version":"1.6.1","dateModified":"2026-11-24","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Get Started","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":3,"name":"Quickstart","item":"https://coldpin-docs.pages.dev/docs/quickstart/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Quickstart Install","description":"Install Coldpin in under 30 seconds across Antigravity, npm/CLI, SLSA-verified release bundles, or air-gapped environments.","url":"https://coldpin-docs.pages.dev/docs/quickstart/","inLanguage":"en","version":"1.6.2","dateModified":"2026-11-26","author":{"@type":"Person","name":"hynko431","url":"https://github.com/hynko431"},"isPartOf":{"@type":"WebSite","name":"Coldpin Documentation","url":"https://coldpin-docs.pages.dev/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Coldpin Docs","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":2,"name":"Get Started","item":"https://coldpin-docs.pages.dev/"},{"@type":"ListItem","position":3,"name":"Quickstart","item":"https://coldpin-docs.pages.dev/docs/quickstart/"}]}]}</script>
   <script src="../../theme-init.js"></script>
   <link rel="stylesheet" href="../../styles.css">
   <script src="../../hook-eval.js" defer></script>
@@ -29,7 +29,7 @@
 
 <div class="announcement-bar" id="announcement-bar" role="region" aria-label="Release announcement">
   <div class="announcement-inner">
-    <span class="announcement-pill">v1.6.1</span>
+    <span class="announcement-pill">v1.6.2</span>
     <span class="announcement-text">Phase E live: self-hosted Streamable HTTP MCP, inline SEP-1865 MCP App &amp; weekly sidecar. <a href="../../docs/enterprise-http/">Read the guide</a></span>
     <button type="button" class="announcement-dismiss" id="announcement-dismiss" aria-label="Dismiss announcement">×</button>
   </div>
@@ -42,7 +42,7 @@
       <a class="brand-link" href="../../">
         <img src="../../icon.svg" alt="" width="24" height="24">
         <span>Coldpin<span class="brand-name-ext"> Docs</span></span>
-        <span class="brand-version">v1.6.1</span>
+        <span class="brand-version">v1.6.2</span>
       </a>
     </div>
 
@@ -58,7 +58,7 @@
         <button type="button" class="theme-opt" data-theme-set="dark" aria-pressed="false">Dark</button>
       </div>
 
-      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.1" rel="noopener noreferrer">Release</a>
+      <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder/releases/tag/v1.6.2" rel="noopener noreferrer">Release</a>
       <a class="header-ext" href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">npm</a>
       <a class="header-ext" href="https://github.com/hynko431/Coldpin-npx-Safe-Finder" rel="noopener noreferrer">GitHub</a>
     </div>
@@ -202,11 +202,11 @@
     <span class="code-label">Pinned npm invocation (zero install scripts)</span>
     <button type="button" class="copy-btn" data-copy="qs-code-npm">Copy</button>
   </div>
-  <pre><code id="qs-code-npm"><span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.1 mcp
-<span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.1 inspect semver@7.7.1
-<span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.1 audit<span class="tok-flag">-batch</span> ./package.json <span class="tok-flag">--limit</span> 50</code></pre>
+  <pre><code id="qs-code-npm"><span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.2 mcp
+<span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.2 inspect semver@7.7.1
+<span class="tok-cmd">npx</span> <span class="tok-flag">--ignore-scripts</span> <span class="tok-cmd">coldpin</span>@1.6.2 audit<span class="tok-flag">-batch</span> ./package.json <span class="tok-flag">--limit</span> 50</code></pre>
 </div>
-<p class="prose-muted">Published as <a href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">coldpin@1.6.1</a> on npm and indexed in the <a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin" rel="noopener noreferrer">Official MCP Registry</a> as <code>io.github.hynko431/coldpin</code>.</p>
+<p class="prose-muted">Published as <a href="https://npmjs.com/package/coldpin" rel="noopener noreferrer">coldpin@1.6.2</a> on npm and indexed in the <a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.hynko431/coldpin" rel="noopener noreferrer">Official MCP Registry</a> as <code>io.github.hynko431/coldpin</code>.</p>
   </div>
   <div id="qs-install-tabs-panel-tab-bundle" class="tab-panel" role="tabpanel" aria-labelledby="qs-install-tabs-tab-bundle" hidden>
 <div class="code-block" data-lang="sh">
@@ -313,7 +313,7 @@
   <div class="footer-panel">
     <div class="footer-top">
       <div>
-        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.1) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
+        <strong>Coldpin</strong> (<code>coldpin</code> v1.6.2) · Apache-2.0 · Maintained by <a href="https://github.com/hynko431" rel="noopener noreferrer">hynko431</a>
       </div>
       <div class="footer-links">
         <a href="../../docs/changelog/">Changelog</a>
@@ -345,7 +345,7 @@
         <ul>
           <li><a href="../../docs/quickstart.md">Raw Markdown (.md)</a></li>
           <li><a href="../../docs/policy-lab/">Interactive Policy Lab</a></li>
-          <li><a href="../../docs/verification/">v1.6.1 Checksums</a></li>
+          <li><a href="../../docs/verification/">v1.6.2 Checksums</a></li>
           <li><a href="../../llms.txt">llms.txt Index</a></li>
         </ul>
       </div>

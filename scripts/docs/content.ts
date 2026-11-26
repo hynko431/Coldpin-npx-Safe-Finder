@@ -2500,6 +2500,7 @@ export function buildDocPages(m: RepoMetrics): readonly DocPage[] {
         "changelog",
         "releases",
         "history",
+        "v1.6.2",
         "v1.6.1",
         "v1.6.0",
         "v1.5.2",

@@ -13,7 +13,7 @@
  */
 
 export const PKG = "coldpin";
-export const FALLBACK_VERSION = "1.6.1";
+export const FALLBACK_VERSION = "1.6.2";
 export const FALLBACK_LICENSE = "Apache-2.0";
 
 const CANONICAL_ORIGIN = "https://coldpin-docs.pages.dev";
